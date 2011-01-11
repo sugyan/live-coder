@@ -1,0 +1,3 @@
+[submodule "deps/codemirror"]
+	path = deps/codemirror
+	url = http://marijnhaverbeke.nl/git/codemirror
