@@ -1,4 +1,5 @@
 var conf = require('node-config');
+conf.currentDirectory = __dirname;
 conf.initConfig(function(err) {
     if (err) throw err;
 
