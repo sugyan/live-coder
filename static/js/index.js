@@ -25,6 +25,7 @@ $(function() {
                     }
                     if (d[0] == '+') {
                         editor.insertIntoLine(line, 0, d[2] + '\n');
+                        if (editor.lineNumber(editor.lastLine) > 100) return;
                     }
                 }
             }
@@ -34,15 +35,34 @@ $(function() {
         parserfile: 'parsedummy.js',
         stylesheet: '/css/code.css',
         path: '/js/lib/codemirror/',
+        height: '600px',
         onLoad: function() {
             socket.connect();
             editor.focus();
         },
         onCursorActivity: function() {
             var code  = editor.getCode();
-            var diffs = diff.diff(prev.split('\n'), code.split('\n'));
+            var lines = code.split('\n');
+            var limited = false;
+            if (lines.length > 25) {
+                limited = true;
+                lines = lines.splice(0, 25);
+            }
+            for (var i = 0; i < lines.length; i++) {
+                if (lines[i].length > 100) {
+                    limited = true;
+                    lines[i] = lines[i].substr(0, 100);
+                }
+            }
+            if (limited) {
+                code = lines.join('\n');
+                editor.setCode(code);
+            }
+            var diffs = diff.diff(prev.split('\n').splice(0, 100), lines);
             if (diffs.length > 0) {
-                if (connected) socket.send({ diff: diffs });
+                if (connected) {
+                    socket.send({ diff: diffs });
+                }
                 prev = code;
             }
         }
