@@ -9,10 +9,12 @@ $(function() {
         connected = true;
     });
     socket.on('message', function(msg) {
-        console.log(msg);
         if (msg.code) {
-            prev = msg.code.join('\n');
-            editor.setCode(prev);
+            var code = msg.code.join('\n');
+            if (code != prev) {
+                editor.setCode(code);
+                prev = code;
+            }
         }
         if (msg.diff) {
             var diffs = msg.diff;
