@@ -16,17 +16,26 @@ $(function() {
             }
         }
         if (msg.diff) {
+            var num = 0;
             var diffs = msg.diff;
             for (var i = 0; i < diffs.length; i++) {
                 for (var j = 0; j < diffs[i].length; j++) {
                     var d = diffs[i][j];
-                    var line = editor.nthLine(d[1] + 1);
-                    if (d[0] == '-') {
-                        editor.removeLine(line);
-                    }
                     if (d[0] == '+') {
-                        editor.insertIntoLine(line, 0, d[2] + '\n');
-                        if (editor.lineNumber(editor.lastLine) > 100) return;
+                        num = 0;
+                        var line = editor.nthLine(d[1] + 1);
+                        if (line || d[1] == 0) {
+                            editor.insertIntoLine(line, 0, d[2] + '\n');
+                        } else {
+                            line = editor.lastLine();
+                            editor.insertIntoLine(line, editor.lineContent(line).length, '\n' + d[2] + '\n');
+                        }
+                        if (editor.lineNumber(editor.lastLine()) > 100) return;
+                    }
+                    if (d[0] == '-') {
+                        var line = editor.nthLine(d[1] + num + 1);
+                        editor.removeLine(line);
+                        num--;
                     }
                 }
             }
