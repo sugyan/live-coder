@@ -1,6 +1,6 @@
 $(function() {
     // editor loaded -> socket connect
-    var prev;
+    var prev = '';
     var connected = false;
     var diff      = new Diff();
     var socket    = new io.Socket();
