@@ -5,7 +5,6 @@ $(function() {
     var diff      = new Diff();
     var socket    = new io.Socket();
     socket.on('connect', function() {
-        console.log('connect');
         connected = true;
     });
     socket.on('message', function(msg) {
