@@ -19,7 +19,6 @@ $(function() {
 		    model: new eclipse.TextModel(),
 		    stylesheet: "/css/code.css"
 	    });
-        editor.setText('');
         editor.focus();
         editor.addEventListener('Modify', {}, function() {
             if (modifying) return false;
@@ -49,8 +48,10 @@ $(function() {
 
     function my_patch_apply(patches, text) {
         modifying = true;
+        var caret  = editor.getCaretOffset();
         var result = dmp.patch_apply(patches, text);
-        editor.setText(result[0]);
+        editor.setText(result[0], 0);
+        editor.setCaretOffset(caret);
         modifying = false;
     }
 });
