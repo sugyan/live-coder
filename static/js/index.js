@@ -19,6 +19,7 @@ $(function() {
 		    model: new eclipse.TextModel(),
 		    stylesheet: "/css/code.css"
 	    });
+        editor.setText('');
         editor.focus();
         editor.addEventListener('Modify', {}, function() {
             if (modifying) return false;
