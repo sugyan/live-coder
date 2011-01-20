@@ -1,23 +1,13 @@
 .token_comment {
-	color: green;
+	color: purple;
 }
 
 .token_string {
-	color: red;
+	color: orange;
 }
 
 .token_keyword {
-	color: lightgreen;
-	font-weight: bold;
-}
-
-.token_bracket_outline {
-	outline: 1px solid red;
-}
-
-.token_bracket {
-	color: white;
-	background-color: grey;
+	color: lime;
 }
 
 .line_caret {
