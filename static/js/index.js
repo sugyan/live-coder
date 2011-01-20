@@ -27,6 +27,21 @@ $(function() {
         editor.focus();
         editor.addEventListener('Modify', {}, function() {
             if (modifying) return false;
+
+            var model = editor.getModel();
+            var line_count = model.getLineCount();
+            if (line_count > 20) {
+                model.setText('', model.getLineStart(20) - 1);
+            }
+            for (var i = 0; i < model.getLineCount(); i++) {
+                var line = model.getLine(i);
+                if (line.length > 100) {
+                    var caret = editor.getCaretOffset();
+                    model.setText(line.substring(0, 99), model.getLineStart(i), model.getLineStart(i) + line.length - 1);
+                    editor.setCaretOffset(caret);
+                }
+            }
+
             return onCursorActivity();
         });
         editor.setAction('lineUp',       onCursorActivity);
