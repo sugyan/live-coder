@@ -15,10 +15,14 @@ $(function() {
             return false;
         }
         editor = new eclipse.Editor({
-		    parent: "code",
-		    model: new eclipse.TextModel(),
-		    stylesheet: "/css/code.css"
-	    });
+            parent: 'code',
+            model: new eclipse.TextModel(),
+            stylesheet: [
+                '/css/code.css',
+                '/css/js.css'
+            ]
+        });
+        var styler = new eclipse.TextStyler(editor, 'js');
         editor.setText('');
         editor.focus();
         editor.addEventListener('Modify', {}, function() {

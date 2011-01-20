@@ -1,0 +1,25 @@
+.token_comment {
+	color: green;
+}
+
+.token_string {
+	color: red;
+}
+
+.token_keyword {
+	color: lightgreen;
+	font-weight: bold;
+}
+
+.token_bracket_outline {
+	outline: 1px solid red;
+}
+
+.token_bracket {
+	color: white;
+	background-color: grey;
+}
+
+.line_caret {
+	background-color: darkblue;
+}
