@@ -1,0 +1,3 @@
+[submodule "deps/orion"]
+	path = deps/orion
+	url = git://git.eclipse.org/gitroot/e4/org.eclipse.orion.client.git
