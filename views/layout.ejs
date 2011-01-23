@@ -1,9 +1,24 @@
 <html>
   <head>
     <title>node-editor</title>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">google.load("jquery", "1.4.4");</script>
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript" src="/js/lib/styler.js"></script>
+    <script type="text/javascript" src="/js/lib/orion/editor.js"></script>
+    <script type="text/javascript" src="/js/lib/orion/model.js"></script>
+    <script type="text/javascript" src="/js/lib/diff_match_patch.js"></script>
+    <script type="text/javascript" src="/js/index.js"></script>
     <link href="/css/style.css" rel="stylesheet" type="text/css" />
   </head>
   <body>
+    <div id="header">
+      <% if (session.user) { %>
+      Hi, <%= session.user %>. <a href="/signout">Sign out</a>
+      <% } else { %>
+      <a href="/signin/twitter"><img src="/images/sign-in-with-twitter.png" /></a>
+      <% } %>
+    </div>
     <%- body %>
   </body>
 </html>

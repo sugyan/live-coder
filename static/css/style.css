@@ -1,3 +1,8 @@
+div#header {
+    text-align: right;
+    margin: 10px;
+}
+
 div#code {
     width: 100%;
     height: 440px;
