@@ -14,7 +14,7 @@
   <body>
     <div id="header">
       <% if (session.user) { %>
-      Hi, <%= session.user %>. <a href="/signout">Sign out</a>
+      Hi, <%= session.user.screen_name %>. <a href="/signout">Sign out</a>
       <% } else { %>
       <a href="/signin/twitter"><img src="/images/sign-in-with-twitter.png" /></a>
       <% } %>
