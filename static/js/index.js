@@ -1,7 +1,7 @@
 $(function() {
     var prev = '';
     var dmp  = new diff_match_patch();
-	var editor = null;
+    var editor = null;
     var socket = new io.Socket();
     var modifying = false;
     socket.on('connect', function() {
