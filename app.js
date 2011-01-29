@@ -3,10 +3,10 @@ conf.currentDirectory = __dirname;
 conf.initConfig(function(err) {
     if (err) throw err;
 
-    var server = require('./lib/server')(conf);
-    server.listen(conf.port, conf.host);
+    var http = require('./lib/http')(conf);
+    http.listen(conf.port, conf.host);
     console.log('Server running at http://' + conf.host + ':' + conf.port + '/');
 
-    var socket = require('socket.io').listen(server);
+    var socket = require('socket.io').listen(http);
     require('./lib/socket.io')(socket);
 });
