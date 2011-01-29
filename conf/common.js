@@ -5,6 +5,11 @@ exports.conf = {
         consumer: '',
         consumer_secret: ''
     },
+    mysql: {
+        user: 'root',
+        password: '',
+        database: 'node_editor'
+    },
     session: {
         secret: 'secret'
     }
