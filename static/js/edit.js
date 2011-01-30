@@ -8,5 +8,7 @@ $(function() {
             '/css/js.css'
         ]
     });
+    var styler = new eclipse.TextStyler(editor, 'js');
     editor.setText('');
+    editor.focus();
 });
