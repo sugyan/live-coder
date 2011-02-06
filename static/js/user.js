@@ -1,4 +1,6 @@
 $(function() {
+    SessionWebSocket(function(socket) {
+    });
     var editor = null;
     editor = new eclipse.Editor({
         parent: 'code',
