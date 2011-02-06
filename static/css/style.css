@@ -29,3 +29,8 @@ div#chat {
     left: 340px;
     width: 340px;
 }
+
+.chat_message {
+    width: 320px;
+    margin: 10px;
+}
