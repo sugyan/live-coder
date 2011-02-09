@@ -1,3 +1,7 @@
+img {
+    border: none;
+}
+
 div#header {
     text-align: right;
     margin: 10px;
@@ -33,4 +37,21 @@ div#chat {
 .chat_message {
     width: 320px;
     margin: 10px;
+}
+
+form#chat_form {
+    margin-bottom: 0;
+}
+
+dl#messages {
+    margin: 0 10px;
+    font-size: 12.5px;
+}
+
+dl#messages > dt {
+    color: #808080;
+}
+
+dl#messages > dd {
+    margin-left: 20px;
 }

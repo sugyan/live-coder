@@ -5,8 +5,14 @@ $(function() {
         socket.send({ connect: username });
         socket.on('message', function(msg) {
             if (msg.chat) {
-                console.log('chat');
-                console.log(msg);
+                var messages = $('#messages');
+                var chat = msg.chat;
+                messages.prepend(
+                    $('<dt>')
+                        .append($('<span>').addClass('datetime').text(msg.chat.time))
+                        .append($('<span>').addClass('username').text(msg.chat.user))
+                        .after($('<dd>')
+                               .append($('<span>').addClass('message').text(msg.chat.data))));
             }
         });
 
