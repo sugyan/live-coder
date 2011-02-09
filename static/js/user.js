@@ -10,6 +10,7 @@ $(function() {
                 messages.prepend(
                     $('<dt>')
                         .append($('<span>').addClass('datetime').text(msg.chat.time))
+                        .append(' - ')
                         .append($('<span>').addClass('username').text(msg.chat.user))
                         .after($('<dd>')
                                .append($('<span>').addClass('message').text(msg.chat.data))));
