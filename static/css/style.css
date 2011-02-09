@@ -55,3 +55,7 @@ dl#messages > dt {
 dl#messages > dd {
     margin-left: 20px;
 }
+
+span.username {
+    color: #4040FF;
+}
