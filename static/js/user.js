@@ -20,6 +20,8 @@ $(function() {
         var message = $(':input[name=chat_message]');
         message.focus();
         $('#chat_form').submit(function() {
+            if (! message.val())            return false;
+            if (message.val().length > 140) return false;
             socket.send({
                 chat: {
                     user: username,
