@@ -4,3 +4,6 @@
 [submodule "deps/session-web-socket"]
 	path = deps/session-web-socket
 	url = git://github.com/kazuyukitanimura/session-web-sockets.git
+[submodule "deps/oauth"]
+	path = deps/oauth
+	url = git://github.com/ciaranj/node-oauth.git
