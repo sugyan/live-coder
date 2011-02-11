@@ -12,6 +12,7 @@ $(function() {
     });
     var styler = new eclipse.TextStyler(editor, 'js');
     editor.setText('');
+
     SessionWebSocket(function(socket) {
         var prev = '';
         var dmp  = new diff_match_patch();
@@ -43,5 +44,10 @@ $(function() {
             }
             return false;
         }
+        function sendCode() {
+            socket.send({ code: editor.getText() });
+            setTimeout(sendCode, 1000);
+        }
+        sendCode();
     });
 });
