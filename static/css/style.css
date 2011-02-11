@@ -27,6 +27,11 @@ div#code {
     height: 440px;
 }
 
+div#cursor {
+    position: absolute;
+    border-right: 1px solid #FF0000;
+}
+
 div#chat {
     float: right;
     position: relative;

@@ -15,6 +15,7 @@ $(function() {
 
     SessionWebSocket(function(socket) {
         var prev = '';
+        var cursor = { row: 0, col: 0 };
         var dmp  = new diff_match_patch();
         socket.send({ connect: null });
         enableChat(socket);
@@ -35,12 +36,31 @@ $(function() {
             }
             onActivity();
         });
+        var actions = ['lineUp', 'lineDown', 'charPrevious', 'charNext'];
+        for (var i = 0; i < actions.length; i++) {
+            editor.setAction(actions[i], onActivity);
+        }
         function onActivity() {
+            var edit = {};
+            // code diff
             var code = editor.getText();
             var patch = dmp.patch_make(prev, code);
             if (patch.length > 0) {
-                socket.send({ patch: dmp.patch_toText(patch) });
+                edit.patch = dmp.patch_toText(patch);
                 prev = code;
+            }
+            // cursor position
+            var model  = editor.getModel();
+            var offset = editor.getCaretOffset();
+            var row = model.getLineAtOffset(offset);
+            var col = offset - model.getLineStart(row);
+            if (row != cursor.row || col != cursor.col) {
+                cursor = { row: row, col: col };
+                edit.cursor = cursor;
+            }
+
+            if (edit.patch || edit.cursor) {
+                socket.send({ edit: edit });
             }
             return false;
         }
