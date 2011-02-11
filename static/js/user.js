@@ -37,7 +37,9 @@ $(function() {
                 }
             }
             if (msg.code) {
-                editor.setText(msg.code);
+                if (editor.getText() != msg.code) {
+                    editor.setText(msg.code);
+                }
             }
         });
     });
