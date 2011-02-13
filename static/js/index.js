@@ -12,7 +12,9 @@ $(function() {
     editor.setText('');
     $('#cursor').height(editor.getLineHeight());
 
-    var welcome_message = 'welcome. enjoy "live coding"!!';
+    // TODO i18n
+    var welcome_message = 'こんにちはこんにちは！\n' + 
+        'Twitterでログインするとライブコーディング的なことができるよ！';
     var i = 0;
     function append() {
         var str = welcome_message.substring(0, i++);
