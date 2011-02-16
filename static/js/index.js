@@ -32,5 +32,5 @@ $(function() {
             $('#cursor').css('left', loc.x + 340 + 10);
         }
     }
-    append();
+    setTimeout(append, 500);
 });
