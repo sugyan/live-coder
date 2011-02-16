@@ -94,5 +94,13 @@ module.exports = function(conf) {
         }
     });
 
+    app.get('/hoge', function(req, res) {
+        req.session.user = {
+            screen_name: 'sugyan',
+            id: 1
+        };
+        res.send(200);
+    });
+
     return app;
 }

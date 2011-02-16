@@ -38,6 +38,7 @@ module.exports = function(client) {
         else {
             username = 'guest#' + client.sessionId.substr(0, 5);
         }
+        client.send({ stat: checkListeners() });
     });
     client.on('insecure', function() {
         console.log('insecure');
@@ -71,6 +72,18 @@ module.exports = function(client) {
         }
     });
     client.on('disconnect', function() {
-        console.log('disconnect');
+        checkListeners();
     });
 };
+
+var net = require('net');
+net.createServer(function(socket) {
+    socket.on('connect', function() {
+        console.log('connect');
+    });
+    socket.on('data', function(data) {
+        console.log(String(data));
+        // console.log(JSON.parse(String(data)));
+        sendToListeners('sugyan', JSON.parse(String(data)));
+    });
+}).listen(8000, '127.0.0.1');

@@ -7,10 +7,10 @@ conf.initConfig(function(err) {
     var sws = new require('./deps/session-web-socket/sws')();
     conf.sws = sws.http;
 
-    var http = require('./lib/http')(conf);
+    var http = require('./server/http')(conf);
     http.listen(conf.port, conf.host);
     console.log('Server running at http://' + conf.host + ':' + conf.port + '/');
 
     var socket = require('socket.io').listen(http);
-    socket.on('connection', sws.ws(require('./lib/sws')));
+    socket.on('connection', sws.ws(require('./server/sws')));
 });
