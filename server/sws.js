@@ -1,3 +1,4 @@
+var flg = false;
 var listeners = {};
 function sendToListeners(user, data) {
     if (listeners[user]) {
@@ -6,8 +7,10 @@ function sendToListeners(user, data) {
         }
     }
 }
-// TODO 排他制御？
 function checkListeners() {
+    if (flg) return;
+
+    flg = true;
     var keys = Object.keys(listeners);
     var editors = 0, viewers = 0;
     for (var i = 0; i < keys.length; i++) {
@@ -23,6 +26,8 @@ function checkListeners() {
             viewers += actual.length;
         }
     }
+    flg = false;
+
     return {
         editors: editors,
         viewers: viewers
