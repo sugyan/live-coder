@@ -1,4 +1,5 @@
 var flg = false;
+var editors   = {};
 var listeners = {};
 function sendToListeners(user, data) {
     if (listeners[user]) {
@@ -10,28 +11,42 @@ function sendToListeners(user, data) {
 function checkListeners() {
     if (flg) return;
 
-    flg = true;
-    var keys = Object.keys(listeners);
-    var editors = 0, viewers = 0;
-    for (var i = 0; i < keys.length; i++) {
-        var key = keys[i];
-        var actual = [];
-        for (var j = 0; j < listeners[key].length; j++) {
-            if (listeners[key][j].connected) {
-                actual.push(listeners[key][j]);
+    function getEditors() {
+        var keys = Object.keys(editors);
+        for (var i = 0; i < keys.length; i++) {
+            var key = keys[i];
+            if (! editors[key].connected) {
+                delete editors[key];
             }
         }
-        listeners[key] = actual;
-        if (actual.length > 0) {
-            viewers += actual.length;
+        return Object.keys(editors).length;
+    }
+    function getViewers() {
+        var viewers = 0;
+        var keys = Object.keys(listeners);
+        for (var i = 0; i < keys.length; i++) {
+            var key = keys[i];
+            var actual = [];
+            for (var j = 0; j < listeners[key].length; j++) {
+                if (listeners[key][j].connected) {
+                    actual.push(listeners[key][j]);
+                }
+            }
+            listeners[key] = actual;
+            if (actual.length > 0) {
+                viewers += actual.length;
+            }
         }
+        return viewers;
+    }
+    flg = true;
+    var ret = {
+        editors: getEditors(),
+        viewers: getViewers()
     }
     flg = false;
 
-    return {
-        editors: editors,
-        viewers: viewers
-    }
+    return ret;
 }
 
 module.exports = function(client) {
@@ -49,10 +64,24 @@ module.exports = function(client) {
         console.log('insecure');
     });
     client.on('message', function(msg) {
+        if (! client.connected) return;
+
         if (msg.connect !== undefined) {
-            var key = msg.connect || username;
+            var key;
+            if (msg.connect) {
+                key = msg.connect;
+            }
+            else {
+                key = username;
+                if (editors[key]) {
+                    editors[key].connected = false;
+                }
+                editors[key] = client;
+            }
             if (! listeners[key]) listeners[key] = [];
             listeners[key].push(client);
+
+            console.log(checkListeners());
         }
         if (msg.chat) {
             function pad(n) {
@@ -77,7 +106,7 @@ module.exports = function(client) {
         }
     });
     client.on('disconnect', function() {
-        checkListeners();
+        console.log(checkListeners());
     });
 };
 
