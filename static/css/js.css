@@ -1,11 +1,11 @@
 .token_comment {
-	color: magenta;
+    color: magenta;
 }
 
 .token_string {
-	color: orange;
+    color: orange;
 }
 
 .token_keyword {
-	color: lime;
+    color: lime;
 }

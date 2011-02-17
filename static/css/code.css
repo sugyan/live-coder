@@ -1,7 +1,7 @@
 .editor {
     padding: 10px;
     color: white;
-	background-color: black;
+    background-color: black;
 }
 
 .editorContainer {
@@ -9,4 +9,9 @@
     font-family: 'Courier New', monospace;
     font-size: large;
     line-height: 20px;
+}
+
+.emphasize {
+    color: #FF4040;
+    font-weight: bold;
 }

@@ -9,6 +9,9 @@
     <script type="text/javascript" src="/js/lib/orion/model.js"></script>
     <script type="text/javascript" src="/js/lib/diff_match_patch.js"></script>
     <script type="text/javascript" src="/js/sws.js"></script>
+    <script type="text/javascript">
+      var signin = <% if (session.user) { %>true<% } else { %>false<% } %>;
+    </script>
     <link href="/css/style.css" rel="stylesheet" type="text/css" />
   </head>
   <body>

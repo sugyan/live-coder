@@ -9,10 +9,10 @@ div#header {
 
 div#container {
     float: left;
-    margin-left: -340px;
     position: relative;
     right: 100%;
     width: 200%;
+    margin-left: -340px;
 }
 
 div#codearea {
@@ -22,12 +22,16 @@ div#codearea {
     position: relative;
 }
 
-div#code {
+div.code {
     margin-left: 340px;
     height: 440px;
 }
+div.code_full {
+    height: 400px;
+}
 
 div#cursor {
+    display: none;
     position: absolute;
     border-right: 1px solid #FF0000;
 }

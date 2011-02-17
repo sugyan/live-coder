@@ -81,7 +81,7 @@ module.exports = function(client) {
             if (! listeners[key]) listeners[key] = [];
             listeners[key].push(client);
 
-            console.log(checkListeners());
+            client.listener.broadcast({ stat: checkListeners() });
         }
         if (msg.chat) {
             function pad(n) {
@@ -106,7 +106,7 @@ module.exports = function(client) {
         }
     });
     client.on('disconnect', function() {
-        console.log(checkListeners());
+        client.listener.broadcast({ stat: checkListeners() });
     });
 };
 
