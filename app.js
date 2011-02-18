@@ -4,7 +4,7 @@ conf.initConfig(function(err) {
     if (err) throw err;
 
     // npm "SessionWebSocket" doesn't work.
-    var sws = new require('./deps/session-web-socket/sws')();
+    var sws = new require('./deps/session-web-sockets/sws')();
     conf.sws = sws.http;
 
     var http = require('./server/http')(conf);

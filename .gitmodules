@@ -1,9 +1,9 @@
 [submodule "deps/orion"]
 	path = deps/orion
 	url = git://git.eclipse.org/gitroot/e4/org.eclipse.orion.client.git
-[submodule "deps/session-web-socket"]
-	path = deps/session-web-socket
-	url = git://github.com/kazuyukitanimura/session-web-sockets.git
 [submodule "deps/oauth"]
 	path = deps/oauth
 	url = git://github.com/ciaranj/node-oauth.git
+[submodule "deps/session-web-sockets"]
+	path = deps/session-web-sockets
+	url = git://github.com/kazuyukitanimura/session-web-sockets.git
