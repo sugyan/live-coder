@@ -11,12 +11,17 @@ function sendToListeners(user, data) {
 function checkListeners() {
     if (flg) return;
 
+    var message;
     function getEditors() {
         var keys = Object.keys(editors);
         for (var i = 0; i < keys.length; i++) {
             var key = keys[i];
             if (! editors[key].connected) {
                 delete editors[key];
+                message = {
+                    user: key,
+                    action: 'finish'
+                };
             }
         }
         return Object.keys(editors).length;
@@ -44,6 +49,7 @@ function checkListeners() {
         editors: getEditors(),
         viewers: getViewers()
     }
+    if (message) ret.message = message;
     flg = false;
 
     return ret;
@@ -67,21 +73,29 @@ module.exports = function(client) {
         if (! client.connected) return;
 
         if (msg.connect !== undefined) {
-            var key;
+            var key, message;
             if (msg.connect) {
+                // viewer
                 key = msg.connect;
             }
             else {
+                // editor
                 key = username;
                 if (editors[key]) {
                     editors[key].connected = false;
                 }
                 editors[key] = client;
+                message = {
+                    user: username,
+                    action: 'start'
+                };
             }
             if (! listeners[key]) listeners[key] = [];
             listeners[key].push(client);
 
-            client.listener.broadcast({ stat: checkListeners() });
+            var data = checkListeners();
+            if (message) data.message = message;
+            client.listener.broadcast({ stat: data });
         }
         if (msg.chat) {
             function pad(n) {

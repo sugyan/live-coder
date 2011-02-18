@@ -36,11 +36,18 @@ div#cursor {
     border-right: 1px solid #FF0000;
 }
 
-div#chat {
+div#right_pane {
     float: right;
     position: relative;
     left: 340px;
     width: 340px;
+}
+
+div#stats {
+    margin-left: 10px;
+}
+span#editors, span#viewers {
+    color: #0000FF;
 }
 
 .chat_message {
@@ -65,6 +72,9 @@ dl#messages > dd {
     margin-left: 20px;
 }
 
+a.message {
+    text-decoration: none;
+}
 span.username {
     color: #4040FF;
 }

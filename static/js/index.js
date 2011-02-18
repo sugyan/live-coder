@@ -1,8 +1,29 @@
 $(function() {
+    function updateTime() {
+        $('time').each(function(i, e) {
+            var elem = $(e);
+            elem.text(simpleTimeago(elem.attr('datetime')));
+        });
+        setTimeout(updateTime, 1000);
+    }
+    updateTime();
+
     SessionWebSocket(function(socket) {
         socket.on('message', function(msg) {
             if (msg.stat) {
-                console.log(msg.stat);
+                console.log(msg);
+                var message = msg.stat.message;
+                if (message) {
+                    $('#messages').prepend(
+                        $('<dt>')
+                            .append($('<time>').attr('datetime', Math.ceil(new Date().getTime() / 1000)))
+                            .after($('<dd>')
+                                   .append($('<a>').attr('href', '/user/' + message.user).addClass('message')
+                                           .append($('<span>').addClass('username').text(message.user)))
+                                   .append(': ' + message.action + ' live coding')));
+                }
+                if (msg.stat.editors) $('#editors').text(msg.stat.editors);
+                if (msg.stat.viewers) $('#viewers').text(msg.stat.viewers);
             }
         });
     });

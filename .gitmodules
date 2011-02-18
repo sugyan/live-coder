@@ -7,3 +7,6 @@
 [submodule "deps/session-web-sockets"]
 	path = deps/session-web-sockets
 	url = git://github.com/kazuyukitanimura/session-web-sockets.git
+[submodule "deps/simpleTimeago"]
+	path = deps/simpleTimeago
+	url = git://github.com/yappo/javascript-simpleTimeago
