@@ -18,7 +18,7 @@ $(function() {
                         $('<dt>')
                             .append($('<time>').attr('datetime', Math.ceil(new Date().getTime() / 1000)))
                             .after($('<dd>')
-                                   .append($('<a>').attr('href', '/user/' + message.user).addClass('message')
+                                   .append($('<a>').attr('href', '/view/' + message.user).addClass('message')
                                            .append($('<span>').addClass('username').text(message.user)))
                                    .append(': ' + message.action + ' live coding')));
                 }

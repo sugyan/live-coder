@@ -11,12 +11,6 @@ module.exports = function(conf) {
         '',
         'HMAC-SHA1'
     );
-    var mysql   = new (require('mysql').Client)({
-        user: conf.mysql.user,
-        password: conf.mysql.password,
-        database: conf.mysql.database
-    });
-    mysql.connect();
 
     app.use(express.staticProvider(path.join(__dirname, '..', 'static')));
     app.use(express.cookieDecoder());
@@ -69,21 +63,8 @@ module.exports = function(conf) {
             res.redirect('/');
         });
     });
-    app.get('/user/:name', function(req, res) {
-        mysql.query(
-            'SELECT id FROM user WHERE name = ?',
-            [req.params.name],
-            function(err, results, fields) {
-                if (err) throw err;
-
-                if (results.length > 0) {
-                    res.render('user');
-                }
-                else {
-                    res.send(404);
-                }
-            }
-        );
+    app.get('/view/:name', function(req, res) {
+        res.render('view');
     });
     app.get('/edit', function(req, res) {
         if (req.session.user) {

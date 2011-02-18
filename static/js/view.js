@@ -1,6 +1,6 @@
 $(function() {
     var pathname = window.location.pathname;
-    var username = pathname.replace(/\/user\//, '');
+    var username = pathname.replace(/\/view\//, '');
     var editor = null;
     editor = new eclipse.Editor({
         parent: 'code',
