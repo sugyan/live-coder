@@ -5,6 +5,9 @@
     <div id="code" class="code"></div>
   </div>
   <div id="right_pane">
+    <div id="stats">
+      view page is <a target="_blank" href="/view/<%= session.user.screen_name %>">here</a>.
+    </div>
     <form method="POST" action="" id="chat_form">
       <input type="text" name="chat_message" class="chat_message" />
     </form>
