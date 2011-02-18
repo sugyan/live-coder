@@ -14,6 +14,7 @@ $(function() {
     var styler = new eclipse.TextStyler(editor, 'js');
     editor.setText('');
     $('#cursor').height(editor.getLineHeight());
+    $('#cursor').show();
 
     SessionWebSocket(function(socket) {
         var dmp = new diff_match_patch();
