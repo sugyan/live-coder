@@ -40,7 +40,7 @@ module.exports = function(conf) {
                     // TODO
                 }
                 req.session.user = results;
-                res.redirect('/');
+                res.redirect('/mypage');
             });
         } else {
             oauth.getOAuthRequestToken({
@@ -74,13 +74,13 @@ module.exports = function(conf) {
             res.redirect('/signin');
         }
     });
-
-    app.get('/hoge', function(req, res) {
-        req.session.user = {
-            screen_name: 'sugyan',
-            id: 1
-        };
-        res.send(200);
+    app.get('/mypage', function(req, res) {
+        if (req.session.user) {
+            res.render('mypage');
+        }
+        else {
+            res.redirect('/signin');
+        }
     });
 
     return app;

@@ -16,8 +16,9 @@
   </head>
   <body>
     <div id="header">
+      <div id="logo"><a href="/">node-editor</a></div>
       <% if (session.user) { %>
-      Hi, <%= session.user.screen_name %>. <a href="/signout">Sign out</a>
+      Hi, <a href="/mypage"><%= session.user.screen_name %></a>. <a href="/signout">Sign out</a>
       <% } else { %>
       <a href="/signin/twitter"><img src="/images/sign-in-with-twitter.png" /></a>
       <% } %>
