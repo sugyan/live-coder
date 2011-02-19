@@ -1,14 +1,13 @@
 $(function() {
     var pathname = window.location.pathname;
-    var username = pathname.replace(/\/view\//, '');
-    var editor = null;
-    editor = new eclipse.Editor({
+    var username = /.*\/view\/(\w+)/.exec(pathname)[1];
+    var editor = new eclipse.Editor({
         parent: 'code',
         model: new eclipse.TextModel(),
         readonly: true,
         stylesheet: [
-            '/css/code.css',
-            '/css/js.css'
+            uri_base + '/css/code.css',
+            uri_base + '/css/js.css'
         ]
     });
     var styler = new eclipse.TextStyler(editor, 'js');

@@ -12,10 +12,17 @@ module.exports = function(conf) {
         'HMAC-SHA1'
     );
 
+    function uri_for(path) {
+        return conf.uri_base + path;
+    }
     app.use(express.staticProvider(path.join(__dirname, '..', 'static')));
     app.use(express.cookieDecoder());
     app.use(express.session({ secret: conf.session.secret }));
     app.use(conf.sws);
+    app.helpers({
+        uri_for: uri_for,
+        port: conf.port
+    });
     app.dynamicHelpers({
         session: function(req, res){
             return req.session;
@@ -29,7 +36,7 @@ module.exports = function(conf) {
         res.render('index');
     });
     app.get('/signin', function(req, res) {
-        res.redirect('/signin/twitter');
+        res.redirect(uri_for('/signin/twitter'));
     });
     app.get('/signin/twitter', function(req, res) {
         var oauth_token    = req.query.oauth_token;
@@ -40,11 +47,11 @@ module.exports = function(conf) {
                     // TODO
                 }
                 req.session.user = results;
-                res.redirect('/mypage');
+                res.redirect(uri_for('/mypage'));
             });
         } else {
             oauth.getOAuthRequestToken({
-                oauth_callback: 'http://' + conf.host + ':' + conf.port + req.url
+                oauth_callback: conf.uri_base + req.url
             }, function(error, oauth_token, oauth_token_secret, results) {
                 if (error) {
                     res.send(500);
@@ -60,7 +67,7 @@ module.exports = function(conf) {
     });
     app.get('/signout', function(req, res) {
         req.session.destroy(function() {
-            res.redirect('/');
+            res.redirect(uri_for('/'));
         });
     });
     app.get('/view/:name', function(req, res) {
@@ -71,7 +78,7 @@ module.exports = function(conf) {
             res.render('edit');
         }
         else {
-            res.redirect('/signin');
+            res.redirect(uri_for('/signin'));
         }
     });
     app.get('/mypage', function(req, res) {
@@ -79,7 +86,7 @@ module.exports = function(conf) {
             res.render('mypage');
         }
         else {
-            res.redirect('/signin');
+            res.redirect(uri_for('/signin'));
         }
     });
 
