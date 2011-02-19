@@ -19,6 +19,11 @@ div#logo a {
     text-decoration: none;
     color: #000000;
 }
+div#footer {
+    text-align: right;
+    text-size: small;
+    color: #808080;
+}
 
 div#container {
     float: left;
