@@ -1,5 +1,7 @@
 var conf = require('node-config');
 conf.currentDirectory = __dirname;
+if (process.argv[2]) conf.hostname = process.argv[2];
+
 conf.initConfig(function(err) {
     if (err) throw err;
 
