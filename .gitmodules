@@ -1,9 +1,9 @@
 [submodule "deps/orion"]
 	path = deps/orion
-	url = http://git.eclipse.org/gitroot/e4/org.eclipse.orion.client.git
+	url = git://git.eclipse.org/gitroot/e4/org.eclipse.orion.client.git
 [submodule "deps/session-web-sockets"]
 	path = deps/session-web-sockets
-	url = https://github.com/kazuyukitanimura/session-web-sockets.git
+	url = git://github.com/kazuyukitanimura/session-web-sockets.git
 [submodule "deps/simpleTimeago"]
 	path = deps/simpleTimeago
-	url = https://github.com/yappo/javascript-simpleTimeago.git
+	url = git://github.com/yappo/javascript-simpleTimeago.git
