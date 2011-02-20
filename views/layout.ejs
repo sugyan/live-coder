@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>node-editor</title>
+    <title>livecoder</title>
     <script type="text/javascript">
       var signin    = <% if (session.user) { %>true<% } else { %>false<% } %>;
       var base_path = "<%= base_path %>";
@@ -29,7 +29,7 @@
   </head>
   <body>
     <div id="header">
-      <div id="logo"><a href="<%= base_path %>/">node-editor</a></div>
+      <div id="logo"><a href="<%= base_path %>/">livecoder</a></div>
       <% if (session.user) { %>
       Hi, <a href="<%= base_path %>/mypage"><%= session.user.screen_name %></a>. <a href="<%= base_path %>/signout">Sign out</a>
       <% } else { %>
