@@ -27,7 +27,8 @@ module.exports = function(sws) {
     app.use(express.session({ secret: conf.session.secret }));
     app.use(sws.http);
     app.helpers({
-        base_path: conf.base_path
+        base_path: conf.base_path,
+        socketio_port: require('config')('server').port
     });
     app.dynamicHelpers({
         session: function(req, res){
