@@ -1,7 +1,14 @@
-module.exports = function(conf) {
-    var path    = require('path');
-    var express = require('express');
-    var app     = express.createServer();
+module.exports = function(sws) {
+    var conf = require('config')('http', {
+        twitter: {
+            consumer: 'consumer key',
+            consumer_secret: 'consumer secret'
+        },
+        session: {
+            secret: 'secret'
+        },
+        base_path: ''
+    });
     var oauth   = new (require('oauth').OAuth)(
         'https://api.twitter.com/oauth/request_token',
         'https://api.twitter.com/oauth/access_token',
@@ -11,17 +18,16 @@ module.exports = function(conf) {
         '',
         'HMAC-SHA1'
     );
+    var path    = require('path');
+    var express = require('express');
+    var app     = express.createServer();
 
-    function uri_for(path) {
-        return conf.uri_base + path;
-    }
     app.use(express.staticProvider(path.join(__dirname, '..', 'static')));
     app.use(express.cookieDecoder());
     app.use(express.session({ secret: conf.session.secret }));
-    app.use(conf.sws);
+    app.use(sws.http);
     app.helpers({
-        uri_for: uri_for,
-        port: conf.port
+        base_path: conf.base_path
     });
     app.dynamicHelpers({
         session: function(req, res){
@@ -36,7 +42,7 @@ module.exports = function(conf) {
         res.render('index');
     });
     app.get('/signin', function(req, res) {
-        res.redirect(uri_for('/signin/twitter'));
+        res.redirect(conf.base_path + '/signin/twitter');
     });
     app.get('/signin/twitter', function(req, res) {
         var oauth_token    = req.query.oauth_token;
@@ -47,14 +53,14 @@ module.exports = function(conf) {
                     // TODO
                 }
                 req.session.user = results;
-                res.redirect(uri_for('/mypage'));
+                res.redirect(conf.base_path + '/mypage');
             });
         } else {
             oauth.getOAuthRequestToken({
-                oauth_callback: conf.uri_base + req.url
+                oauth_callback: conf.twitter.callback
             }, function(error, oauth_token, oauth_token_secret, results) {
                 if (error) {
-                    res.send(500);
+                    res.send(error);
                 }
                 req.session.oauth = {
                     oauth_token: oauth_token,
@@ -67,7 +73,7 @@ module.exports = function(conf) {
     });
     app.get('/signout', function(req, res) {
         req.session.destroy(function() {
-            res.redirect(uri_for('/'));
+            res.redirect(conf.base_path + '/');
         });
     });
     app.get('/view/:name', function(req, res) {
@@ -78,7 +84,7 @@ module.exports = function(conf) {
             res.render('edit');
         }
         else {
-            res.redirect(uri_for('/signin'));
+            res.redirect(conf.base_path + '/signin');
         }
     });
     app.get('/mypage', function(req, res) {
@@ -86,9 +92,9 @@ module.exports = function(conf) {
             res.render('mypage');
         }
         else {
-            res.redirect(uri_for('/signin'));
+            res.redirect(conf.base_path + '/signin');
         }
     });
 
     return app;
-}
+};

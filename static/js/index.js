@@ -33,7 +33,7 @@ $(function() {
         model: new eclipse.TextModel(),
         readonly: true,
         stylesheet: [
-            uri_base + '/css/code.css',
+            base_path + '/css/code.css',
         ]
     });
     editor.addEventListener('LineStyle', this, function(e) {

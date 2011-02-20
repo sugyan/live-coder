@@ -6,8 +6,8 @@ $(function() {
         parent: 'code',
         model: new eclipse.TextModel(),
         stylesheet: [
-            uri_base + '/css/code.css',
-            uri_base + '/css/js.css'
+            base_path + '/css/code.css',
+            base_path + '/css/js.css'
         ]
     });
     var styler = new eclipse.TextStyler(editor, 'js');

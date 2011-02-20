@@ -1,12 +1,12 @@
-<script type="text/javascript" src="<%= uri_for('/js/chat.js') %>"></script>
-<script type="text/javascript" src="<%= uri_for('/js/edit.js') %>"></script>
+<script type="text/javascript" src="<%= base_path %>/js/chat.js"></script>
+<script type="text/javascript" src="<%= base_path %>/js/edit.js"></script>
 <div id="container" class="container">
   <div id="codearea">
     <div id="code" class="code"></div>
   </div>
   <div id="right_pane">
     <div id="stats">
-      view page is <a target="_blank" href="<%= uri_for('/view/' + session.user.screen_name) %>">here</a>.
+      view page is <a target="_blank" href="<%= base_path + '/view/' + session.user.screen_name %>">here</a>.
     </div>
     <form method="POST" action="" id="chat_form">
       <input type="text" name="chat_message" class="chat_message" />
