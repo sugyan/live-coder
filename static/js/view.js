@@ -41,6 +41,16 @@ $(function() {
                     editor.setText(msg.code);
                 }
             }
+            if (msg.status) {
+                $('#editing')
+                    .html($('<span>')
+                          .text(
+                              msg.status.editing
+                                  ? username + ' is livecoding now!'
+                                  : username + ' is not livecoding.')
+                          .css('color', msg.status.editing ? '#FF0000' : '#000000'));
+                $('#viewers').text(msg.status.viewers);
+            }
         });
     });
 });

@@ -8,6 +8,16 @@ function sendToListeners(user, data) {
         }
     }
 }
+function sendStatuses() {
+    for (var i = 0, users = Object.keys(listeners); i < users.length; i++) {
+        sendToListeners(users[i], {
+            status: {
+                editing: editors[users[i]] ? true : false,
+                viewers: listeners[users[i]].length
+            }
+        });
+    }
+}
 function checkListeners() {
     if (flg) return;
 
@@ -96,6 +106,7 @@ module.exports = function(client) {
             var data = checkListeners();
             if (message) data.message = message;
             client.listener.broadcast({ stat: data });
+            sendStatuses();
         }
         if (msg.chat) {
             function pad(n) {
@@ -121,6 +132,7 @@ module.exports = function(client) {
     });
     client.on('disconnect', function() {
         client.listener.broadcast({ stat: checkListeners() });
+        sendStatuses();
     });
 };
 
