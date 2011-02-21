@@ -14,6 +14,11 @@ $(function() {
     editor.setText('');
 
     SessionWebSocket(function(socket) {
+        socket.on('message', function(msg) {
+            if (msg.status) {
+                $('#viewers').text(msg.status.viewers);
+            }
+        });
         var prev = '';
         var cursor = { row: 0, col: 0 };
         var dmp  = new diff_match_patch();
