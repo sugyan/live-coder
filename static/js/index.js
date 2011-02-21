@@ -18,7 +18,7 @@ $(function() {
                         $('<dt>')
                             .append($('<time>').attr('datetime', Math.ceil(new Date().getTime() / 1000)))
                             .after($('<dd>')
-                                   .append($('<a>').attr('href', '/view/' + message.user).addClass('message')
+                                   .append($('<a>').attr('href', base_path + '/view/' + message.user).addClass('message')
                                            .append($('<span>').addClass('username').text(message.user)))
                                    .append(': ' + message.action + ' live coding')));
                 }
@@ -26,6 +26,7 @@ $(function() {
                 if (msg.stat.viewers) $('#viewers').text(msg.stat.viewers);
             }
         });
+        socket.send({ connect: '/' });
     });
 
     var editor = new eclipse.Editor({

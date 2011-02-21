@@ -50,6 +50,9 @@ function checkListeners() {
             listeners[key] = actual;
             if (actual.length > 0) {
                 viewers += actual.length;
+                console.log(key + ': ' + actual.length);
+            } else {
+                delete listeners[key];
             }
         }
         return viewers;
@@ -74,7 +77,6 @@ module.exports = function(client) {
         else {
             username = 'guest#' + client.sessionId.substr(0, 5);
         }
-        client.send({ stat: checkListeners() });
     });
     client.on('insecure', function() {
         console.log('insecure');
