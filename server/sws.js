@@ -135,15 +135,3 @@ module.exports = function(client) {
         sendStatuses();
     });
 };
-
-var net = require('net');
-net.createServer(function(socket) {
-    socket.on('connect', function() {
-        console.log('connect');
-    });
-    socket.on('data', function(data) {
-        console.log(String(data));
-        // console.log(JSON.parse(String(data)));
-        sendToListeners('sugyan', JSON.parse(String(data)));
-    });
-}).listen(8000, '127.0.0.1');
