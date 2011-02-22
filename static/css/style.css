@@ -32,6 +32,11 @@ div#container {
     width: 200%;
     margin-left: -340px;
 }
+div#buttons {
+    margin-left: 10px;
+    top: 10px;
+    position: relative;
+}
 
 div#codearea {
     float: left;
