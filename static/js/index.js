@@ -11,7 +11,6 @@ $(function() {
     SessionWebSocket(function(socket) {
         socket.on('message', function(msg) {
             if (msg.stat) {
-                console.log(msg);
                 var message = msg.stat.message;
                 if (message) {
                     $('#messages').prepend(
