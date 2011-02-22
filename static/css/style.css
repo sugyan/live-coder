@@ -31,11 +31,11 @@ div#container {
     right: 100%;
     width: 200%;
     margin-left: -340px;
+    margin-bottom: 10px;
 }
 div#buttons {
     margin-left: 10px;
     top: 10px;
-    position: relative;
 }
 
 div#codearea {
