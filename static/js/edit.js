@@ -75,4 +75,6 @@ $(function() {
         }
         sendCode();
     });
+    var viewer_url = location.protocol + '//' + location.hostname + $('#button').attr('data-path');
+    $('#button').html('<a href="http://twitter.com/share" class="twitter-share-button" data-text="I\'m livecoding now! #livecoder" data-url="' +  viewer_url + '" data-count="none">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>');
 });

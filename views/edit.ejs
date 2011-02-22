@@ -6,9 +6,8 @@
   </div>
   <div id="right_pane">
     <div id="stats">
-      view page is <a target="_blank" href="<%= base_path + '/view/' + session.user.screen_name %>">here</a>.
       <span id="viewers">0</span> viewers.
-      <span id="button" style="float: right;"><a href="http://twitter.com/share" class="twitter-share-button" data-text="I'm livecoding now! #livecoder" data-count="none">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script></span>
+      <span id="button" style="float: right;" data-path="<%= base_path + '/view/' + session.user.screen_name %>"></span>
     </div>
     <form method="POST" action="" id="chat_form">
       <input type="text" name="chat_message" class="chat_message" />

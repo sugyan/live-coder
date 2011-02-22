@@ -53,5 +53,5 @@ $(function() {
             }
         });
     });
-    $('#button').append('<a href="http://twitter.com/share" class="twitter-share-button" data-text="now viewing @' + username + '\'s livecoding #livecoder" data-count="none">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>');
+    $('#button').html('<a href="http://twitter.com/share" class="twitter-share-button" data-text="now viewing @' + username + '\'s livecoding #livecoder" data-count="none">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>');
 });
