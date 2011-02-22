@@ -21,7 +21,7 @@ div#logo a {
 }
 div#footer {
     text-align: right;
-    text-size: small;
+    font-size: small;
     color: #808080;
 }
 
