@@ -14,13 +14,17 @@ $(function() {
     editor.setText('');
 
     SessionWebSocket(function(socket) {
+        var viewers = 0;
         socket.on('message', function(msg) {
             if (msg.status) {
-                $('#viewers').text(msg.status.viewers);
-                if (window.webkitNotifications && window.webkitNotifications.checkPermission() == 0) {
-                    var notify = window.webkitNotifications.createNotification('', 'livecoder', 'now ' + msg.status.viewers + ' viewers');
-                    notify.show();
-                    setTimeout(function() { notify.cancel(); }, 2000);
+                if (msg.status.viewers != viewers) {
+                    viewers = msg.status.viewers;
+                    $('#viewers').text(viewers);
+                    if (window.webkitNotifications && window.webkitNotifications.checkPermission() == 0) {
+                        var notify = window.webkitNotifications.createNotification('', 'livecoder', 'now ' + viewers + ' viewers');
+                        notify.show();
+                        setTimeout(function() { notify.cancel(); }, 2000);
+                    }
                 }
             }
         });
