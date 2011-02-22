@@ -17,6 +17,11 @@ $(function() {
         socket.on('message', function(msg) {
             if (msg.status) {
                 $('#viewers').text(msg.status.viewers);
+                if (window.webkitNotifications && window.webkitNotifications.checkPermission() == 0) {
+                    var notify = window.webkitNotifications.createNotification('', 'livecoder', 'now ' + msg.status.viewers + ' viewers');
+                    notify.show();
+                    setTimeout(function() { notify.cancel(); }, 2000);
+                }
             }
         });
         var prev = '';
@@ -77,4 +82,13 @@ $(function() {
     });
     var viewer_url = location.protocol + '//' + location.hostname + $('#button').attr('data-path');
     $('#button').html('<a href="http://twitter.com/share" class="twitter-share-button" data-text="I\'m livecoding now! #livecoder" data-url="' +  viewer_url + '" data-count="none">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>');
+
+    // notification
+    if (window.webkitNotifications) {
+        if (window.webkitNotifications.checkPermission()) {
+            $('#stats').append($('<button>').click(function() {
+                window.webkitNotifications.requestPermission();
+            }).text('notify me'));
+        }
+    }
 });
