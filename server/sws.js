@@ -131,6 +131,11 @@ module.exports = function(client) {
         if (msg.code) {
             sendToListeners(username, msg);
         }
+        if (msg.inquiry) {
+            if (msg.inquiry == 'editors') {
+                client.send({ inquiry: Object.keys(editors) });
+            }
+        }
     });
     client.on('disconnect', function() {
         client.listener.broadcast({ stat: checkListeners() });
