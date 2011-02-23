@@ -39,7 +39,8 @@ $(function() {
     editor.addEventListener('LineStyle', this, function(e) {
         var rule = {
             '"live coding"': 'emphasize',
-            'Sign in with Twitter': 'emphasize'
+            'Sign in with Twitter': 'emphasize',
+            'What\'s new': 'head'
         };
         var text = editor.getText();
         e.ranges = [];
@@ -70,22 +71,40 @@ $(function() {
         (signin
          ? 'You can start live coding now!'
          : 'Sign in with Twitter and start coding.');
+    var other_info = [
+        '', '', '',
+        '- What\'s new',
+        ' * Feb. 23, 2011 something something...'
+    ];
     var i = 0;
-    function append() {
+    function appendChar() {
         var str = welcome_message.substring(0, i++);
         editor.setText(str);
         if (i > welcome_message.length + 1) {
-            editor.setCaretOffset(i);
-            editor.focus();
-            $('#cursor').hide();
-            editor.readonly = false;
+            var message = welcome_message;
+            function appendLine() {
+                if (other_info.length == 0) {
+                    editor.setCaretOffset(message.length);
+                    editor.focus();
+                    $('#cursor').hide();
+                    editor.readonly = false;
+                    return;
+                }
+                message += other_info.shift() + "\n";
+                editor.setText(message);
+                var loc = editor.getLocationAtOffset(message.length - 1);
+                $('#cursor').css('top',  loc.y + 10);
+                $('#cursor').css('left', loc.x + 10 + 340);
+                setTimeout(appendLine, 300);
+            }
+            appendLine();
         }
         else {
-            setTimeout(append, 50 + Math.floor(Math.random() * 100));
+            setTimeout(appendChar, 50 + Math.floor(Math.random() * 100));
             var loc = editor.getLocationAtOffset(i + 1);
             $('#cursor').css('top',  loc.y + 10);
             $('#cursor').css('left', loc.x + 10 + 340);
         }
     }
-    setTimeout(append, 500);
+    setTimeout(appendChar, 500);
 });
