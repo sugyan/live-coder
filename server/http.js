@@ -97,10 +97,5 @@ module.exports = function(sws) {
         }
     });
 
-    app.get('/hoge', function(req, res) {
-        req.session.user = { screen_name: 'sugyan' };
-        res.send(200);
-    });
-
     return app;
 };

@@ -63,7 +63,8 @@ $(function() {
         var rule = {
             '"live coding"': 'emphasize',
             'Sign in with Twitter': 'emphasize',
-            'What\'s new': 'head'
+            'What\'s new': 'head',
+            'Now livecoding': 'head'
         };
         var text = editor.getText();
         e.ranges = [];
