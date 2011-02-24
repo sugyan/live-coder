@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 if (process.argv.length < 3) {
     console.error('usage: node ' + process.argv[1] + ' <filename>');
     process.exit(1);
@@ -7,7 +8,7 @@ var fs   = require('fs');
 var path = require('path');
 var net  = require('net');
 
-var conn = net.createConnection(8000, '127.0.0.1');
+var conn = net.createConnection(8000, 'localhost');
 
 var file = process.argv[2];
 path.exists(file, function(exists) {
