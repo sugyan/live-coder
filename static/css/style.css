@@ -85,6 +85,7 @@ form#chat_form {
 dl#messages {
     margin: 0 10px;
     font-size: 12.5px;
+    font-family: Arial;
     height: 400px;
     overflow: auto;
 }
