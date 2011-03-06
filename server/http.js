@@ -22,8 +22,8 @@ module.exports = function(sws) {
     var express = require('express');
     var app     = express.createServer();
 
-    app.use(express.staticProvider(path.join(__dirname, '..', 'static')));
-    app.use(express.cookieDecoder());
+    app.use(express.static(path.join(__dirname, '..', 'static')));
+    app.use(express.cookieParser());
     app.use(express.session({ secret: conf.session.secret }));
     app.use(sws.http);
     app.helpers({
@@ -62,6 +62,7 @@ module.exports = function(sws) {
             }, function(error, oauth_token, oauth_token_secret, results) {
                 if (error) {
                     res.send(error);
+                    return;
                 }
                 req.session.oauth = {
                     oauth_token: oauth_token,
