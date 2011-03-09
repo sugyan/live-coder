@@ -20,7 +20,7 @@ $(function() {
                 if (message) {
                     $('#messages').prepend(
                         $('<dt>')
-                            .append($('<time>').attr('datetime', Math.ceil(new Date().getTime() / 1000)))
+                            .append($('<time>').attr('datetime', Math.floor(new Date().getTime() / 1000)))
                             .after($('<dd>')
                                    .append($('<a>').attr('href', base_path + '/view/' + message.user).addClass('message')
                                            .append($('<span>').addClass('username').text(message.user)))
@@ -30,20 +30,20 @@ $(function() {
                 if (msg.stat.viewers) $('#viewers').text(msg.stat.viewers);
             }
             if (msg.inquiry) {
-                var editors = $('<dd>');
                 if (msg.inquiry.length > 0) {
-                    editors.append('livecoders: ');
-                    $.each(msg.inquiry, function(i, e) {
-                        editors.append($('<a>').attr('href', base_path + '/view/' + e).text(e));
-                        editors.append(', ');
+                    var sorted = msg.inquiry.sort(function(a, b) {
+                        return a.time > b.time;
                     });
-                } else {
-                    editors.append('there are no livecoders..');
+                    for (var i = 0, l = sorted.length; i < l; i++) {
+                        $('#messages').prepend(
+                            $('<dt>')
+                                .append($('<time>').attr('datetime', Math.floor(sorted[i].time / 1000)))
+                                .after($('<dd>')
+                                       .append($('<a>').attr('href', base_path + '/view/' + sorted[i].user).addClass('message')
+                                               .append($('<span>').addClass('username').text(sorted[i].user)))
+                                       .append(': start live coding')));
+                    }
                 }
-                $('#messages').prepend(
-                    $('<dt>')
-                        .append($('<time>').attr('datetime', Math.ceil(new Date().getTime() / 1000)))
-                        .after(editors));
             }
         });
         socket.send({ connect: '/' });

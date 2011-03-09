@@ -26,7 +26,7 @@ function checkListeners() {
         var keys = Object.keys(editors);
         for (var i = 0; i < keys.length; i++) {
             var key = keys[i];
-            if (! editors[key].connected) {
+            if (! editors[key].client.connected) {
                 delete editors[key];
                 message = {
                     user: key,
@@ -94,9 +94,13 @@ module.exports = function(client) {
                 // editor
                 key = username;
                 if (editors[key]) {
-                    editors[key].connected = false;
+                    // prevent multi session editing
+                    editors[key].client.connected = false;
                 }
-                editors[key] = client;
+                editors[key] = {
+                    client: client,
+                    time: new Date().getTime()
+                };
                 message = {
                     user: username,
                     action: 'start'
@@ -133,7 +137,16 @@ module.exports = function(client) {
         }
         if (msg.inquiry) {
             if (msg.inquiry == 'editors') {
-                client.send({ inquiry: Object.keys(editors) });
+                client.send({
+                    inquiry: Object.keys(editors).map(
+                        function(key) {
+                            return {
+                                user: key,
+                                time: editors[key].time
+                            };
+                        }
+                    )
+                });
             }
         }
     });
