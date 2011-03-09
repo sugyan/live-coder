@@ -3,12 +3,16 @@ var app     = express.createServer();
 var config  = require('config');
 var common  = config('common', {
     host: 'localhost',
-    port: 3000
+    port: 3000,
+    base_path: ''
 });
 
 app.use(express.static(__dirname + '/public'));
 app.set('view engine', 'ejs');
 app.helpers({
+    path_for: function(path) {
+        return common.base_path + path;
+    },
     jss: []
 });
 

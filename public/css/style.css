@@ -1,7 +1,12 @@
 div#header {
+    margin-bottom: 8px;
 }
 
 div#footer {
+    /* top: auto; */
+    /* bottom: 0; */
+    /* right: 10px; */
+    /* position: absolute; */
     text-align: right;
 }
 
@@ -11,4 +16,11 @@ div#footer {
     font-weight: bold;
     text-decoration: none;
     color: #000000;
+}
+
+div#code {
+}
+
+img {
+    border: none;
 }

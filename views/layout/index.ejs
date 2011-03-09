@@ -1,17 +1,16 @@
 <html>
   <head>
     <title>livecoder</title>
-    <link rel="stylesheet" href="/css/style.css" type="text/css" />
+    <link rel="stylesheet" href="<%= path_for('/css/style.css') %>" type="text/css" />
   </head>
   <body>
     <div id="header">
-      <span class="logo"><a href="/">livecoder</a></span>
+      <span class="logo"><a href="<%= path_for('/') %>">livecoder</a></span>
+      <a href="<%= path_for('/signin/twitter') %>"><img src="<%= path_for('/img/sign-in-with-twitter.png') %>" /></a>
     </div>
     <%- body %>
     <div id="footer">
-      created by <a href="http://twitter.com/#!/sugyan">@sugyan</a>.
-      -
-      <a href="/about">about</a>
+      created by <a href="http://twitter.com/#!/sugyan">@sugyan</a>. | <a href="<%= path_for('/about') %>">about</a>
     </div>
     <script type="text/javascript">
   var _gaq = _gaq || [];
@@ -26,9 +25,9 @@
     </script>
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
     <script type="text/javascript">google.load("jquery", "1.5.1");</script>
-    <script type="text/javascript" src="/js/lib/orion/editor.js"></script>
-    <script type="text/javascript" src="/js/lib/orion/model.js"></script>
+    <script type="text/javascript" src="<%= path_for('/js/lib/orion/editor.js') %>"></script>
+    <script type="text/javascript" src="<%= path_for('/js/lib/orion/model.js') %>"></script>
     <% for (var i = 0, l = jss.length; i < l; i++) { %>
-    <script type="text/javascript" src="<%= jss[i] %>"></script><% } %>
+    <script type="text/javascript" src="<%= path_for(jss[i]) %>"></script><% } %>
   </body>
 </html>
