@@ -1,13 +1,16 @@
-var app    = require('express').createServer();
-var config = require('config');
-
-var common = config('common', {
+var express = require('express');
+var app     = express.createServer();
+var config  = require('config');
+var common  = config('common', {
     host: 'localhost',
     port: 3000
 });
 
+app.use(express.static(__dirname + '/public'));
+app.set('view engine', 'ejs');
+
 app.get('/', function(req, res) {
-    res.send(200);
+    res.render('index', { jss: ['/js/index.js'] });
 });
 app.listen(common.port, common.host);
 
