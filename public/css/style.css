@@ -1,0 +1,14 @@
+div#header {
+}
+
+div#footer {
+    text-align: right;
+}
+
+.logo a {
+    font-family: monospace;
+    font-size: xx-large;
+    font-weight: bold;
+    text-decoration: none;
+    color: #000000;
+}
