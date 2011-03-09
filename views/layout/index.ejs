@@ -6,7 +6,14 @@
   <body>
     <div id="header">
       <span class="logo"><a href="<%= path_for('/') %>">livecoder</a></span>
-      <a href="<%= path_for('/signin/twitter') %>"><img src="<%= path_for('/img/sign-in-with-twitter.png') %>" /></a>
+      <div id="signin">
+        Sign in
+        <ul id="signin_list">
+          <li><a href="<%= path_for('/signin/twitter') %>">Twitter</a></li>
+          <li><a href="<%= path_for('/signin/facebook') %>">Facebook</a></li>
+          <li><a href="<%= path_for('/signin/github') %>">Github</a></li>
+        </ul>
+      </div>
     </div>
     <%- body %>
     <div id="footer">
@@ -27,6 +34,7 @@
     <script type="text/javascript">google.load("jquery", "1.5.1");</script>
     <script type="text/javascript" src="<%= path_for('/js/lib/orion/editor.js') %>"></script>
     <script type="text/javascript" src="<%= path_for('/js/lib/orion/model.js') %>"></script>
+    <script type="text/javascript" src="<%= path_for('/js/common.js') %>"></script>
     <% for (var i = 0, l = jss.length; i < l; i++) { %>
     <script type="text/javascript" src="<%= path_for(jss[i]) %>"></script><% } %>
   </body>
