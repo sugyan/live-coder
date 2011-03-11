@@ -1,14 +1,14 @@
 $(function() {
-    var last_action_mouseout;
+    var mouseout = true;
     $('#signin')
         .mouseover(function() {
             $('#signin_list').show();
-            last_action_mouseout = false;
+            mouseout = false;
         })
         .mouseout(function() {
-            last_action_mouseout = true;
+            mouseout = true;
             setTimeout(function() {
-                if (last_action_mouseout) {
+                if (mouseout) {
                     $('#signin_list').hide();
                 }
             }, 100);

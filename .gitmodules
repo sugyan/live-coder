@@ -4,3 +4,6 @@
 [submodule "deps/simpleTimeago"]
 	path = deps/simpleTimeago
 	url = git://github.com/yappo/javascript-simpleTimeago.git
+[submodule "deps/authbuttons"]
+	path = deps/authbuttons
+	url = git://github.com/intridea/authbuttons.git
