@@ -6,13 +6,15 @@
   <body>
     <div id="header">
       <span class="logo"><a href="<%= path_for('/') %>">livecoder</a></span>
-      <div id="signin">
+      <div id="signin"><% if (session.user) { %>
+        <%= session.user.name %>
+        <a href="/signout">Sign out</a><% } else { %>
         Sign in
         <div id="signin_list">
           <a href="<%= path_for('/signin/twitter') %>"><img src="<%= path_for('/img/authbuttons/twitter_64.png') %>" /></a>
           <a href="<%= path_for('/signin/facebook') %>"><img src="<%= path_for('/img/authbuttons/facebook_64.png') %>" /></a>
           <a href="<%= path_for('/signin/github') %>"><img src="<%= path_for('/img/authbuttons/github_64.png') %>" /></a>
-        </div>
+        </div><% } %>
       </div>
     </div>
     <%- body %>
