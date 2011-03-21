@@ -11,9 +11,15 @@ var http_conf = config('http', {
     cookie_secret: 'hogefugapiyo'
 });
 
+var store = new (require('connect-redis'))();
 app.use(express.static(__dirname + '/public'));
 app.use(express.cookieParser());
-app.use(express.session({ secret: http_conf.cookie_secret }));
+app.use(express.session({
+    store: store,
+    secret: http_conf.cookie_secret,
+    cookie: { httpOnly: false }
+}));
+
 app.set('view engine', 'ejs');
 app.helpers({
     path_for: function(path) {
@@ -80,5 +86,15 @@ app.get('/signin/twitter', function(req, res) {
     }
 });
 app.listen(common.port, common.host);
+
+var io = require('socket.io');
+var socket = io.listen(app);
+var parseCookie = require('connect').utils.parseCookie;
+socket.on('connection', function(client) {
+    var cookie = parseCookie(client.request.headers.cookie);
+    store.get(cookie['connect.sid'], function(err, session) {
+        console.log(session);
+    });
+});
 
 console.log('Server running at http://' + common.host + ':' + common.port + '/');
