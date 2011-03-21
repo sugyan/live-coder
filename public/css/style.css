@@ -3,11 +3,10 @@ div#header {
 }
 
 div#footer {
-    /* top: auto; */
-    /* bottom: 0; */
-    /* right: 10px; */
-    /* position: absolute; */
-    text-align: right;
+    position: absolute;
+    height: 20px;
+    margin: 10px;
+    right: 0; bottom: 0;
 }
 
 .logo a {
@@ -32,6 +31,8 @@ div#signin_list {
 }
 
 div#code {
+    position: absolute;
+    top: 50px; left: 10px; bottom: 36px; right: 10px;
 }
 
 img {
