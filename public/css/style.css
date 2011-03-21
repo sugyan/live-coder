@@ -28,6 +28,7 @@ div#signin_list {
     position: absolute;
     right: 0px;
     background-color: #F0F0F0;
+    z-index: 1;
 }
 
 div#code {
