@@ -2,7 +2,7 @@ require('../test_helper');
 require('../lib/model');
 
 var mongod;
-var port = 10101;
+var port = 17017;               // empty port...?
 QUnit.module('model', {
     setup: function() {
         console.log('setup!!');
@@ -37,38 +37,41 @@ QUnit.test('mongoose', function() {
             assert.equal(err, null, 'no error');
             QUnit.start();
         });
-    }, 100);
+    }, 200);
 
     QUnit.stop();
 
+    var key = 'hoge';
     var async = require('async');
     async.series([
-        function(callback) {
+        // initialization
+        function(cb) {
             User.remove({}, function(err) {
-                assert.equal(err, null, 'removed');
-                callback(err);
+                assert.equal(err, null, 'user removed');
+                User.find({}, function(err, docs) {
+                    assert.equal(err, null, 'find users');
+                    assert.equal(docs.length, 0, 'no users');
+                    cb(err);
+                });
             });
         },
-        function(callback) {
-            User.find({}, function(err, docs) {
-                assert.equal(err, null, 'find');
-                assert.equal(docs.length, 0, 'no users');
-                callback(err);
+        function(cb) {
+            Auth.remove({}, function(err) {
+                assert.equal(err, null, 'auth removed');
+                Auth.find({}, function(err, docs) {
+                    assert.equal(err, null, 'find auths');
+                    assert.equal(docs.length, 0, 'no auths');
+                    cb(err);
+                });
             });
         },
-        function(callback) {
-            var user = new User();
-            user.screen_name = 'hoge';
-            user.save(function(err) {
-                assert.equal(err, null, 'saved');
-                callback(err);
-            });
-        },
-        function(callback) {
-            User.find({}, function(err, docs) {
-                assert.equal(err, null, 'find');
-                assert.equal(docs.length, 1, '1 user created');
-                callback(err);
+        // new auth
+        function(cb) {
+            var auth = new Auth();
+            auth.key = key;
+            auth.save(function(err) {
+                assert.equal(err, null, 'auth save');
+                cb(err);
             });
         },
         function(callback) {
