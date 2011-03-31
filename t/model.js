@@ -34,8 +34,8 @@ QUnit.test('mongoose', function() {
 
     setTimeout(function() {
         mongoose.connect('localhost', 'test', port, function(err) {
-            assert.equal(err, null, 'no error');
             QUnit.start();
+            assert.equal(err, null, 'connect success');
         });
     }, 200);
 
