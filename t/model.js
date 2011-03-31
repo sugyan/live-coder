@@ -5,7 +5,6 @@ var mongod;
 var port = 17017;               // empty port...?
 QUnit.module('model', {
     setup: function() {
-        console.log('setup!!');
         mongod = require('child_process').spawn('mongod', [
             '--dbpath', 't/db',
             '--port', port,
@@ -16,7 +15,6 @@ QUnit.module('model', {
         // });
     },
     teardown: function() {
-        console.log('teardown!!');
         mongod.kill();
     }
 });
@@ -37,7 +35,7 @@ QUnit.test('mongoose', function() {
             QUnit.start();
             assert.equal(err, null, 'connect success');
         });
-    }, 200);
+    }, 500);
 
     QUnit.stop();
 
