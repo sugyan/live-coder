@@ -67,8 +67,8 @@ QUnit.test('mongoose', function() {
         function(cb) {
             User.find_or_create(
                 { key: 'hoge', name: 'sugyan', info: { foo: 'bar' } },
-                function(err, user) {
-                    assert.ok(user && user.name == 'sugyan', 'user created');
+                function(err, result) {
+                    assert.ok(result.user, 'user created');
                     cb(err);
                 }
             );
@@ -87,9 +87,8 @@ QUnit.test('mongoose', function() {
         function(cb) {
             User.find_or_create(
                 { key: 'fuga', name: 'sugyan', info: { foo: 'bar' } },
-                function(err, user) {
-                    assert.ok(
-                        user && user.name == 'sugyan1', 'another user created');
+                function(err, result) {
+                    assert.ok(result.user, 'another user created');
                     cb(err);
                 }
             );
@@ -108,8 +107,9 @@ QUnit.test('mongoose', function() {
         function(cb) {
             User.find_or_create(
                 { key: 'hoge', name: 'dummy', info: { dummy: 'dummy' } },
-                function(err, user) {
-                    assert.ok(user && user.name == 'sugyan', 'user found');
+                function(err, result) {
+                    assert.ok(result.user, 'user found');
+                    assert.equal(result.user.name, 'sugyan', 'user name');
                     cb(err);
                 }
             );
