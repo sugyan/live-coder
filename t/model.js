@@ -63,17 +63,66 @@ QUnit.test('mongoose', function() {
                 });
             });
         },
-        // new auth
+        // new user
         function(cb) {
-            var auth = new Auth();
-            auth.key = key;
-            auth.save(function(err) {
-                assert.equal(err, null, 'auth save');
-                cb(err);
+            User.find_or_create(
+                { key: 'hoge', name: 'sugyan', info: { foo: 'bar' } },
+                function(err, user) {
+                    assert.ok(user && user.name == 'sugyan', 'user created');
+                    cb(err);
+                }
+            );
+        },
+        // 1 auth, 1 user
+        function(cb) {
+            Auth.find({}, function(err, docs) {
+                assert.equal(docs.length, 1, '1 auths');
+                User.find({}, function(err, docs) {
+                    assert.equal(docs.length, 1, '1 users');
+                    cb(err);
+                });
             });
         },
-        function(callback) {
-            QUnit.start();
+        // same name user
+        function(cb) {
+            User.find_or_create(
+                { key: 'fuga', name: 'sugyan', info: { foo: 'bar' } },
+                function(err, user) {
+                    assert.ok(
+                        user && user.name == 'sugyan1', 'another user created');
+                    cb(err);
+                }
+            );
+        },
+        // 2 auth, 2 user
+        function(cb) {
+            Auth.find({}, function(err, docs) {
+                assert.equal(docs.length, 2, '2 auths');
+                User.find({}, function(err, docs) {
+                    assert.equal(docs.length, 2, '2 users');
+                    cb(err);
+                });
+            });
+        },
+        // find user
+        function(cb) {
+            User.find_or_create(
+                { key: 'hoge', name: 'dummy', info: { dummy: 'dummy' } },
+                function(err, user) {
+                    assert.ok(user && user.name == 'sugyan', 'user found');
+                    cb(err);
+                }
+            );
+        },
+        // 2 auth, 2 user (not created)
+        function(cb) {
+            Auth.find({}, function(err, docs) {
+                assert.equal(docs.length, 2, '2 auths');
+                User.find({}, function(err, docs) {
+                    assert.equal(docs.length, 2, '2 users');
+                    cb(err);
+                });
+            });
         }
     ], function(err) {
         assert.equal(err, null, 'no errors occurred');
