@@ -26,14 +26,14 @@ exports.empty_port = function(callback) {
         try {
             server.listen(port, '127.0.0.1');
             server.close();
-            callback(port);
+            callback(null, port);
         } catch(e) {
             loop();
         };
     });
     function loop() {
         if (port++ >= 20000) {
-            callback(null);
+            callback(new Error('empty port not found'));
             return;
         }
 
