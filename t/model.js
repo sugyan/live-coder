@@ -34,10 +34,10 @@ empty_port(function(err, port) {
 
         setTimeout(function() {
             mongoose.connect('localhost', 'test', port, function(err) {
-                QUnit.start();
                 assert.equal(err, null, 'connect success');
+                QUnit.start();
             });
-        }, 500);
+        }, 1000);
 
         QUnit.stop();
 
