@@ -98,6 +98,9 @@ Socket.prototype.connect = function() {
         if (msg !== undefined) {
             self.emit('message', msg);
         }
+        else {
+            self.sessionId = rawmsg;
+        }
     };
 
     this.conn.onclose = function() {
