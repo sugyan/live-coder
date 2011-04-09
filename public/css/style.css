@@ -36,6 +36,11 @@ div#code {
     top: 50px; left: 10px; bottom: 36px; right: 10px;
 }
 
+div#cursor {
+    border-right: 1px solid white;
+    position: absolute;
+}
+
 img {
     border: none;
 }
