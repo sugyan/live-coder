@@ -18,9 +18,16 @@ $(function() {
             editor.setText(results[0]);
         }
         if (msg.cursor) {
-            var offset = editor.getModel().getLineStart(msg.cursor.row) + msg.cursor.col;
+            var offset =
+                editor.getModel().getLineStart(msg.cursor.row) + msg.cursor.col;
             var location = editor.getLocationAtOffset(offset);
-            $('#cursor').show().offset({ top : 60 + location.y, left: 20 + location.x });
+            $('#cursor').show().offset({
+                top: 60 + location.y,
+                left: 20 + location.x
+            });
+        }
+        if (msg.code) {
+            editor.setText(msg.code);
         }
     });
     socket.on('connect', function() {

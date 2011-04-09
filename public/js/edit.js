@@ -42,6 +42,12 @@ $(function() {
         }, 0);
     };
 
+    var loop = function() {
+        socket.send({ code: editor.getText() });
+        setTimeout(loop, 1000);
+    };
+    loop();
+
     socket.on('connect', function() {
         socket.send({ cookie: document.cookie });
     });
