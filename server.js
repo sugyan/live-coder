@@ -5,12 +5,10 @@ var config = require('config')('http', {
     cookie_secret: 'hogefugapiyo'
 });
 
+// http server
 var express = require('express'),
     app = express.createServer(),
-    store = require('connect-mongodb')(),
-    base_uri = 'http://' +
-        config.host + ':' + config.port + config.base_path;
-
+    store = require('connect-mongodb')();
 app.use(express.static(__dirname + '/public'));
 app.use(express.cookieParser());
 app.use(express.session({
@@ -32,25 +30,16 @@ app.dynamicHelpers({
     }
 });
 
-var http = require('./lib/http');
-for (var path in http) {
-    app.get(path, http[path]);
+// routing
+var router = require('./lib/http')(config);
+for (var path in router) {
+    app.get(path, router[path]);
 }
 
-var signin = new (require('./lib/http/signin'))({
-    base_uri: base_uri,
-    redirect: base_uri + '/'
-});
-app.get('/signin/twitter', signin.twitter());
-app.get('/signin/facebook', signin.facebook());
-app.get('/signin/github', signin.github());
-app.get('/signout', function(req, res) {
-    req.session.destroy();
-    res.redirect(config.base_path + '/');
-});
 app.listen(config.port, config.host);
-console.log('Server running at ' + base_uri);
+console.log('Server running at http://' + config.host + ':' + config.port);
 
+// socket.io
 require('./lib/socket.io')({
     server: app,
     store: store
