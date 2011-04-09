@@ -48,8 +48,19 @@ $(function() {
     };
     loop();
 
+    socket.on('message', function(msg) {
+        if (msg.error) {
+            socket.disconnect();
+            alert('disconnected!');
+        }
+    });
     socket.on('connect', function() {
-        socket.send({ cookie: document.cookie });
+        socket.send({
+            auth: {
+                cookie: document.cookie,
+                edit: true
+            }
+        });
     });
     socket.connect();
 });
