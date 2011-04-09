@@ -13,7 +13,10 @@ empty_port(function(err, port) {
         setup: function() {
             http = require('http').createServer();
             http.listen(port);
-            server = require('../lib/socket.io')(http, store);
+            server = require('../lib/socket.io')({
+                server: http,
+                store: store
+            });
         },
         teardown: function() {
             http.close();
