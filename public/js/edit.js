@@ -42,5 +42,8 @@ $(function() {
         }, 0);
     };
 
+    socket.on('connect', function() {
+        socket.send({ cookie: document.cookie });
+    });
     socket.connect();
 });

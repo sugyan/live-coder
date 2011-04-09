@@ -23,6 +23,10 @@ $(function() {
             $('#cursor').show().offset({ top : 60 + location.y, left: 20 + location.x });
         }
     });
+    socket.on('connect', function() {
+        var target = window.location.pathname.match(/\/view\/([\w\.\-]+)/)[1];
+        socket.send({ view: target });
+    });
     socket.connect();
 
     var blink = function() {
