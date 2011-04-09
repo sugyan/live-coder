@@ -13,7 +13,4 @@ $(function() {
                 }
             }, 100);
         });
-
-    var socket = new io.Socket();
-    socket.connect();
 });
