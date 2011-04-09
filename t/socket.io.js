@@ -6,12 +6,12 @@ var Cookie = require('connect').session.Cookie;
 empty_port(function(err, port) {
     if (err) throw err;
 
-    var http = require('http').createServer(),
-    store = new (require('connect').session.MemoryStore)(),
-    server;
+    var http, server,
+        store = new (require('connect').session.MemoryStore)();
 
     QUnit.module('socket.io & session', {
         setup: function() {
+            http = require('http').createServer();
             http.listen(port);
             server = require('../lib/socket.io')(http, store);
         },
@@ -49,6 +49,47 @@ empty_port(function(err, port) {
             assert.ok(true, 'disconnect');
             QUnit.start();
         });
+    });
+
+    QUnit.test('chat', function() {
+        var async = require('async');
+        var cookie1 = new Cookie();
+        var cookie2 = new Cookie();
+
+        QUnit.stop();
+
+        async.series([
+            function(cb) {
+                store.set('foo', { user: 'hoge', cookie: cookie1 }, cb);
+            },
+            function(cb) {
+                store.set('bar', { user: 'fuga', cookie: cookie2 }, cb);
+            },
+            function(cb) {
+                QUnit.start();
+            }
+        ], function(err) {
+            assert.equal(err, null, 'no error');
+            QUnit.start();
+        });
+
+        QUnit.stop();
+
+        var socket1 = new io.Socket('localhost', { port: port }),
+            socket2 = new io.Socket('localhost', { port: port });
+
+        socket1.on('connect', function() {
+            assert.ok(true, 'socket1 connect');
+            socket2.connect();
+        });
+        socket2.on('connect', function() {
+            assert.ok(true, 'socket2 connect');
+            socket1.disconnect();
+            socket2.disconnect();
+            QUnit.start();
+        });
+
+        socket1.connect();
     });
 
     QUnit.start();
