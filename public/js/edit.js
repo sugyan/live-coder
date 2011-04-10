@@ -74,4 +74,34 @@ $(function() {
     });
     chat(socket);
     socket.connect();
+
+    var index = 1;
+    var menus = $('.menu_item').toArray().reverse();
+    function menuPrevious() {
+        index--; changeMenu();
+    }
+    function menuNext() {
+        index++; changeMenu();
+    }
+    function changeMenu() {
+        if (index < 0) index = menus.length - 1;
+        if (index == menus.length) index = 0;
+        $(menus[index]).click();
+        if (index != 1) editor.focus();
+    }
+
+    editor.setAction('menuPrevious', menuPrevious);
+    editor.setAction('menuNext', menuNext);
+    editor.setKeyBinding(
+        new eclipse.KeyBinding(219, false, false, false, true), 'menuPrevious'
+    );
+    editor.setKeyBinding(
+        new eclipse.KeyBinding(221, false, false, false, true), 'menuNext'
+    );
+    $('#message').bind('keydown', function(e) {
+        if (e.ctrlKey) {
+            if (e.keyCode == 219) menuPrevious();
+            if (e.keyCode == 221) menuNext();
+        }
+    });
 });

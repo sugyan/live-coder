@@ -25,6 +25,9 @@ $(function() {
             $('#' + menu).show();
             $(this).addClass('selected');
             $('#close').show();
+            if (menu === 'chat') {
+                $('#message').focus();
+            }
         }
     });
 });
