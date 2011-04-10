@@ -90,7 +90,8 @@ input.message {
 dl#message_list {
     margin: 0;
     font-family: sans-serif;
-    font-size: 16px;
+    font-size: 15px;
+    line-height: 20px;
     position: absolute;
     top: 40px; bottom: 0px; right: 0px;
     width: 440px;
@@ -101,15 +102,15 @@ dl#message_list span.name {
 }
 dl#message_list span.time {
     margin-left: 10px;
-    font-size: small;
+    font-size: 14px;
     color: gray;
 }
-dl#message_list dt {
-    height: 20px;
+dl#message_list .info {
+    color: gray;
 }
 dl#message_list dd {
-    height: 20px;
     margin-left: 20px;
+    margin-bottom: 5px;
 }
 
 div#cursor {

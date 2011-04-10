@@ -30,23 +30,14 @@ $(function() {
             editor.setText(msg.code);
         }
         if (msg.name) {
-            console.log(msg.name);
-        }
-        if (msg.chat) {
-            var data = msg.chat;
-            $('#message_list').prepend(
-                $('<dt>')
-                    .append($('<span>').addClass('name').text(data.user))
-                    .append($('<span>').addClass('time').text(new Date(data.date).toLocaleTimeString()))
-                    .after($('<dd>').text(data.message)));
+            var path = window.location.pathname;
+            var target = path.match(/\/view\/([\w\.\-]+)/)[1];
+            socket.send({ view: target });
         }
     });
+    chat(socket);
     socket.on('connect', function() {
-        var target = window.location.pathname.match(/\/view\/([\w\.\-]+)/)[1];
-        socket.send({
-            view: target,
-            auth: { cookie: document.cookie }
-        });
+        socket.send({ auth: { cookie: document.cookie } });
     });
     socket.connect();
 

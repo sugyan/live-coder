@@ -63,14 +63,6 @@ $(function() {
             socket.disconnect();
             alert('disconnected!');
         }
-        if (msg.chat) {
-            var data = msg.chat;
-            $('#message_list').prepend(
-                $('<dt>')
-                    .append($('<span>').addClass('name').text(data.user))
-                    .append($('<span>').addClass('time').text(new Date(data.date).toLocaleTimeString()))
-                    .after($('<dd>').text(data.message)));
-        }
     });
     socket.on('connect', function() {
         socket.send({
@@ -80,5 +72,6 @@ $(function() {
             }
         });
     });
+    chat(socket);
     socket.connect();
 });
