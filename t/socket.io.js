@@ -95,7 +95,6 @@ empty_port(function(err, port) {
                     assert.equal(
                         msg.chat.message, 'foo', 'socket1 received self message'
                     );
-                    socket2.send({ chat: 'bar' });
                 }
                 else {
                     assert.equal(
@@ -114,9 +113,9 @@ empty_port(function(err, port) {
             assert.equal(sequence++, 1, 'socket1 connect');
             socket1.send({
                 edit: { cursor: { row: 0, col: 0 } }, // noop
-                auth: { cookie: cookie1.serialize('connect.sid', 'hoge') }
+                auth: { cookie: cookie1.serialize('connect.sid', 'hoge') },
+                view: 'piyo'
             });
-            socket1.send({ view: 'piyo' });
             socket2.connect();
         });
         socket2.on('message', function(msg) {
@@ -124,8 +123,9 @@ empty_port(function(err, port) {
                 assert.equal(msg.name, 'piyo', 'authenticated');
                 socket2.send({ edit: { cursor: { row: 0, col: 1 } } });
             }
-            if (msg.chat && msg.chat.message === 'bar') {
-                assert.equal(sequence, 5, 'socket2 received self message');
+            if (msg.chat && msg.chat.message === 'foo') {
+                assert.ok(true, 'socket2 received message');
+                socket2.send({ chat: 'bar' });
             }
         });
         socket2.on('connect', function() {
