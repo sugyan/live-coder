@@ -28,7 +28,8 @@ empty_port(function(err, port) {
 
         QUnit.stop();
 
-        store.set('hoge', { data: 'fuga', cookie: cookie }, function() {
+        var data = { user: { name: 'fuga' }, cookie: cookie };
+        store.set('hoge', data, function() {
             assert.ok(true, 'session set');
             QUnit.start();
         });
@@ -37,7 +38,7 @@ empty_port(function(err, port) {
 
         var socket = new io.Socket('localhost', { port: port });
         socket.on('message', function(msg) {
-            assert.deepEqual(msg, { data: 'fuga' }, 'message');
+            assert.deepEqual(msg, { name: 'fuga' }, 'message');
             socket.disconnect();
         });
         socket.on('connect', function() {
@@ -59,7 +60,8 @@ empty_port(function(err, port) {
 
         QUnit.stop();
 
-        store.set('hoge', { user: { name: 'fuga' }, cookie: cookie }, function() {
+        var data = { user: { name: 'fuga' }, cookie: cookie };
+        store.set('hoge', data, function() {
             assert.ok(true, 'session set');
             QUnit.start();
         });
@@ -73,7 +75,9 @@ empty_port(function(err, port) {
         var sequence = 0;
         socket1.on('message', function(msg) {
             assert.equal(sequence++, 3, 'socket1 received message');
-            assert.deepEqual(msg, { cursor: { row: 0, col: 1 } }, 'edit message');
+            assert.deepEqual(
+                msg, { cursor: { row: 0, col: 1 } }, 'edit message'
+            );
             socket1.disconnect();
             socket2.disconnect();
             socket3.disconnect();
