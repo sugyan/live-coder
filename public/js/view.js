@@ -8,7 +8,7 @@ $(function() {
             readonly: true
         });
     editor.setText('');
-    $('#cursor').offset({ top: 70, left: 20 }).height(editor.getLineHeight());
+    $('#cursor').offset({ top: 70, left: 25 }).height(editor.getLineHeight());
 
     socket.on('message', function(msg) {
         if (msg.patch) {
@@ -23,7 +23,7 @@ $(function() {
             var location = editor.getLocationAtOffset(offset);
             $('#cursor').show().offset({
                 top: 70 + location.y,
-                left: 20 + location.x
+                left: 25 + location.x
             });
         }
         if (msg.code) {
