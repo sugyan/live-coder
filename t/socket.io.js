@@ -139,6 +139,7 @@ empty_port(function(err, port) {
             });
         });
         socket3.on('message', function(msg) {
+            if (msg.info || msg.stat) return;
             assert.ok(false, 'no messages received');
         });
         socket3.on('connect', function() {
