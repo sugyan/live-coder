@@ -48,10 +48,28 @@ $(function() {
     };
     loop();
 
+    $('#message_form').submit(function() {
+        var val = $('#message').val();
+        if (val.length > 0) {
+            socket.send({ chat: val });
+        }
+        $('#message').val('');
+        return false;
+    });
+    $('#message').focus();
+
     socket.on('message', function(msg) {
         if (msg.error) {
             socket.disconnect();
             alert('disconnected!');
+        }
+        if (msg.chat) {
+            var data = msg.chat;
+            $('#message_list').prepend(
+                $('<dt>')
+                    .append($('<span>').addClass('name').text(data.user))
+                    .append($('<span>').addClass('time').text(new Date(data.date).toLocaleTimeString()))
+                    .after($('<dd>').text(data.message)));
         }
     });
     socket.on('connect', function() {

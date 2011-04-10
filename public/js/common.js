@@ -13,4 +13,18 @@ $(function() {
                 }
             }, 100);
         });
+
+    $('.menu_item').click(function() {
+        var menu = $(this).text();
+        $('div.selected').removeClass('selected');
+        $('div.menu_window').hide();
+        if (menu === 'x') {
+            $('#close').hide();
+        }
+        else {
+            $('#' + menu).show();
+            $(this).addClass('selected');
+            $('#close').show();
+        }
+    });
 });

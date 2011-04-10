@@ -56,12 +56,21 @@ empty_port(function(err, port) {
     });
 
     QUnit.test('send to viewers', function() {
-        var cookie = new Cookie();
+        var cookie1 = new Cookie();
+        var cookie2 = new Cookie();
 
         QUnit.stop();
 
-        var data = { user: { name: 'fuga' }, cookie: cookie };
+        var data = { cookie: cookie1 };
         store.set('hoge', data, function() {
+            assert.ok(true, 'session set');
+            QUnit.start();
+        });
+
+        QUnit.stop();
+
+        var data = { user: { name: 'piyo' }, cookie: cookie2 };
+        store.set('fuga', data, function() {
             assert.ok(true, 'session set');
             QUnit.start();
         });
@@ -74,30 +83,60 @@ empty_port(function(err, port) {
 
         var sequence = 0;
         socket1.on('message', function(msg) {
-            assert.equal(sequence++, 3, 'socket1 received message');
-            assert.deepEqual(
-                msg, { cursor: { row: 0, col: 1 } }, 'edit message'
-            );
-            socket1.disconnect();
-            socket2.disconnect();
-            socket3.disconnect();
-            QUnit.start();
+            if (msg.cursor) {
+                assert.equal(sequence++, 3, 'socket1 received message');
+                assert.deepEqual(
+                    msg, { cursor: { row: 0, col: 1 } }, 'cursor message'
+                );
+                socket1.send({ chat: 'foo' });
+            }
+            if (msg.chat) {
+                if (sequence++ < 5) {
+                    assert.equal(
+                        msg.chat.message, 'foo', 'socket1 received self message'
+                    );
+                    socket2.send({ chat: 'bar' });
+                }
+                else {
+                    assert.equal(
+                        msg.chat.message, 'bar', 'socket1 received message'
+                    );
+                    setTimeout(function() {
+                        socket1.disconnect();
+                        socket2.disconnect();
+                        socket3.disconnect();
+                        QUnit.start();
+                    }, 100);
+                }
+            }
         });
         socket1.on('connect', function() {
             assert.equal(sequence++, 1, 'socket1 connect');
-            socket1.send({ edit: { cursor: { row: 0, col: 0 } } }); // noop
-            socket1.send({ view: 'fuga' });
+            socket1.send({
+                edit: { cursor: { row: 0, col: 0 } }, // noop
+                auth: { cookie: cookie1.serialize('connect.sid', 'hoge') }
+            });
+            socket1.send({ view: 'piyo' });
             socket2.connect();
+        });
+        socket2.on('message', function(msg) {
+            if (msg.name) {
+                assert.equal(msg.name, 'piyo', 'authenticated');
+                socket2.send({ edit: { cursor: { row: 0, col: 1 } } });
+            }
+            if (msg.chat && msg.chat.message === 'bar') {
+                assert.equal(sequence, 5, 'socket2 received self message');
+            }
         });
         socket2.on('connect', function() {
             assert.equal(sequence++, 2, 'socket2 connect');
 
             socket2.send({
-                auth: { cookie: cookie.serialize('connect.sid', 'hoge') }
+                auth: {
+                    cookie: cookie2.serialize('connect.sid', 'fuga'),
+                    edit: true
+                }
             });
-            setTimeout(function() {
-                socket2.send({ edit: { cursor: { row: 0, col: 1 } } });
-            }, 100);
         });
         socket3.on('message', function(msg) {
             assert.ok(false, 'no messages received');
