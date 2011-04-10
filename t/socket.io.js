@@ -43,7 +43,7 @@ empty_port(function(err, port) {
         socket.on('connect', function() {
             assert.ok(true, 'connect');
             socket.send({
-                cookie: cookie.serialize('connect.sid', 'hoge')
+                auth: { cookie: cookie.serialize('connect.sid', 'hoge') }
             });
         });
         socket.connect();

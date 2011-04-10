@@ -57,7 +57,9 @@ empty_port(function(err, port) {
         socket2.on('connect', function() {
             assert.equal(sequence++, 2, 'socket2 connect');
 
-            socket2.send({ cookie: cookie.serialize('connect.sid', 'hoge') });
+            socket2.send({
+                auth: { cookie: cookie.serialize('connect.sid', 'hoge') }
+            });
             setTimeout(function() {
                 socket2.send({ edit: { cursor: { row: 0, col: 1 } } });
             }, 100);
