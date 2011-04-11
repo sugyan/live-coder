@@ -36,6 +36,7 @@ $(function() {
         }
     });
     chat(socket);
+    stat(socket);
     socket.on('connect', function() {
         socket.send({ auth: { cookie: document.cookie } });
     });

@@ -73,6 +73,7 @@ $(function() {
         });
     });
     chat(socket);
+    stat(socket);
     socket.connect();
 
     var index = 1;

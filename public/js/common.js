@@ -56,3 +56,24 @@ function chat(socket) {
         }
     });
 }
+function stat(socket) {
+    socket.on('message', function(msg) {
+        if (msg.stat) {
+            var viewers = [];
+            for (var viewer in msg.stat.viewers) {
+                viewers.push(msg.stat.viewers[viewer]);
+            }
+            var sorted = viewers.sort(function(a, b) {
+                return b.start - a.start;
+            });
+            var ul = $('#viewers_list');
+            ul.children().remove();
+            for (var i = 0, l = sorted.length; i < l; i++) {
+                ul.append($('<li>').text(sorted[i].name));
+            }
+            $('#viewers').empty()
+                .append($('<span>').addClass('count').text(sorted.length))
+                .append(' viewers');
+        }
+    });
+}

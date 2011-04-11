@@ -1,3 +1,7 @@
+body {
+    font-family: sans-serif;
+}
+
 div#header {
     margin-bottom: 8px;
 }
@@ -89,7 +93,6 @@ input.message {
 }
 dl#message_list {
     margin: 0;
-    font-family: sans-serif;
     font-size: 15px;
     line-height: 20px;
     position: absolute;
@@ -111,6 +114,20 @@ dl#message_list .info {
 dl#message_list dd {
     margin-left: 20px;
     margin-bottom: 5px;
+}
+
+.menu_window h4 {
+    margin: 20px 5px 5px 15px;
+}
+span.count {
+    color: darkred;
+    font-weight: bold;
+    font-size: large;
+}
+ul#viewers_list {
+    margin: 0;
+    padding: 0 35px;
+    list-style-type: circle;
 }
 
 div#cursor {
