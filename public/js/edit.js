@@ -99,7 +99,7 @@ $(function() {
     editor.setKeyBinding(
         new eclipse.KeyBinding(221, false, false, false, true), 'menuNext'
     );
-    $('#message').bind('keydown', function(e) {
+    $('body').bind('keydown', function(e) {
         if (e.ctrlKey) {
             if (e.keyCode == 219) menuPrevious();
             if (e.keyCode == 221) menuNext();

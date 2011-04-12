@@ -119,6 +119,9 @@ dl#message_list dd {
 .menu_window h4 {
     margin: 20px 5px 5px 15px;
 }
+.menu_window div {
+    margin-left: 20px;
+}
 span.count {
     color: darkred;
     font-weight: bold;
