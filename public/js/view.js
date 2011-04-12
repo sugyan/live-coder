@@ -1,4 +1,5 @@
 $(function() {
+    var util = new CommonUtil();
     var dmp = new diff_match_patch(),
         socket = new io.Socket(),
         editor = new eclipse.Editor({
@@ -35,8 +36,8 @@ $(function() {
             socket.send({ view: target });
         }
     });
-    chat(socket);
-    stat(socket);
+    util.chat(socket);
+    util.stat(socket);
     socket.on('connect', function() {
         socket.send({ auth: { cookie: document.cookie } });
     });
@@ -58,4 +59,6 @@ $(function() {
         setTimeout(blink, 500);
     };
     blink();
+
+    util.menu(editor);
 });

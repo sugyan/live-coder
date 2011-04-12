@@ -32,7 +32,10 @@ $(function() {
     });
 });
 
-function chat(socket) {
+function CommonUtil() {
+}
+
+CommonUtil.prototype.chat = function(socket) {
     socket.on('message', function(msg) {
         if (msg.chat) {
             var data = msg.chat;
@@ -55,8 +58,8 @@ function chat(socket) {
                     .after($('<dd>').addClass('info').text(data.action + '.')));
         }
     });
-}
-function stat(socket) {
+};
+CommonUtil.prototype.stat = function(socket) {
     socket.on('message', function(msg) {
         if (msg.stat) {
             var viewers = [];
@@ -76,4 +79,36 @@ function stat(socket) {
                 .append(' viewers');
         }
     });
-}
+};
+
+CommonUtil.prototype.menu = function(editor) {
+    var index = 1;
+    var menus = $('.menu_item').toArray().reverse();
+    function menuPrevious() {
+        index--; changeMenu();
+    }
+    function menuNext() {
+        index++; changeMenu();
+    }
+    function changeMenu() {
+        if (index < 0) index = menus.length - 1;
+        if (index == menus.length) index = 0;
+        $(menus[index]).click();
+        if (index != 1) editor.focus();
+    }
+
+    editor.setAction('menuPrevious', menuPrevious);
+    editor.setAction('menuNext', menuNext);
+    editor.setKeyBinding(
+        new eclipse.KeyBinding(219, false, false, false, true), 'menuPrevious'
+    );
+    editor.setKeyBinding(
+        new eclipse.KeyBinding(221, false, false, false, true), 'menuNext'
+    );
+    $('body').bind('keydown', function(e) {
+        if (e.ctrlKey) {
+            if (e.keyCode == 219) menuPrevious();
+            if (e.keyCode == 221) menuNext();
+        }
+    });
+};
