@@ -1,7 +1,6 @@
 var config = require('config')('http', {
     host: 'localhost',
     port: 3000,
-    base_path: '',
     cookie_secret: 'hogefugapiyo'
 });
 
@@ -19,10 +18,7 @@ app.use(express.session({
 
 app.set('view engine', 'ejs');
 app.helpers({
-    home: 'http://' + config.host + (config.port == 80 ? '' : ':' + config.port) + config.base_path,
-    path_for: function(path) {
-        return config.base_path + path;
-    },
+    home: 'http://' + config.host + (config.port == 80 ? '' : ':' + config.port),
     jss: []
 });
 app.dynamicHelpers({
