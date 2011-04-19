@@ -2,7 +2,6 @@ $(function() {
     var util = new CommonUtil();
     var prev = { code: '', row: 0, col: 0 };
         dmp = new diff_match_patch(),
-        socket = new io.Socket(),
         editor = new eclipse.Editor({
             parent: 'code',
             model: new eclipse.TextModel(),

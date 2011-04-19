@@ -1,7 +1,6 @@
 $(function() {
     var util = new CommonUtil();
     var dmp = new diff_match_patch(),
-        socket = new io.Socket(),
         editor = new eclipse.Editor({
             parent: 'code',
             model: new eclipse.TextModel(),
