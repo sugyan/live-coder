@@ -1,6 +1,6 @@
 var config = require('config')('http', {
     host: 'localhost',
-    front_port: 3000,
+    front_port: 80,
     back_port: 3000,
     cookie_secret: 'hogefugapiyo'
 });
