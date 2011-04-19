@@ -56,7 +56,6 @@ $(function() {
         $('#message').val('');
         return false;
     });
-    $('#message').focus();
 
     socket.on('message', function(msg) {
         if (msg.error) {
