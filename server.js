@@ -18,7 +18,6 @@ app.use(express.session({
 
 app.set('view engine', 'ejs');
 app.helpers({
-    home: 'http://' + config.host + (config.port == 80 ? '' : ':' + config.port),
     port: config.port,
     jss: []
 });
