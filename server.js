@@ -1,6 +1,7 @@
 var config = require('config')('http', {
     host: 'localhost',
-    port: 3000,
+    front_port: 3000,
+    back_port: 3000,
     cookie_secret: 'hogefugapiyo'
 });
 
@@ -18,7 +19,7 @@ app.use(express.session({
 
 app.set('view engine', 'ejs');
 app.helpers({
-    port: config.port,
+    port: config.back_port,
     jss: []
 });
 app.dynamicHelpers({
@@ -36,8 +37,8 @@ for (var path in router) {
     app.get(path, router[path]);
 }
 
-app.listen(config.port, config.host);
-console.log('Server running at http://' + config.host + ':' + config.port);
+app.listen(config.back_port, config.host);
+console.log('Server running at http://' + config.host + ':' + config.back_port);
 
 // socket.io
 require('./lib/socket.io')({
