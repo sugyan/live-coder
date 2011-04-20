@@ -18,16 +18,10 @@ $(function() {
         var menu = $(this).text();
         $('div.selected').removeClass('selected');
         $('div.menu_window').hide();
-        if (menu === 'x') {
-            $('#close').hide();
-        }
-        else {
-            $('#' + menu).show();
-            $(this).addClass('selected');
-            $('#close').show();
-            if (menu === 'chat') {
-                $('#message').focus();
-            }
+        $('#' + menu).show();
+        $(this).addClass('selected');
+        if (menu === 'chat') {
+            $('#message').focus();
         }
     });
 });
