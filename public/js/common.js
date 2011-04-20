@@ -88,7 +88,11 @@ CommonUtil.prototype.menu = function(editor) {
         if (index < 0) index = menus.length - 1;
         if (index == menus.length) index = 0;
         $(menus[index]).click();
-        if (index != 1) editor.focus();
+        if (index != 1 && (! editor.readonly)) {
+            setTimeout(function() {
+                editor.focus();
+            }, 0);
+        }
     }
 
     editor.setAction('menuPrevious', menuPrevious);
@@ -99,7 +103,7 @@ CommonUtil.prototype.menu = function(editor) {
     editor.setKeyBinding(
         new eclipse.KeyBinding(221, false, false, false, true), 'menuNext'
     );
-    $('body').bind('keydown', function(e) {
+    $(document).bind('keydown', function(e) {
         if (e.ctrlKey) {
             if (e.keyCode == 219) menuPrevious();
             if (e.keyCode == 221) menuNext();
