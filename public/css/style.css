@@ -2,6 +2,16 @@ body {
     font-family: sans-serif;
 }
 
+h4 {
+    margin-bottom: 0;
+}
+
+ul {
+    margin-top: 10px;
+    padding: 0 35px;
+    list-style-type: circle;
+}
+
 div#header {
     margin-bottom: 8px;
 }
