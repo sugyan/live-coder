@@ -14,8 +14,20 @@ $(function() {
         if (msg.patch) {
             var patches = dmp.patch_fromText(msg.patch);
             var results = dmp.patch_apply(patches, editor.getText());
-            // TODO: check results
-            editor.setText(results[0]);
+            // check results
+            var flg = true;
+            for (var i = 0, l = results[1].length; i < l; i++) {
+                if (! results[1][i]) {
+                    flg = false;
+                    break;
+                }
+            }
+            if (flg) {
+                editor.setText(results[0]);
+            }
+            else {
+                socket.send({ inquiry: 'code' });
+            }
         }
         if (msg.cursor) {
             var offset =
@@ -26,7 +38,7 @@ $(function() {
                 left: 25 + location.x
             });
         }
-        if (msg.code) {
+        if (msg.code !== undefined) {
             editor.setText(msg.code);
         }
         if (msg.name) {

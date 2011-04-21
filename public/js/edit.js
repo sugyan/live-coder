@@ -23,30 +23,36 @@ $(function() {
             send(socket, null);
         });
     });
+    function cursor() {
+        var model = editor.getModel(),
+            offset = editor.getCaretOffset(),
+            row = model.getLineAtOffset(offset),
+            col = offset - model.getLineStart(row);
+        return { col: col, row: row };
+    }
     function send(socket, patch) {
         var data = {};
         if (patch) data.patch = patch;
         setTimeout(function() {
-            var model = editor.getModel();
-            var offset = editor.getCaretOffset();
-            var row = model.getLineAtOffset(offset);
-            var col = offset - model.getLineStart(row);
-            if (row != prev.row || col != prev.col) {
-                data.cursor = { row: row, col: col };
-                prev.row = row;
-                prev.col = col;
+            var c = cursor();
+            if (c.row != prev.row || c.col != prev.col) {
+                data.cursor = c;
+                prev.row = c.row;
+                prev.col = c.col;
             }
             if (data.patch || data.cursor) {
                 socket.send({ edit: data });
             }
         }, 0);
     };
-
-    var loop = function() {
-        socket.send({ code: editor.getText() });
-        setTimeout(loop, 1000);
-    };
-    loop();
+    function sync() {
+        socket.send({
+            code: editor.getText(),
+            edit: {
+                cursor: cursor()
+            }
+        });
+    }
 
     $('#message_form').submit(function() {
         var val = $('#message').val();
@@ -62,6 +68,15 @@ $(function() {
             socket.disconnect();
             alert('disconnected!');
         }
+        if (msg.name) {
+            sync();
+        }
+        if (msg.info && msg.info.action === 'connect') {
+            sync();
+        }
+        if (msg.inquiry === 'code') {
+            sync();
+        }
     });
     socket.on('connect', function() {
         socket.send({
@@ -70,6 +85,11 @@ $(function() {
                 edit: true
             }
         });
+        var loop = function() {
+            sync();
+            setTimeout(loop, 10000);
+        };
+        loop();
     });
     util.chat(socket);
     util.stat(socket);
