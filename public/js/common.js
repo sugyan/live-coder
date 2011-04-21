@@ -56,6 +56,7 @@ CommonUtil.prototype.chat = function(socket) {
 CommonUtil.prototype.stat = function(socket) {
     socket.on('message', function(msg) {
         if (msg.stat) {
+            // viewers
             var viewers = [];
             for (var viewer in msg.stat.viewers) {
                 viewers.push(msg.stat.viewers[viewer]);
@@ -71,8 +72,40 @@ CommonUtil.prototype.stat = function(socket) {
             $('#viewers').empty()
                 .append($('<span>').addClass('count').text(sorted.length))
                 .append(' viewers');
+            // editing
+            if (msg.stat.editing) {
+                $('.status_line').html(
+                    $('<span>').css({
+                        'color': '#FFB0B0',
+                        'font-weight': 'bold'
+                    }).text('livecoding now!')
+                        .after($('<span>').addClass('time').data(
+                            'date', msg.stat.editing.start
+                        ))
+                );
+            }
+            else {
+                $('.status_line').html(
+                    $('<span>').css({
+                        'color': '#C0C0C0',
+                        'font-weight': 'normal'
+                    }).text('not livecoding now...')
+                );
+            }
         }
     });
+    var updateTime = function() {
+        $('.status_line .time').each(function(i, e) {
+            var duration = Math.floor(
+                (new Date().getTime() - $(e).data('date')) / 1000
+            );
+            var m = Math.floor(duration / 60);
+            var s = duration % 60;
+            $(e).text((m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s);
+        });
+        setTimeout(updateTime, 1000);
+    };
+    updateTime();
 };
 
 CommonUtil.prototype.menu = function(editor) {
