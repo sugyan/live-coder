@@ -71,4 +71,23 @@ $(function() {
     loop();
 
     util.menu(editor);
+
+    var message =
+        'Welcome to "Livecoder"!!\n' +
+        '\n' +
+        'You can do "live coding" here,\n' +
+        'and everyone can view your editing in real time.\n' +
+        '\n' +
+        'Enjoy!\n';
+    var i = 1;
+    var write_message = function() {
+        editor.setText(message.substring(0, i++));
+        editor.setCaretOffset(i);
+        if (i > message.length) return;
+
+        var wait = Math.floor(50 + Math.random() * 50);
+        if (message[i - 2].search(/[ \n]/) != -1) wait += 50;
+        setTimeout(write_message, wait);
+    };
+    write_message();
 });
