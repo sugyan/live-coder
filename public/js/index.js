@@ -72,13 +72,14 @@ $(function() {
 
     util.menu(editor);
 
-    var message =
-        'Welcome to "Livecoder"!!\n' +
-        '\n' +
-        'You can do "live coding" here,\n' +
-        'and everyone can view your editing in real time.\n' +
-        '\n' +
-        'Enjoy!\n';
+    var message = [
+        'Welcome to "Livecoder"!!',
+        '',
+        'You can do "live coding" here,',
+        'and everyone can view your editing in real time.',
+        '',
+        'Enjoy!'
+    ].join('\n') + '\n';
     var i = 1;
     var write_message = function() {
         editor.setText(message.substring(0, i++));
