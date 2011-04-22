@@ -100,6 +100,21 @@ div.menu_window {
     margin-top: 19px;
 }
 
+ul#editors_list {
+    overflow: auto;
+    position: absolute;
+    left: 0px; top: 40px; bottom: 0px; right: 0px;
+    margin-bottom: 0;
+}
+ul#editors_list li {
+    margin-bottom: 5px;
+}
+ul#editors_list span.info {
+    color: gray;
+    margin-left: 10px;
+    font-size: small;
+}
+
 form#message_form {
     margin-bottom: 0;
 }

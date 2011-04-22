@@ -6,14 +6,13 @@
   <div class="menu_item">detail</div>
 </div>
 <div class="menu_window" id="detail">
-<h4>URL</h4>
-<div>
-  <a href="http://<%= req.headers.host + req.url %>">http://<%= req.headers.host + req.url %></a>
-  <a href="http://twitter.com/share" class="twitter-share-button" data-text="I'm viewing livecoding now! #livecoder" data-count="none">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
-</div>
-<h4 id="viewers">viewers</h4>
-<ul id="viewers_list">
-</ul>
+  <h4>URL</h4>
+  <div>
+    <a href="http://<%= req.headers.host + req.url %>">http://<%= req.headers.host + req.url %></a>
+    <a href="http://twitter.com/share" class="twitter-share-button" data-text="I'm viewing livecoding now! #livecoder" data-count="none">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+  </div>
+  <h4 id="viewers">viewers</h4>
+  <ul id="viewers_list"></ul>
 </div>
 <div class="menu_window" id="chat">
   <form id="message_form">
