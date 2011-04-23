@@ -7,3 +7,4 @@ npm install connect-mongodb
 npm install oauth
 npm install ejs
 npm install async
+npm install config
