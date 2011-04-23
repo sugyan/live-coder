@@ -61,7 +61,7 @@ $(function() {
     var updateTime = function() {
         $('.datetime').each(function(i, e) {
             var epoch = $(e).data('date');
-            $(e).text('start at ' + simpleTimeago(epoch));
+            $(e).text('started ' + simpleTimeago(epoch));
         });
     };
     var loop = function() {
