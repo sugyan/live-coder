@@ -1,12 +1,14 @@
 $(function() {
-    var util = new CommonUtil();
-    var dmp = new diff_match_patch(),
+    var util = new CommonUtil(),
+        dmp = new diff_match_patch(),
         editor = new eclipse.Editor({
             parent: 'code',
             model: new eclipse.TextModel(),
             stylesheet: '/css/code.css',
             readonly: true
-        });
+        }),
+        pos = { top: 0, left: 0 };
+
     editor.setText('');
     $('#cursor').offset({ top: 70, left: 25 }).height(editor.getLineHeight());
 
@@ -33,10 +35,14 @@ $(function() {
             var offset =
                 editor.getModel().getLineStart(msg.cursor.row) + msg.cursor.col;
             var location = editor.getLocationAtOffset(offset);
-            $('#cursor').show().offset({
-                top: 70 + location.y,
-                left: 25 + location.x
-            });
+            pos.top = 70 + location.y;
+            pos.left = 25 + location.x;
+            if (pos.top < $('#code').height() + editor.getLineHeight()) {
+                $('#cursor').show().offset({
+                    top: pos.top,
+                    left: pos.left
+                });
+            }
         }
         if (msg.code !== undefined) {
             editor.setText(msg.code);
@@ -66,7 +72,17 @@ $(function() {
 
     var blink = function() {
         var cursor = $('#cursor');
-        cursor[cursor.css('display') === 'none' ? 'show' : 'hide']();
+        if (cursor.css('display') === 'none') {
+            if (pos.top < $('#code').height() + editor.getLineHeight()) {
+                cursor.show().offset({
+                    top: pos.top,
+                    left: pos.left
+                });
+            }
+        }
+        else {
+            cursor.hide();
+        }
         setTimeout(blink, 500);
     };
     blink();
