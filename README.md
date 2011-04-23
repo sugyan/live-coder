@@ -3,10 +3,10 @@ This is web-based "live coding" application using node.js.
 ### Website
 http://livecoder.sugyan.com/
 
-### Installation
+### Setup
     $ git clone git://github.com/sugyan/live-coder.git
     $ cd live-coder
-    $ git submodule update --init
+    $ ./setup.sh
     $ node server.js -config ./conf/example.js
 
 ### Dependencies
