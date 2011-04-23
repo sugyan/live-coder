@@ -25,12 +25,7 @@ div#socialbuttons {
 
 div#socialbuttons > div {
     float: left;
-}
-div#socialbuttons div#twitter_button {
     margin-top: 7px;
-}
-div#socialbuttons div#facebook_button {
-    margin-top: 6px;
 }
 
 div#footer {
