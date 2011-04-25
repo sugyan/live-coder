@@ -1,6 +1,5 @@
 $(function() {
-    var util = new CommonUtil(),
-        dmp = new diff_match_patch(),
+    var dmp = new diff_match_patch(),
         editor = new eclipse.Editor({
             parent: 'code',
             model: new eclipse.TextModel(),
@@ -53,8 +52,6 @@ $(function() {
             socket.send({ view: target });
         }
     });
-    util.chat(socket);
-    util.stat(socket);
     socket.on('connect', function() {
         socket.send({ auth: { cookie: document.cookie } });
     });
@@ -87,5 +84,9 @@ $(function() {
     };
     blink();
 
-    util.menu(editor);
+    var LS = new Livecoder.Socket(socket);
+    LS.use(['chat', 'stat']);
+
+    var LE = new Livecoder.Editor(editor);
+    LE.use(['menu']);
 });

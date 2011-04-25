@@ -1,5 +1,4 @@
 $(function() {
-    var util = new CommonUtil();
     var editor = new eclipse.Editor({
         parent: 'code',
         model: new eclipse.TextModel(),
@@ -70,8 +69,6 @@ $(function() {
     }
     loop();
 
-    util.menu(editor);
-
     var message = [
         'Welcome to "Livecoder"!!',
         '',
@@ -91,4 +88,7 @@ $(function() {
         setTimeout(write_message, wait);
     };
     write_message();
+
+    var LE = new Livecoder.Editor(editor);
+    LE.use(['menu']);
 });

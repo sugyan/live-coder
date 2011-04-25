@@ -5,3 +5,15 @@
     font-size: 20px;
     line-height: 27px;
 }
+
+.token_comment {
+	color: orange;
+}
+
+.token_string {
+	color: lightblue;
+}
+
+.token_keyword {
+	color: lime;
+}

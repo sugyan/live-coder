@@ -1,5 +1,4 @@
 $(function() {
-    var util = new CommonUtil();
     var prev = { code: '', row: 0, col: 0 };
         dmp = new diff_match_patch(),
         editor = new eclipse.Editor({
@@ -9,6 +8,7 @@ $(function() {
         });
     editor.setText('');
     editor.focus();
+    var styler = new Livecoder.TextStyler(editor);
 
     editor.addEventListener('Modify', {}, function() {
         var code = editor.getText();
@@ -91,9 +91,11 @@ $(function() {
         };
         loop();
     });
-    util.chat(socket);
-    util.stat(socket);
     socket.connect();
 
-    util.menu(editor);
+    var LS = new Livecoder.Socket(socket);
+    LS.use(['chat', 'stat']);
+
+    var LE = new Livecoder.Editor(editor);
+    LE.use(['menu']);
 });
