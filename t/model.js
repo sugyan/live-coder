@@ -12,9 +12,6 @@ empty_port(function(err, port) {
                 '--port', port,
                 '--nounixsocket', '-v'
             ]);
-            // mongod.stdout.on('data', function(data) {
-            //     console.log(data.toString());
-            // });
         },
         teardown: function() {
             mongod.kill();
@@ -133,4 +130,10 @@ empty_port(function(err, port) {
     });
 
     QUnit.start();
+
+    process.on('uncaughtException', function (err) {
+        console.error('Caught exception: ' + err);
+        assert.ok(false, 'no exceptions');
+        QUnit.start();
+    });
 });
