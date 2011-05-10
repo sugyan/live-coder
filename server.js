@@ -10,7 +10,7 @@ var express = require('express'),
     app = express.createServer(),
     store = new (require('connect-mongodb'))();
 
-app.use(express.static(__dirname + '/public'));
+app.use(express['static'](__dirname + '/public'));
 app.use(express.cookieParser());
 app.use(express.session({
     store: store,
@@ -33,9 +33,11 @@ app.dynamicHelpers({
 });
 
 // routing
-var router = require('./lib/http')(config);
-for (var path in router) {
-    app.get(path, router[path]);
+var path, router = require('./lib/http')(config);
+for (path in router) {
+    if (router.hasOwnProperty(path)) {
+        app.get(path, router[path]);
+    }
 }
 
 app.listen(config.back_port, config.host);

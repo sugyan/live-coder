@@ -27,7 +27,7 @@ exports.empty_port = function(callback) {
             server.listen(port, '127.0.0.1');
             server.close();
             callback(null, port);
-        } catch (e) {
+        } catch (err) {
             loop();
         }
     });
@@ -41,7 +41,7 @@ exports.empty_port = function(callback) {
             socket.destroy();
             loop();
         });
-    };
+    }
     loop();
 };
 
@@ -50,14 +50,16 @@ var io = {},
         var socketio_dir = path.dirname(require.resolve('socket.io')),
         utils_path = path.join(socketio_dir, 'lib', 'socket.io', 'utils');
         return require(utils_path);
-    })();
+    }());
 
 var Socket = io.Socket = function(host, options) {
     this.url = 'ws://' + host + ':' + options.port + '/socket.io/websocket';
     this.connected = false;
     this.sessionId = null;
     this._heartbeats = 0;
-    if (options.origin) this.options = { origin: options.origin };
+    if (options.origin) {
+        this.options = { origin: options.origin };
+    }
 };
 Socket.prototype = new (require('events').EventEmitter)();
 Socket.prototype.connect = function() {
@@ -69,10 +71,11 @@ Socket.prototype.connect = function() {
             dir, 'support', 'node-websocket-client', 'lib', 'websocket'
         );
         return require(websocket_path).WebSocket;
-    })();
+    }());
 
     function heartBeat() {
-        self.send('~h~' + ++self._heartbeats);
+        self._heartbeats++;
+        self.send('~h~' + self._heartbeats);
     }
 
     this.conn = new WebSocket(this.url, 'borf', this.options);

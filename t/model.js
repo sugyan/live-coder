@@ -2,7 +2,7 @@ require('../test_helper');
 require('../lib/model');
 
 empty_port(function(err, port) {
-    if (err) throw err;
+    if (err) { throw err; }
 
     var mongod;
     QUnit.module('model', {

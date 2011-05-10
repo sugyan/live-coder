@@ -1,5 +1,5 @@
 $(function() {
-    var prev = { code: '', row: 0, col: 0 };
+    var prev = { code: '', row: 0, col: 0 },
         dmp = new diff_match_patch(),
         editor = new eclipse.Editor({
             parent: 'code',
@@ -32,10 +32,10 @@ $(function() {
     }
     function send(socket, patch) {
         var data = {};
-        if (patch) data.patch = patch;
+        if (patch) { data.patch = patch; }
         setTimeout(function() {
             var c = cursor();
-            if (c.row != prev.row || c.col != prev.col) {
+            if (c.row !== prev.row || c.col !== prev.col) {
                 data.cursor = c;
                 prev.row = c.row;
                 prev.col = c.col;
@@ -44,7 +44,7 @@ $(function() {
                 socket.send({ edit: data });
             }
         }, 0);
-    };
+    }
     function sync() {
         socket.send({
             code: editor.getText(),
@@ -85,7 +85,7 @@ $(function() {
                 edit: true
             }
         });
-        var loop = function() {
+        var loop; loop = function() {
             sync();
             setTimeout(loop, 10000);
         };

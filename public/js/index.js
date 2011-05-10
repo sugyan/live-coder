@@ -13,29 +13,38 @@ $(function() {
             var editors = (function() {
                 var obj = msg.connections.editors;
                 var arr = [];
-                for (var e in obj) {
-                    arr.push({
-                        name: e,
-                        date: Math.floor(obj[e].start / 1000)
-                    });
+                var e;
+                for (e in obj) {
+                    if (obj.hasOwnProperty(e)) {
+                        arr.push({
+                            name: e,
+                            date: Math.floor(obj[e].start / 1000)
+                        });
+                    }
                 }
                 return arr.sort(function(a, b) {
                     return b.date - a.date;
                 });
-            })();
+            }());
             var ul = $('#editors_list');
             ul.children().remove();
             if (editors.length > 0) {
-                for (var i = 0, l = editors.length; i < l; i++) {
+                var i, l;
+                var count_viewers = function (editor) {
+                    var e, n = 0, obj = viewers[editor];
+                    for (e in obj) {
+                        if (obj.hasOwnProperty(e)) {
+                            n++;
+                        }
+                    }
+                    return n - 1;
+                };
+                for (i = 0, l = editors.length; i < l; i++) {
                     var name = $('<span>').addClass('name')
                         .append($('<a>').attr({
                             href: '/view/' + editors[i].name
                         }).text(editors[i].name));
-                    var count = (function() {
-                        var n = 0;
-                        for (var e in viewers[editors[i].name]) n++;
-                        return n - 1;
-                    })();
+                    var count = count_viewers(editors[i].name);
                     var info = $('<span>').addClass('info')
                         .append($('<span>').text(count + ' viewers, '))
                         .append($('<span>').addClass('datetime').data(
@@ -63,10 +72,10 @@ $(function() {
             $(e).text('started ' + simpleTimeago(epoch));
         });
     };
-    var loop = function() {
+    var loop; loop = function() {
         updateTime();
         setTimeout(loop, 1000);
-    }
+    };
     loop();
 
     var message = [
@@ -77,14 +86,14 @@ $(function() {
         '',
         'Enjoy!'
     ].join('\n') + '\n';
-    var i = 1;
-    var write_message = function() {
+    var write_message, i = 1;
+    write_message = function() {
         editor.setText(message.substring(0, i++));
         editor.setCaretOffset(i);
-        if (i > message.length) return;
+        if (i > message.length) { return; }
 
         var wait = Math.floor(50 + Math.random() * 50);
-        if (message[i - 2].search(/[ \n]/) != -1) wait += 50;
+        if (message[i - 2].search(/[ \n]/) !== -1) { wait += 50; }
         setTimeout(write_message, wait);
     };
     write_message();

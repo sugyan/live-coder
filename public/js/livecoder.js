@@ -38,7 +38,7 @@ $(function() {
 Livecoder.Util = (function() {
     function Util() {}
     return Util;
-})();
+}());
 
 Livecoder.Socket = (function() {
     function Socket(socket) {
@@ -46,14 +46,16 @@ Livecoder.Socket = (function() {
     }
 
     Socket.prototype.use = function(methods) {
-        for (var i = 0, l = methods.length; i < l; i++) {
+        var i;
+        for (i = methods.length; i--;) {
             this[methods[i]]();
         }
     };
     Socket.prototype.chat = function() {
         this.socket.on('message', function(msg) {
+            var data;
             if (msg.chat) {
-                var data = msg.chat;
+                data = msg.chat;
                 $('#message_list').prepend(
                     $('<dt>')
                         .append($('<span>').addClass('name').text(data.user))
@@ -63,7 +65,7 @@ Livecoder.Socket = (function() {
                         .after($('<dd>').text(data.message)));
             }
             if (msg.info) {
-                var data = msg.info;
+                data = msg.info;
                 var dt = $('<dt>').addClass('info')
                     .append($('<span>').addClass('name').text(data.user))
                     .append($('<span>').addClass('time').text(
@@ -76,19 +78,23 @@ Livecoder.Socket = (function() {
     };
     Socket.prototype.stat = function() {
         socket.on('message', function(msg) {
-            if (! msg.stat) return;
+            if (! msg.stat) { return; }
 
             // viewers
             var viewers = [];
-            for (var viewer in msg.stat.viewers) {
-                viewers.push(msg.stat.viewers[viewer]);
+            var viewer, obj = msg.stat.viewers;
+            for (viewer in obj) {
+                if (obj.hasOwnProperty(viewer)) {
+                    viewers.push(msg.stat.viewers[viewer]);
+                }
             }
             var sorted = viewers.sort(function(a, b) {
-                return b.start - a.start;
+                return a.start - b.start;
             });
             var ul = $('#viewers_list');
             ul.children().remove();
-            for (var i = 0, l = sorted.length; i < l; i++) {
+            var i, j;
+            for (i = sorted.length; i--;) {
                 ul.append($('<li>').text(sorted[i].name));
             }
             $('#viewers').empty()
@@ -115,7 +121,7 @@ Livecoder.Socket = (function() {
                 );
             }
         });
-        var updateTime = function() {
+        var updateTime; updateTime = function() {
             $('.status_line .time').each(function(i, e) {
                 var duration = Math.floor(
                     (new Date().getTime() - $(e).data('date')) / 1000
@@ -131,14 +137,15 @@ Livecoder.Socket = (function() {
         updateTime();
     };
     return Socket;
-})();
+}());
 
 Livecoder.Editor = (function() {
     function Editor(editor) {
         this.editor = editor;
     }
     Editor.prototype.use = function(methods) {
-        for (var i = 0, l = methods.length; i < l; i++) {
+        var i;
+        for (i = methods.length; i--;) {
             this[methods[i]]();
         }
     };
@@ -153,10 +160,14 @@ Livecoder.Editor = (function() {
             index++; changeMenu();
         }
         function changeMenu() {
-            if (index < 0) index = menus.length - 1;
-            if (index == menus.length) index = 0;
+            if (index < 0) {
+                index = menus.length - 1;
+            }
+            if (index === menus.length) {
+                index = 0;
+            }
             $(menus[index]).click();
-            if (index != 1 && (! self.editor.readonly)) {
+            if (index !== 1 && (! self.editor.readonly)) {
                 setTimeout(function() {
                     self.editor.focus();
                 }, 0);
@@ -175,13 +186,17 @@ Livecoder.Editor = (function() {
         );
         $(document).bind('keydown', function(e) {
             if (e.ctrlKey) {
-                if (e.keyCode == 219) menuPrevious();
-                if (e.keyCode == 221) menuNext();
+                if (e.keyCode === 219) {
+                    menuPrevious();
+                }
+                if (e.keyCode === 221) {
+                    menuNext();
+                }
             }
         });
     };
     return Editor;
-})();
+}());
 
 /*
   Copied from: http://git.eclipse.org/c/e4/org.eclipse.orion.client.git/tree/bundles/org.eclipse.orion.client.editor/web/samples/styler.js
@@ -301,7 +316,7 @@ Livecoder.TextStyler = (function() {
                         this._unread(c);
                         return WHITE;
                     default:
-                        var isCSS = this.isCSS;
+                        var i, isCSS = this.isCSS;
                         if ((97 <= c && c <= 122) || (65 <= c && c <= 90) || c === 95 || (48 <= c && c <= 57) || (0x2d === c && isCSS)) { //LETTER OR UNDERSCORE OR NUMBER
                             var off = this.offset - 1;
                             do {
@@ -310,7 +325,7 @@ Livecoder.TextStyler = (function() {
                             this._unread(c);
                             var word = this.text.substring(off, this.offset);
                             //TODO slow
-                            for (var i=0; i<this.keywords.length; i++) {
+                            for (i=0; i<this.keywords.length; i++) {
                                 if (this.keywords[i] === word) { return KEYWORD; }
                             }
                         }
@@ -413,9 +428,9 @@ Livecoder.TextStyler = (function() {
                 }
                 offset = index + search.length;
             }
-            var redraw = (commentEnd - commentStart) !== newComments.length;
+            var i, redraw = (commentEnd - commentStart) !== newComments.length;
             if (!redraw) {
-                for (var i=0; i<newComments.length; i++) {
+                for (i=0; i<newComments.length; i++) {
                     offset = this.commentOffsets[commentStart + 1 + i];
                     if (offset > start) { offset += addedCharCount - removedCharCount; }
                     if (offset !== newComments[i]) {
@@ -425,9 +440,9 @@ Livecoder.TextStyler = (function() {
                 }
             }
             
-            var args = [commentStart + 1, (commentEnd - commentStart)].concat(newComments);
+            var k, args = [commentStart + 1, (commentEnd - commentStart)].concat(newComments);
             Array.prototype.splice.apply(this.commentOffsets, args);
-            for (var k=commentStart + 1 + newComments.length; k< this.commentOffsets.length; k++) {
+            for (k=commentStart + 1 + newComments.length; k< this.commentOffsets.length; k++) {
                 this.commentOffsets[k] += addedCharCount - removedCharCount;
             }
             
@@ -449,8 +464,8 @@ Livecoder.TextStyler = (function() {
             var styles = [];
             
             // for any sub range that is not a comment, parse code generating tokens (keywords, numbers, brackets, line comments, etc)
-            var offset = start;
-            for (var i = 0; i < commentRanges.length; i+= 2) {
+            var i, offset = start;
+            for (i = 0; i < commentRanges.length; i+= 2) {
                 var commentStart = commentRanges[i];
                 if (offset < commentStart) {
                     this._parse(text.substring(offset - start, commentStart - start), offset, styles);
@@ -478,9 +493,10 @@ Livecoder.TextStyler = (function() {
             var scanner = this._scanner;
             scanner.setText(text);
             var token;
-            while ((token = scanner.nextToken())) {
+            while ((token = scanner.nextToken()) !== null) {
                 var tokenStart = scanner.getStartOffset() + offset;
                 var style = null;
+                var continue_flg = false;
                 if (tokenStart === this._matchingBracket) {
                     style = bracketStyle;
                 } else {
@@ -489,7 +505,7 @@ Livecoder.TextStyler = (function() {
                     case STRING:
                         if (this.whitespacesVisible) {
                             this._parseWhitespace(scanner.getData(), tokenStart, styles, stringStyle);
-                            continue;
+                            continue_flg = true;
                         } else {
                             style = stringStyle;
                         }
@@ -497,7 +513,7 @@ Livecoder.TextStyler = (function() {
                     case COMMENT: 
                         if (this.whitespacesVisible) {
                             this._parseWhitespace(scanner.getData(), tokenStart, styles, commentStyle);
-                            continue;
+                            continue_flg = true;
                         } else {
                             style = commentStyle;
                         }
@@ -514,7 +530,9 @@ Livecoder.TextStyler = (function() {
                         break;
                     }
                 }
-                styles.push({start: tokenStart, end: scanner.getOffset() + offset, style: style});
+                if (! continue_flg) {
+                    styles.push({start: tokenStart, end: scanner.getOffset() + offset, style: style});
+                }
             }
         },
         _getCommentRanges: function(start, end) {

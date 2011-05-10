@@ -1,10 +1,10 @@
 require('../test_helper');
 
-var path = require('path');
-var Cookie = require('connect').session.Cookie;
+var path = require('path'),
+    Cookie = require('connect').session.Cookie;
 
 empty_port(function(err, port) {
-    if (err) throw err;
+    if (err) { throw err; }
 
     var http, server,
         store = new (require('connect').session.MemoryStore)();
@@ -56,12 +56,13 @@ empty_port(function(err, port) {
     });
 
     QUnit.test('send to viewers', function() {
-        var cookie1 = new Cookie();
-        var cookie2 = new Cookie();
+        var data,
+            cookie1 = new Cookie(),
+            cookie2 = new Cookie();
 
         QUnit.stop();
 
-        var data = { cookie: cookie1 };
+        data = { cookie: cookie1 };
         store.set('hoge', data, function() {
             assert.ok(true, 'session set');
             QUnit.start();
@@ -69,7 +70,7 @@ empty_port(function(err, port) {
 
         QUnit.stop();
 
-        var data = { user: { name: 'piyo' }, cookie: cookie2 };
+        data = { user: { name: 'piyo' }, cookie: cookie2 };
         store.set('fuga', data, function() {
             assert.ok(true, 'session set');
             QUnit.start();
@@ -139,7 +140,9 @@ empty_port(function(err, port) {
             });
         });
         socket3.on('message', function(msg) {
-            if (msg.info || msg.stat) return;
+            if (msg.info || msg.stat) {
+                return;
+            }
             assert.ok(false, 'no messages received');
         });
         socket3.on('connect', function() {

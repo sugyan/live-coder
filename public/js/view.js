@@ -16,8 +16,8 @@ $(function() {
             var patches = dmp.patch_fromText(msg.patch);
             var results = dmp.patch_apply(patches, editor.getText());
             // check results
-            var flg = true;
-            for (var i = 0, l = results[1].length; i < l; i++) {
+            var i, flg = true;
+            for (i = results[1].length; i--;) {
                 if (! results[1][i]) {
                     flg = false;
                     break;
@@ -67,7 +67,7 @@ $(function() {
     });
     $('#message').focus();
 
-    var blink = function() {
+    var blink; blink = function() {
         var cursor = $('#cursor');
         if (cursor.css('display') === 'none') {
             if (pos.top < $('#code').height() + editor.getLineHeight()) {
