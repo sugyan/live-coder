@@ -8,7 +8,8 @@ var config = require('config')('http', {
 // http server
 var express = require('express'),
     app = express.createServer(),
-    store = require('connect-mongodb')();
+    store = new (require('connect-mongodb'))();
+
 app.use(express.static(__dirname + '/public'));
 app.use(express.cookieParser());
 app.use(express.session({
