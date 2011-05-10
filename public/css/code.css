@@ -2,8 +2,8 @@
     padding: 20px 15px 10px 15px;
     color: white;
     background-color: black;
+    font-family: "Courier New", Courier, monospace;
     font-size: 20px;
-    line-height: 27px;
 }
 
 .token_comment {

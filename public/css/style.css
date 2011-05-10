@@ -36,7 +36,7 @@ div#footer {
 }
 
 .logo a {
-    font-family: monospace;
+    font-family: "Courier New", Courier, monospace;
     font-size: xx-large;
     font-weight: bold;
     text-decoration: none;
