@@ -7,13 +7,34 @@
 }
 
 .token_comment {
-	color: orange;
+    color: orange;
 }
 
 .token_string {
-	color: lime;
+    color: lime;
 }
 
 .token_keyword {
-	color: aqua;
+    color: aqua;
+}
+
+.line_caret {
+    background-color: #202020;
+}
+
+.ruler_lines {
+    color: gray;
+    background-color: black;
+    border-right: 1px solid #202020;
+    text-align: right;
+    font-family: 'Bitstream Vera Sans Mono', Courier, monospace;
+    line-height: 24px;
+}
+.ruler_lines_even {
+    padding: 0 3px;
+    background-color: #202020;
+}
+.ruler_lines_odd {
+    padding: 0 3px;
+    background-color: black;
 }

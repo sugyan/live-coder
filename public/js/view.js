@@ -7,8 +7,14 @@ $(function() {
             readonly: true
         }),
         pos = { top: 0, left: 0 };
-
     editor.setText('');
+	editor.addRuler(new Livecoder.LineNumberRuler(
+        "left",
+        { styleClass: "ruler_lines" },
+        { styleClass: "ruler_lines_odd" },
+        { styleClass: "ruler_lines_even" }
+    ));
+    var styler = new Livecoder.TextStyler(editor);
     $('#cursor').offset({ top: 70, left: 25 }).height(editor.getLineHeight());
 
     socket.on('message', function(msg) {
@@ -33,13 +39,14 @@ $(function() {
         if (msg.cursor) {
             var offset =
                 editor.getModel().getLineStart(msg.cursor.row) + msg.cursor.col;
+            editor.setCaretOffset(offset);
             var location = editor.getLocationAtOffset(offset);
             pos.top = 70 + location.y;
             pos.left = 25 + location.x;
             if (pos.top < $('#code').height() + editor.getLineHeight()) {
                 $('#cursor').show().offset({
                     top: pos.top,
-                    left: pos.left
+                    left: pos.left + editor._leftDiv.scrollWidth
                 });
             }
         }
@@ -73,7 +80,7 @@ $(function() {
             if (pos.top < $('#code').height() + editor.getLineHeight()) {
                 cursor.show().offset({
                     top: pos.top,
-                    left: pos.left
+                    left: pos.left + editor._leftDiv.scrollWidth
                 });
             }
         }

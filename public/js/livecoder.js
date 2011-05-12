@@ -226,6 +226,7 @@ Livecoder.TextStyler = (function() {
     var commentStyle = {styleClass: "token_comment"};
     var stringStyle = {styleClass: "token_string"};
     var keywordStyle = {styleClass: "token_keyword"};
+    var caretLineStyle = {styleClass: "line_caret"};
 
     var Scanner = (function() {
         function Scanner (keywords, whitespacesVisible) {
@@ -325,7 +326,7 @@ Livecoder.TextStyler = (function() {
                             this._unread(c);
                             var word = this.text.substring(off, this.offset);
                             //TODO slow
-                            for (i=0; i<this.keywords.length; i++) {
+                            for (i = 0; i < this.keywords.length; i++) {
                                 if (this.keywords[i] === word) { return KEYWORD; }
                             }
                         }
@@ -347,16 +348,39 @@ Livecoder.TextStyler = (function() {
         this.commentEnd = "*/";
         this.commentOffset = 0;
         this.commentOffsets = [];
+        this.highlightCaretLine = true;
 
         var keywords = [];
         this.editor = editor;
         this._scanner = new Scanner(keywords);
 
+        editor.addEventListener("Selection", this, this._onSelection);
         editor.addEventListener("ModelChanged", this, this._onModelChanged);
         editor.addEventListener("LineStyle", this, this._onLineStyle);
         editor.redrawLines();
     }
     Styler.prototype = {
+        _onSelection: function(e) {
+            var oldSelection = e.oldValue;
+            var newSelection = e.newValue;
+            var editor = this.editor;
+            var model = editor.getModel();
+            var lineIndex;
+            if (this.highlightCaretLine) {
+                var oldLineIndex = model.getLineAtOffset(oldSelection.start);
+                lineIndex = model.getLineAtOffset(newSelection.start);
+                var newEmpty = newSelection.start === newSelection.end;
+                var oldEmpty = oldSelection.start === oldSelection.end;
+                if (!(oldLineIndex === lineIndex && oldEmpty && newEmpty)) {
+                    if (oldEmpty) {
+                        editor.redrawLines(oldLineIndex, oldLineIndex + 1);
+                    }
+                    if ((oldLineIndex !== lineIndex || !oldEmpty) && newEmpty) {
+                        editor.redrawLines(lineIndex, lineIndex + 1);
+                    }
+                }
+            }
+        },
         _onModelChanged: function(e) {
             var start = e.start;
             var removedCharCount = e.removedCharCount;
@@ -428,9 +452,10 @@ Livecoder.TextStyler = (function() {
                 }
                 offset = index + search.length;
             }
-            var i, redraw = (commentEnd - commentStart) !== newComments.length;
+            var redraw = (commentEnd - commentStart) !== newComments.length;
             if (!redraw) {
-                for (i=0; i<newComments.length; i++) {
+                var i;
+                for (i = 0; i < newComments.length; i++) {
                     offset = this.commentOffsets[commentStart + 1 + i];
                     if (offset > start) { offset += addedCharCount - removedCharCount; }
                     if (offset !== newComments[i]) {
@@ -442,7 +467,7 @@ Livecoder.TextStyler = (function() {
             
             var k, args = [commentStart + 1, (commentEnd - commentStart)].concat(newComments);
             Array.prototype.splice.apply(this.commentOffsets, args);
-            for (k=commentStart + 1 + newComments.length; k< this.commentOffsets.length; k++) {
+            for (k = commentStart + 1 + newComments.length; k < this.commentOffsets.length; k++) {
                 this.commentOffsets[k] += addedCharCount - removedCharCount;
             }
             
@@ -453,7 +478,19 @@ Livecoder.TextStyler = (function() {
             }
         },
         _onLineStyle: function (e) {
+            e.style = this._getLineStyle(e.lineIndex);
             e.ranges = this._getStyles(e.lineText, e.lineStart);
+        },
+        _getLineStyle: function(lineIndex) {
+            if (this.highlightCaretLine) {
+                var editor = this.editor;
+                var model = this.editor.getModel();
+                var selection = editor.getSelection();
+                if (selection.start === selection.end && model.getLineAtOffset(selection.start) === lineIndex) {
+                    return caretLineStyle;
+                }
+            }
+            return null;
         },
         _getStyles: function(text, start) {
             var end = start + text.length;
@@ -465,7 +502,7 @@ Livecoder.TextStyler = (function() {
             
             // for any sub range that is not a comment, parse code generating tokens (keywords, numbers, brackets, line comments, etc)
             var i, offset = start;
-            for (i = 0; i < commentRanges.length; i+= 2) {
+            for (i = 0; i < commentRanges.length; i += 2) {
                 var commentStart = commentRanges[i];
                 if (offset < commentStart) {
                     this._parse(text.substring(offset - start, commentStart - start), offset, styles);
@@ -552,7 +589,7 @@ Livecoder.TextStyler = (function() {
             var charCount = model.getCharCount();
             var e = end;
             // Uncomment to compute all comments
-            //            e = charCount;
+            // e = charCount;
             var t = /*start == this.commentOffset && e == end ? text : */model.getText(this.commentOffset, e);
             if (this.commentOffsets.length > 1 && this.commentOffsets[this.commentOffsets.length - 1] === charCount) {
                 this.commentOffsets.length--;
@@ -587,4 +624,83 @@ Livecoder.TextStyler = (function() {
     };
 
     return Styler;
+}());
+
+/*
+  Copied from: http://git.eclipse.org/c/e4/org.eclipse.orion.client.git/tree/bundles/org.eclipse.orion.client.editor/web/samples/rulers.js
+  Modified by sugyan
+ */
+
+/*******************************************************************************
+ * Copyright (c) 2010, 2011 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials are made 
+ * available under the terms of the Eclipse Public License v1.0 
+ * (http://www.eclipse.org/legal/epl-v10.html), and the Eclipse Distribution 
+ * License v1.0 (http://www.eclipse.org/org/documents/edl-v10.html). 
+ * 
+ * Contributors: IBM Corporation - initial API and implementation
+ ******************************************************************************/
+
+Livecoder.Ruler = (function() {
+    function Ruler (rulerLocation, rulerOverview, rulerStyle) {
+        this._location = rulerLocation || "left";
+        this._overview = rulerOverview || "page";
+        this._rulerStyle = rulerStyle;
+        this._editor = null;
+    }
+    Ruler.prototype = {
+        setEditor: function (editor) {
+            if (this._onModelChanged && this._editor) {
+                this._editor.removeEventListener("ModelChanged", this, this._onModelChanged); 
+            }
+            this._editor = editor;
+            if (this._onModelChanged && this._editor) {
+                this._editor.addEventListener("ModelChanged", this, this._onModelChanged);
+            }
+        },
+        getLocation: function() {
+            return this._location;
+        },
+        getOverview: function(editor) {
+            return this._overview;
+        }
+    };
+    return Ruler;
+}());
+
+Livecoder.LineNumberRuler = (function() {
+    function LineNumberRuler (rulerLocation, rulerStyle, oddStyle, evenStyle) {
+        Livecoder.Ruler.call(this, rulerLocation, "page", rulerStyle);
+        this._oddStyle = oddStyle || {style: {backgroundColor: "white"}};
+        this._evenStyle = evenStyle || {style: {backgroundColor: "white"}};
+        this._numOfDigits = 0;
+    }
+    LineNumberRuler.prototype = new Livecoder.Ruler();
+    LineNumberRuler.prototype.getStyle = function(lineIndex) {
+        if (lineIndex === undefined) {
+            return this._rulerStyle;
+        } else {
+            return lineIndex & 1 ? this._oddStyle : this._evenStyle;
+        }
+    };
+    LineNumberRuler.prototype.getHTML = function(lineIndex) {
+        if (lineIndex === -1) {
+            var model = this._editor.getModel();
+            return model.getLineCount();
+        } else {
+            return lineIndex + 1;
+        }
+    };
+    LineNumberRuler.prototype._onModelChanged = function(e) {
+        var start = e.start;
+        var model = this._editor.getModel();
+        var lineCount = model.getLineCount();
+        var numOfDigits = String(lineCount).length;
+        if (this._numOfDigits !== numOfDigits) {
+            this._numOfDigits = numOfDigits;
+            var startLine = model.getLineAtOffset(start);
+            this._editor.redrawLines(startLine, lineCount, this);
+        }
+    };
+    return LineNumberRuler;
 }());

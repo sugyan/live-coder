@@ -8,6 +8,12 @@ $(function() {
         });
     editor.setText('');
     editor.focus();
+	editor.addRuler(new Livecoder.LineNumberRuler(
+        "left",
+        { styleClass: "ruler_lines" },
+        { styleClass: "ruler_lines_odd" },
+        { styleClass: "ruler_lines_even" }
+    ));
     var styler = new Livecoder.TextStyler(editor);
 
     editor.addEventListener('Modify', {}, function() {
