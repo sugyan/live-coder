@@ -4,7 +4,7 @@ $(function() {
         editor = new eclipse.Editor({
             parent: 'code',
             model: new eclipse.TextModel(),
-            stylesheet: '/css/code.css'
+            stylesheet: ['/css/code.css', '/css/editor.css']
         });
     editor.setText('');
     editor.focus();

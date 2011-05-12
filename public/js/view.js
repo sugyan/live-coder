@@ -3,7 +3,7 @@ $(function() {
         editor = new eclipse.Editor({
             parent: 'code',
             model: new eclipse.TextModel(),
-            stylesheet: '/css/code.css',
+            stylesheet: ['/css/code.css'],
             readonly: true
         }),
         pos = { top: 0, left: 0 };
@@ -37,9 +37,7 @@ $(function() {
             }
         }
         if (msg.cursor) {
-            var offset =
-                editor.getModel().getLineStart(msg.cursor.row) + msg.cursor.col;
-            editor.setCaretOffset(offset);
+            var offset = editor.getModel().getLineStart(msg.cursor.row) + msg.cursor.col;
             var location = editor.getLocationAtOffset(offset);
             pos.top = 70 + location.y;
             pos.left = 25 + location.x;
