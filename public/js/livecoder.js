@@ -97,7 +97,7 @@ Livecoder.Socket = (function() {
             for (i = sorted.length; i--;) {
                 ul.append($('<li>').text(sorted[i].name));
             }
-            $('#viewers').empty()
+            $('#viewers_count').empty()
                 .append($('<span>').addClass('count').text(sorted.length))
                 .append(' viewers');
             // editing
@@ -151,8 +151,8 @@ Livecoder.Editor = (function() {
     };
     Editor.prototype.menu = function() {
         var self = this;
-        var index = 1;
         var menus = $('.menu_item').toArray().reverse();
+        var index = menus.length - 2;
         function menuPrevious() {
             index--; changeMenu();
         }
@@ -167,7 +167,7 @@ Livecoder.Editor = (function() {
                 index = 0;
             }
             $(menus[index]).click();
-            if (index !== 1 && (! self.editor.readonly)) {
+            if (index !== menus.length - 2 && (! self.editor.readonly)) {
                 setTimeout(function() {
                     self.editor.focus();
                 }, 0);
@@ -200,7 +200,7 @@ Livecoder.Editor = (function() {
 
 /*
   Copied from: http://git.eclipse.org/c/e4/org.eclipse.orion.client.git/tree/bundles/org.eclipse.orion.client.editor/web/samples/styler.js
-  Modify by sugyan
+  Modified by sugyan
  */
 
 /*******************************************************************************

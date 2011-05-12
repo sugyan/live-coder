@@ -3,17 +3,36 @@
 <div class="head_line menu">
   <div class="menu_item" id="close">x</div>
   <div class="menu_item selected">chat</div>
-  <div class="menu_item">detail</div>
+  <div class="menu_item">viewers</div>
+  <div class="menu_item">info</div>
 </div>
-<div class="menu_window" id="detail">
-<h4>URL</h4>
-<div>
-  <a href="http://<%= req.headers.host + '/view/' + session.user.name %>">http://<%= req.headers.host + '/view/' + session.user.name %></a>
-  <a href="http://twitter.com/share" class="twitter-share-button" data-text="I'm livecoding now! #livecoder" data-count="none" data-url="http://<%= req.headers.host + '/view/' + session.user.name %>">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+<div class="menu_window" id="info">
+  <h4>URL</h4>
+  <div>
+    <div class="info_url">
+      <a href="http://<%= req.headers.host + '/view/' + session.user.name %>">http://<%= req.headers.host + '/view/' + session.user.name %></a>
+    </div>
+    <div>
+      <a href="http://twitter.com/share" class="twitter-share-button" data-text="I'm livecoding now! #livecoder" data-count="none" data-url="http://<%= req.headers.host + '/view/' + session.user.name %>">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+    </div>
+  </div>
+  <h4>Language</h4>
+  <div>
+    <select type="selectbox" name="lang">
+      <option></option>
+      <option>C</option>
+      <option>Java</option>
+      <option>JavaScript</option>
+      <option>Perl</option>
+      <option>PHP</option>
+      <option>Python</option>
+      <option>Ruby</option>
+    </select>
+  </div>
 </div>
-<h4 id="viewers">viewers</h4>
-<ul id="viewers_list">
-</ul>
+<div class="menu_window" id="viewers">
+  <h4 id="viewers_count">viewers</h4>
+  <ul id="viewers_list"></ul>
 </div>
 <div class="menu_window" id="chat">
   <form id="message_form">
