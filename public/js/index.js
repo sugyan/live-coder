@@ -2,10 +2,17 @@ $(function() {
     var editor = new eclipse.Editor({
         parent: 'code',
         model: new eclipse.TextModel(),
-        stylesheet: '/css/code.css'
+        stylesheet: ['/css/code.css', '/css/editor.css']
     });
     editor.setText('');
     editor.focus();
+	editor.addRuler(new Livecoder.LineNumberRuler(
+        "left",
+        { styleClass: "ruler_lines" },
+        { styleClass: "ruler_lines_odd" },
+        { styleClass: "ruler_lines_even" }
+    ));
+    var styler = new Livecoder.TextStyler(editor);
 
     socket.on('message', function(msg) {
         if (msg.connections) {
