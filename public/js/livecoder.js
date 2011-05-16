@@ -1,22 +1,22 @@
 var Livecoder = Livecoder || {};
 
 // common
-$(function() {
+$(function () {
     var mouseout = true;
     $('#signin')
-        .mouseover(function() {
+        .mouseover(function () {
             $('#signin_list').show();
             mouseout = false;
         })
-        .mouseout(function() {
+        .mouseout(function () {
             mouseout = true;
-            setTimeout(function() {
+            setTimeout(function () {
                 if (mouseout) {
                     $('#signin_list').hide();
                 }
             }, 100);
         });
-    $('.menu_item').click(function() {
+    $('.menu_item').click(function () {
         var menu = $(this).text();
         $('div.selected').removeClass('selected');
         $('div.menu_window').hide();
@@ -35,24 +35,24 @@ $(function() {
     }
 });
 
-Livecoder.Util = (function() {
+Livecoder.Util = (function () {
     function Util() {}
     return Util;
 }());
 
-Livecoder.Socket = (function() {
+Livecoder.Socket = (function () {
     function Socket(socket) {
         this.socket = socket;
     }
 
-    Socket.prototype.use = function(methods) {
+    Socket.prototype.use = function (methods) {
         var i;
         for (i = methods.length; i--;) {
             this[methods[i]]();
         }
     };
-    Socket.prototype.chat = function() {
-        this.socket.on('message', function(msg) {
+    Socket.prototype.chat = function () {
+        this.socket.on('message', function (msg) {
             var data;
             if (msg.chat) {
                 data = msg.chat;
@@ -76,8 +76,8 @@ Livecoder.Socket = (function() {
             }
         });
     };
-    Socket.prototype.stat = function() {
-        socket.on('message', function(msg) {
+    Socket.prototype.stat = function () {
+        socket.on('message', function (msg) {
             if (! msg.stat) { return; }
 
             // viewers
@@ -88,7 +88,7 @@ Livecoder.Socket = (function() {
                     viewers.push(msg.stat.viewers[viewer]);
                 }
             }
-            var sorted = viewers.sort(function(a, b) {
+            var sorted = viewers.sort(function (a, b) {
                 return a.start - b.start;
             });
             var ul = $('#viewers_list');
@@ -121,8 +121,8 @@ Livecoder.Socket = (function() {
                 );
             }
         });
-        var updateTime; updateTime = function() {
-            $('.status_line .time').each(function(i, e) {
+        var updateTime; updateTime = function () {
+            $('.status_line .time').each(function (i, e) {
                 var duration = Math.floor(
                     (new Date().getTime() - $(e).data('date')) / 1000
                 );
@@ -139,17 +139,17 @@ Livecoder.Socket = (function() {
     return Socket;
 }());
 
-Livecoder.Editor = (function() {
+Livecoder.Editor = (function () {
     function Editor(editor) {
         this.editor = editor;
     }
-    Editor.prototype.use = function(methods) {
+    Editor.prototype.use = function (methods) {
         var i;
         for (i = methods.length; i--;) {
             this[methods[i]]();
         }
     };
-    Editor.prototype.menu = function() {
+    Editor.prototype.menu = function () {
         var self = this;
         var menus = $('.menu_item').toArray().reverse();
         var index = menus.length - 2;
@@ -168,7 +168,7 @@ Livecoder.Editor = (function() {
             }
             $(menus[index]).click();
             if (index !== menus.length - 2 && (! self.editor.readonly)) {
-                setTimeout(function() {
+                setTimeout(function () {
                     self.editor.focus();
                 }, 0);
             }
@@ -184,7 +184,7 @@ Livecoder.Editor = (function() {
             new eclipse.KeyBinding(221, false, false, false, true),
             'menuNext'
         );
-        $(document).bind('keydown', function(e) {
+        $(document).bind('keydown', function (e) {
             if (e.ctrlKey) {
                 if (e.keyCode === 219) {
                     menuPrevious();
@@ -212,7 +212,7 @@ Livecoder.Editor = (function() {
  * Contributors: IBM Corporation - initial API and implementation
  ******************************************************************************/
 
-Livecoder.TextStyler = (function() {
+Livecoder.TextStyler = (function () {
     // Scanner constants
     var UNKNOWN = 1;
     var KEYWORD = 2;
@@ -641,7 +641,7 @@ Livecoder.TextStyler = (function() {
  * Contributors: IBM Corporation - initial API and implementation
  ******************************************************************************/
 
-Livecoder.Ruler = (function() {
+Livecoder.Ruler = (function () {
     function Ruler (rulerLocation, rulerOverview, rulerStyle) {
         this._location = rulerLocation || "left";
         this._overview = rulerOverview || "page";
@@ -668,7 +668,7 @@ Livecoder.Ruler = (function() {
     return Ruler;
 }());
 
-Livecoder.LineNumberRuler = (function() {
+Livecoder.LineNumberRuler = (function () {
     function LineNumberRuler (rulerLocation, rulerStyle, oddStyle, evenStyle) {
         Livecoder.Ruler.call(this, rulerLocation, "page", rulerStyle);
         this._oddStyle = oddStyle || {style: {backgroundColor: "white"}};

@@ -1,4 +1,4 @@
-$(function() {
+$(function () {
     var prev = { code: '', row: 0, col: 0 },
         dmp = new diff_match_patch(),
         editor = new eclipse.Editor({
@@ -16,7 +16,7 @@ $(function() {
     ));
     var styler = new Livecoder.TextStyler(editor);
 
-    editor.addEventListener('Modify', {}, function() {
+    editor.addEventListener('Modify', {}, function () {
         var code = editor.getText();
         if (code !== prev.code) {
             var patch = dmp.patch_toText(dmp.patch_make(prev.code, code));
@@ -24,8 +24,8 @@ $(function() {
             prev.code = code;
         }
     });
-    $.each(['lineUp', 'lineDown', 'charPrevious', 'charNext'], function(i, e) {
-        editor.setAction(e, function() {
+    $.each(['lineUp', 'lineDown', 'charPrevious', 'charNext'], function (i, e) {
+        editor.setAction(e, function () {
             send(socket, null);
         });
     });
@@ -39,7 +39,7 @@ $(function() {
     function send(socket, patch) {
         var data = {};
         if (patch) { data.patch = patch; }
-        setTimeout(function() {
+        setTimeout(function () {
             var c = cursor();
             if (c.row !== prev.row || c.col !== prev.col) {
                 data.cursor = c;
@@ -60,7 +60,7 @@ $(function() {
         });
     }
 
-    $('#message_form').submit(function() {
+    $('#message_form').submit(function () {
         var val = $('#message').val();
         if (val.length > 0) {
             socket.send({ chat: val });
@@ -69,7 +69,7 @@ $(function() {
         return false;
     });
 
-    socket.on('message', function(msg) {
+    socket.on('message', function (msg) {
         if (msg.error) {
             socket.disconnect();
             alert('disconnected!');
@@ -84,14 +84,14 @@ $(function() {
             sync();
         }
     });
-    socket.on('connect', function() {
+    socket.on('connect', function () {
         socket.send({
             auth: {
                 cookie: document.cookie,
                 edit: true
             }
         });
-        var loop; loop = function() {
+        var loop; loop = function () {
             sync();
             setTimeout(loop, 10000);
         };
