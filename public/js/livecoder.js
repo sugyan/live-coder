@@ -229,9 +229,15 @@ Livecoder.TextStyler = (function () {
     var caretLineStyle = {styleClass: "line_caret"};
 
     var Scanner = (function() {
-        function Scanner (keywords, whitespacesVisible) {
+        function Scanner (keywords, commentStart) {
+            var i;
             this.keywords = keywords;
-            this.whitespacesVisible = whitespacesVisible;
+            this.commentStart = {};
+            if (commentStart) {
+                for (i = commentStart.length; i--;) {
+                    this.commentStart[commentStart[i]] = true;
+                }
+            }
             this.setText("");
         }
         
@@ -264,8 +270,23 @@ Livecoder.TextStyler = (function () {
                     switch (c) {
                     case -1: return null;
                     case 47:    // SLASH -> comment
-                        c = this._read();
-                        if (c === 47) {
+                        if (this.commentStart["//"]) {
+                            c = this._read();
+                            if (c === 47) {
+                                while (true) {
+                                    c = this._read();
+                                    if ((c === -1) || (c === 10)) {
+                                        this._unread(c);
+                                        return COMMENT;
+                                    }
+                                }
+                            }
+                            this._unread(c);
+                            return UNKNOWN;
+                        }
+                        break;
+                    case 35:
+                        if (this.commentStart["#"]) {
                             while (true) {
                                 c = this._read();
                                 if ((c === -1) || (c === 10)) {
@@ -274,8 +295,7 @@ Livecoder.TextStyler = (function () {
                                 }
                             }
                         }
-                        this._unread(c);
-                        return UNKNOWN;
+                        break;
                     case 39:    // SINGLE QUOTE -> char const
                         while(true) {
                             c = this._read();
@@ -308,9 +328,6 @@ Livecoder.TextStyler = (function () {
                         break;
                     case 32: // SPACE
                     case 9: // TAB
-                        if (this.whitespacesVisible) {
-                            return c === 32 ? WHITE_SPACE : WHITE_TAB;
-                        }
                         do {
                             c = this._read();
                         } while(c === 32 || c === 9);
@@ -344,8 +361,8 @@ Livecoder.TextStyler = (function () {
     }());
 
     function Styler(editor) {
-        this.commentStart = "/*";
-        this.commentEnd = "*/";
+        // this.commentStart = "";
+        // this.commentEnd = "";
         this.commentOffset = 0;
         this.commentOffsets = [];
         this.highlightCaretLine = true;
@@ -390,6 +407,10 @@ Livecoder.TextStyler = (function () {
             if (start >= this.commentOffset) { return; }
             var model = this.editor.getModel();
             
+            if (! (this.commentStart && this.commentEnd)) {
+                return;
+            }
+
             var commentCount = this.commentOffsets.length;
             var extra = Math.max(this.commentStart.length - 1, this.commentEnd.length - 1);
             if (commentCount === 0) {
@@ -508,10 +529,6 @@ Livecoder.TextStyler = (function () {
                     this._parse(text.substring(offset - start, commentStart - start), offset, styles);
                 }
                 var style = commentStyle;
-                if ((commentRanges[i+1] - commentStart) > (this.commentStart.length + this.commentEnd.length)) {
-                    var o = commentStart + this.commentStart.length;
-                    if (model.getText(o, o + 1) === "*") { style = javadocStyle; }
-                }
                 if (this.whitespacesVisible) {
                     var s = Math.max(offset, commentStart);
                     var e = Math.min(end, commentRanges[i+1]);
@@ -589,7 +606,7 @@ Livecoder.TextStyler = (function () {
             var charCount = model.getCharCount();
             var e = end;
             // Uncomment to compute all comments
-            // e = charCount;
+            e = charCount;
             var t = /*start == this.commentOffset && e == end ? text : */model.getText(this.commentOffset, e);
             if (this.commentOffsets.length > 1 && this.commentOffsets[this.commentOffsets.length - 1] === charCount) {
                 this.commentOffsets.length--;
@@ -620,6 +637,19 @@ Livecoder.TextStyler = (function () {
                 }
             }
             return high;
+        },
+        changeLanguage: function (data) {
+            this._scanner = new Scanner(data.keywords, data.comment.line);
+            if (data.comment.block) {
+                this.commentStart = data.comment.block[0];
+                this.commentEnd = data.comment.block[1];
+            } else {
+                delete this.commentStart;
+                delete this.commentEnd;
+                this.commentOffset = 0;
+                this.commentOffsets = [];
+            }
+            this.editor.redrawRange();
         }
     };
 
