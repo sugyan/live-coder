@@ -88,7 +88,7 @@ $(function() {
     var message = [
         'Welcome to "Livecoder"!!',
         '',
-        'You can do "live coding" here,',
+        'You can do live coding here,',
         'and everyone can view your editing in real time.',
         '',
         'Enjoy!'

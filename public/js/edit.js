@@ -104,4 +104,17 @@ $(function () {
 
     var LE = new Livecoder.Editor(editor);
     LE.use(['menu']);
+
+    $('#lang').change(function () {
+        var lang = $(this).val();
+        if (lang) {
+            $.ajax({
+                url: '/data/lang/' + lang + '.json',
+                dataType: 'json',
+                success: function (data) {
+                    styler.changeLanguage(data);
+                }
+            });
+        }
+    });
 });
