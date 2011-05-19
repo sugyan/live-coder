@@ -11,10 +11,10 @@ http://livecoder.sugyan.com/
 
 ### Dependencies
 - [node.js](http://nodejs.org/) 0.4.7
- - [Socket.IO](http://socket.io/) 0.6.17
+ - [Socket.IO](http://socket.io/) 0.6.18
  - [Express](http://expressjs.com/) 2.3.4
- - [Mongoose](http://mongoosejs.com/) 1.3.3
- - [EJS](http://embeddedjs.com/) 0.4.1
+ - [Mongoose](http://mongoosejs.com/) 1.3.5
+ - [EJS](http://embeddedjs.com/) 0.4.2
  - [oauth](https://github.com/ciaranj/node-oauth) 0.9.0
 - [MongoDB](http://www.mongodb.org/) 1.8.1
 - [google-diff-match-patch](http://code.google.com/p/google-diff-match-patch/)
