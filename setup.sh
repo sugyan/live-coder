@@ -2,6 +2,7 @@
 git submodule update --init
 npm install config
 npm install express
+npm install connect
 npm install connect-mongodb
 npm install oauth
 npm install socket.io
