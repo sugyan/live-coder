@@ -1,5 +1,6 @@
 #!/bin/sh
 git submodule update --init
+npm install async
 npm install config
 npm install express
 npm install connect
