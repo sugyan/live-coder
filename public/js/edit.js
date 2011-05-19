@@ -55,7 +55,8 @@ $(function () {
         socket.send({
             code: editor.getText(),
             edit: {
-                cursor: cursor()
+                cursor: cursor(),
+                lang: $('#lang').val()
             }
         });
     }
@@ -107,14 +108,15 @@ $(function () {
 
     $('#lang').change(function () {
         var lang = $(this).val();
-        if (lang) {
-            $.ajax({
-                url: '/data/lang/' + lang + '.json',
-                dataType: 'json',
-                success: function (data) {
-                    styler.changeLanguage(data);
-                }
-            });
-        }
+        socket.send({
+            edit: { lang: lang }
+        });
+        $.ajax({
+            url: '/data/lang/' + lang + '.json',
+            dataType: 'json',
+            success: function (data) {
+                styler.changeLanguage(data);
+            }
+        });
     });
 });

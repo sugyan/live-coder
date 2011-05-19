@@ -51,6 +51,16 @@ $(function() {
         if (msg.code !== undefined) {
             editor.setText(msg.code);
         }
+        if (msg.lang !== undefined) {
+            $.ajax({
+                url: '/data/lang/' + msg.lang + '.json',
+                dataType: 'json',
+                success: function (data) {
+                    styler.changeLanguage(data);
+                }
+            });
+            $('#lang').val(msg.lang);
+        }
         if (msg.name) {
             var path = window.location.pathname;
             var target = path.match(/\/view\/([\w\.\-]+)/)[1];
