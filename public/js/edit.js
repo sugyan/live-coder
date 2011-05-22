@@ -79,6 +79,15 @@ $(function () {
             sync();
         }
         if (msg.info && msg.info.action === 'connect') {
+            if (window.webkitNotifications && window.webkitNotifications.checkPermission() === 0) {
+                var notify = window.webkitNotifications.createNotification(
+                    '', 'livecoder', msg.info.user + ' connected.'
+                );
+                notify.show();
+                setTimeout(function () {
+                    notify.cancel();
+                }, 3000);
+            }
             sync();
         }
         if (msg.inquiry === 'code') {

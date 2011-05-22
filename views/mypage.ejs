@@ -1,3 +1,17 @@
 <h2>Hi, <%= session.user.name %>.</h2>
 <p><a href="/edit">start livecoding!</a></p>
+<div id="notification"></div>
+<script type="text/javascript">
+if (window.webkitNotifications) {
+    if (window.webkitNotifications.checkPermission() !== 0) {
+        var div = document.getElementById('notification');
+        var button = document.createElement('button');
+        button.appendChild(document.createTextNode('notification'));
+        button.addEventListener('click', function () {
+            window.webkitNotifications.requestPermission();
+        }, false);
+        div.appendChild(button);
+    }
+}
+</script>
 <p style="font-size: small;"># TODO: account setting...</p>
