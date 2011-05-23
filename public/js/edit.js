@@ -113,7 +113,7 @@ $(function () {
     LS.use(['chat', 'stat']);
 
     var LE = new Livecoder.Editor(editor);
-    LE.use(['menu']);
+    LE.use(['menu', 'lleval']);
 
     $('#lang').change(function () {
         var lang = $(this).val();

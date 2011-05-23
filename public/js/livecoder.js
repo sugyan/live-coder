@@ -195,6 +195,33 @@ Livecoder.Editor = (function () {
             }
         });
     };
+    Editor.prototype.lleval = function () {
+        var self = this;
+        $('#eval').click(function () {
+            var lang = {
+                c: 'c',
+                js: 'js',
+                perl: 'pl',
+                php: 'php',
+                python: 'py',
+                ruby: 'rb19'
+            }[$('#lang').val()];
+            if (! lang) { return; }
+
+            $.ajax({
+                url: 'http://api.dan.co.jp/lleval.cgi',
+                dataType: 'jsonp',
+                jsonp: 'c',
+                data: {
+                    l: lang,
+                    s: self.editor.getText()
+                },
+                success: function (data) {
+                    console.log(JSON.stringify(data));
+                }
+            });
+        });
+    };
     return Editor;
 }());
 
