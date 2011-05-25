@@ -176,12 +176,13 @@ Livecoder.Editor = (function () {
 
         this.editor.setAction('menuPrevious', menuPrevious);
         this.editor.setAction('menuNext', menuNext);
+        // select tab by Ctrl + "[" or Ctrl + "]"
         this.editor.setKeyBinding(
-            new eclipse.KeyBinding(219, false, false, false, true),
+            new eclipse.KeyBinding(219, navigator.platform.indexOf("Mac") === -1, false, false, true),
             'menuPrevious'
         );
         this.editor.setKeyBinding(
-            new eclipse.KeyBinding(221, false, false, false, true),
+            new eclipse.KeyBinding(221, navigator.platform.indexOf("Mac") === -1, false, false, true),
             'menuNext'
         );
         $(document).bind('keydown', function (e) {
