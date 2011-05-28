@@ -12,7 +12,7 @@ http://livecoder.sugyan.com/
 ### Dependencies
 - [node.js](http://nodejs.org/) 0.4.8
  - [Socket.IO](http://socket.io/) 0.6.18
- - [Express](http://expressjs.com/) 2.3.6
+ - [Express](http://expressjs.com/) 2.3.10
  - [Mongoose](http://mongoosejs.com/) 1.3.6
  - [EJS](http://embeddedjs.com/) 0.4.2
  - [oauth](https://github.com/ciaranj/node-oauth) 0.9.0
