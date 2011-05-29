@@ -39,10 +39,7 @@ empty_port(function (err, port) {
         mongoSetup.once('ok', function () {
             async.series([
                 function (callback) {
-                    model.remove('users', function (err) {
-                        assert.ok(1, 'users removed');
-                        callback(err);
-                    });
+                    model.remove('users', {}, callback);
                 },
                 function (callback) {
                     model.find('users', {}, function (err, data) {
@@ -51,10 +48,7 @@ empty_port(function (err, port) {
                     });
                 },
                 function (callback) {
-                    model.remove('auths', function (err) {
-                        assert.ok(1, 'auths removed');
-                        callback(err);
-                    });
+                    model.remove('auths', {}, callback);
                 },
                 function (callback) {
                     model.find('users', {}, function (err, data) {
@@ -66,6 +60,46 @@ empty_port(function (err, port) {
                     QUnit.start();
                 }
             ], function (err) {
+                console.error('Caught exception: ' + err);
+                assert.ok(false, 'no exceptions');
+                QUnit.start();
+            });
+        });
+    });
+
+    QUnit.test('new User', function () {
+        QUnit.stop();
+
+        mongoSetup.once('ok', function () {
+            async.series([
+                // new user
+                function (callback) {
+                    model.find_or_create_user({
+                        key: 'hoge',
+                        name: 'sugyan',
+                        info: { foo: 'bar' }
+                    }, function (err) {
+                        callback(err);
+                    });
+                },
+                // 1 users, 1 auths
+                function (callback) {
+                    model.find('users', {}, function (err, data) {
+                        assert.equal(data.length, 1, '1 user');
+                        callback(err);
+                    });
+                },
+                function (callback) {
+                    model.find('auths', {}, function (err, data) {
+                        assert.equal(data.length, 1, '1 auths');
+                        callback(err);
+                    });
+                },
+                function (callback) {
+                    QUnit.start();
+                }
+            ], function (err) {
+                console.error('Caught exception: ' + err);
                 assert.ok(false, 'no exceptions');
                 QUnit.start();
             });
