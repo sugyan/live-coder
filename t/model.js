@@ -78,7 +78,32 @@ empty_port(function (err, port) {
                         key: 'hoge',
                         name: 'sugyan',
                         info: { foo: 'bar' }
-                    }, function (err) {
+                    }, function (err, user) {
+                        assert.equal(user.name, 'hoge', 'user created');
+                        callback(err);
+                    });
+                },
+                // 1 users, 1 auths
+                function (callback) {
+                    model.find('users', {}, function (err, data) {
+                        assert.equal(data.length, 1, '1 user');
+                        callback(err);
+                    });
+                },
+                function (callback) {
+                    model.find('auths', {}, function (err, data) {
+                        assert.equal(data.length, 1, '1 auths');
+                        callback(err);
+                    });
+                },
+                // find user
+                function (callback) {
+                    model.find_or_create_user({
+                        key: 'hoge',
+                        name: 'sugyan',
+                        info: { foo: 'bar' }
+                    }, function (err, user) {
+                        assert.equal(user.name, 'hoge', 'user found');
                         callback(err);
                     });
                 },
