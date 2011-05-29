@@ -32,19 +32,33 @@ app.dynamicHelpers({
     }
 });
 
+// db
+var model = (function () {
+    var Model = require('./lib/model');
+    var config = require('config')('db', {
+        dbname: 'livecoder',
+        host: '127.0.0.1',
+        port: 27017
+    });
+    return new Model(config);
+}());
+
 // routing
-var path, router = require('./lib/http')(config);
-for (path in router) {
-    if (router.hasOwnProperty(path)) {
-        app.get(path, router[path]);
-    }
-}
+require('./lib/http')({
+    app: app,
+    model: model,
+    config: config
+});
 
-app.listen(config.back_port, config.host);
-console.log('Server running at http://' + config.host + ':' + config.back_port);
+model.open(function (err) {
+    if (err) throw err;
 
-// socket.io
-require('./lib/socket.io')({
-    server: app,
-    store: store
+    app.listen(config.back_port, config.host);
+    console.log('Server running at http://' + config.host + ':' + config.back_port);
+
+    // socket.io
+    require('./lib/socket.io')({
+        server: app,
+        store: store
+    });
 });
