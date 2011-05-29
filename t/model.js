@@ -2,9 +2,9 @@ require('../test_helper');
 
 var async = require('async'),
     events = require('events'),
-    util = require('util'),
+    utils = require('util'),
     MongoSetup = function () {};
-util.inherits(MongoSetup, events.EventEmitter);
+utils.inherits(MongoSetup, events.EventEmitter);
 
 empty_port(function (err, port) {
     if (err) { throw err; }
