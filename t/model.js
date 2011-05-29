@@ -79,7 +79,7 @@ empty_port(function (err, port) {
                         name: 'sugyan',
                         info: { foo: 'bar' }
                     }, function (err, user) {
-                        assert.equal(user.name, 'hoge', 'user created');
+                        assert.equal(user.name, 'sugyan', 'user created');
                         callback(err);
                     });
                 },
@@ -103,7 +103,7 @@ empty_port(function (err, port) {
                         name: 'sugyan',
                         info: { foo: 'bar' }
                     }, function (err, user) {
-                        assert.equal(user.name, 'hoge', 'user found');
+                        assert.equal(user.name, 'sugyan', 'user found');
                         callback(err);
                     });
                 },
@@ -120,6 +120,31 @@ empty_port(function (err, port) {
                         callback(err);
                     });
                 },
+                // same name user
+                function (callback) {
+                    model.find_or_create_user({
+                        key: 'fuga',
+                        name: 'sugyan',
+                        info: { foo: 'bar' }
+                    }, function (err, user) {
+                        assert.equal(user.name, 'sugyan1', 'another user created');
+                        callback(err);
+                    });
+                },
+                // 2 users, 2 auths
+                function (callback) {
+                    model.find('users', {}, function (err, data) {
+                        assert.equal(data.length, 2, '2 user');
+                        callback(err);
+                    });
+                },
+                function (callback) {
+                    model.find('auths', {}, function (err, data) {
+                        assert.equal(data.length, 2, '2 auths');
+                        callback(err);
+                    });
+                },
+                // all ok
                 function (callback) {
                     QUnit.start();
                 }
