@@ -78,8 +78,8 @@ empty_port(function (err, port) {
                         key: 'hoge',
                         name: 'sugyan',
                         info: { foo: 'bar' }
-                    }, function (err, user) {
-                        assert.equal(user.name, 'sugyan', 'user created');
+                    }, function (err, result) {
+                        assert.equal(result.user.name, 'sugyan', 'user created');
                         callback(err);
                     });
                 },
@@ -102,8 +102,8 @@ empty_port(function (err, port) {
                         key: 'hoge',
                         name: 'sugyan',
                         info: { foo: 'bar' }
-                    }, function (err, user) {
-                        assert.equal(user.name, 'sugyan', 'user found');
+                    }, function (err, result) {
+                        assert.equal(result.user.name, 'sugyan', 'user found');
                         callback(err);
                     });
                 },
@@ -126,8 +126,8 @@ empty_port(function (err, port) {
                         key: 'fuga',
                         name: 'sugyan',
                         info: { foo: 'bar' }
-                    }, function (err, user) {
-                        assert.equal(user.name, 'sugyan1', 'another user created');
+                    }, function (err, result) {
+                        assert.equal(result.user.name, 'sugyan1', 'another user created');
                         callback(err);
                     });
                 },
