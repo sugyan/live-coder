@@ -51,7 +51,11 @@ require('./lib/http')({
 });
 
 model.open(function (err) {
-    if (err) { throw err; }
+    if (err) {
+        console.error('failed: model open');
+        console.error(err.message);
+        process.exit(1);
+    }
 
     app.listen(config.back_port, config.host);
     console.log('Server running at http://' + config.host + ':' + config.back_port);
