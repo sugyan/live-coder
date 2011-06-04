@@ -1,7 +1,7 @@
 $(function() {
-    var editor = new eclipse.Editor({
+    var editor = new orion.textview.TextView({
         parent: 'code',
-        model: new eclipse.TextModel(),
+        model: new orion.textview.TextModel(),
         stylesheet: ['/css/code.css', '/css/editor.css']
     });
     editor.setText('');
