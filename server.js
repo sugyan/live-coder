@@ -52,7 +52,6 @@ require('./lib/http')({
 
 model.open(function (err) {
     if (err) {
-        console.error('failed: model open');
         console.error(err.message);
         process.exit(1);
     }
@@ -63,6 +62,7 @@ model.open(function (err) {
     // socket.io
     require('./lib/socket.io')({
         server: app,
-        store: store
+        store: store,
+        model: model
     });
 });

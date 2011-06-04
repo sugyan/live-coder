@@ -51,12 +51,13 @@ $(function () {
             }
         }, 0);
     }
-    function sync() {
+    function sync(save) {
         socket.send({
-            code: editor.getText(),
             edit: {
+                lang: $('#lang').val(),
+                code: editor.getText(),
                 cursor: cursor(),
-                lang: $('#lang').val()
+                save: save
             }
         });
     }
@@ -101,11 +102,9 @@ $(function () {
                 edit: true
             }
         });
-        var loop; loop = function () {
-            sync();
-            setTimeout(loop, 10000);
-        };
-        loop();
+        setInterval(function () {
+            sync(true);
+        }, 10000);
     });
     socket.connect();
 
