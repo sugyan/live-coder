@@ -1,7 +1,13 @@
+/**
+ * This configuration is template.
+ * You shoud overwrite these config by "development.js" or "deployment.js"
+ */
 module.exports = {
     http: {
         host: 'localhost',
-        front_port: 3000
+        front_port: 3000,
+        back_port: 3000,
+        cookie_secret: '********'
     },
     oauth: {
         twitter: {
@@ -17,8 +23,9 @@ module.exports = {
             client_secret: '****************************************'
         }
     },
-    mongoose: {
+    db: {
         host: 'localhost',
+        port: 27017,
         database: 'livecoder'
     }
 };

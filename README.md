@@ -7,7 +7,7 @@ http://livecoder.sugyan.com/
     $ git clone git://github.com/sugyan/live-coder.git
     $ cd live-coder
     $ ./setup.sh
-    $ node server.js -config ./conf/example.js
+    $ node server.js
 
 ### Dependencies
 - [node.js](http://nodejs.org/) 0.4.8
