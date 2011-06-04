@@ -52,10 +52,8 @@ require('./lib/http')({
 
 model.open(function (err) {
     if (err) {
-        console.error('failed: model open');
         console.error(err.message);
         process.exit(1);
-        return;
     }
 
     app.listen(config.back_port, config.host);
@@ -64,6 +62,7 @@ model.open(function (err) {
     // socket.io
     require('./lib/socket.io')({
         server: app,
-        store: store
+        store: store,
+        model: model
     });
 });
