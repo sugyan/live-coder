@@ -13,7 +13,7 @@ app.configure('development', function () {
 app.configure('production', function () {
     // if NODE_ENV is production
     var production = require('./conf/production');
-    Object.keys(development).forEach(function (key) {
+    Object.keys(production).forEach(function (key) {
         config[key] = production[key];
     });
 });
