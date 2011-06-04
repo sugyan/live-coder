@@ -6,7 +6,7 @@ $(function () {
             model: new eclipse.TextModel(),
             stylesheet: ['/css/code.css', '/css/editor.css']
         });
-    editor.setText('');
+    editor.setText(prev.code);
     editor.focus();
 	editor.addRuler(new Livecoder.LineNumberRuler(
         "left",
@@ -127,4 +127,13 @@ $(function () {
             }
         });
     });
+    // restore
+    if (saved_data) {
+        if (saved_data.code) {
+            editor.setText(saved_data.code);
+        }
+        if (saved_data.lang) {
+            $('#lang').val(saved_data.lang).change();
+        }
+    }
 });

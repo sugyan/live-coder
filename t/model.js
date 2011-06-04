@@ -156,6 +156,53 @@ empty_port(function (err, port) {
         });
     });
 
+    QUnit.test('update User data', function () {
+        QUnit.stop();
+
+        mongoSetup.once('ok', function () {
+            async.series([
+                // update code
+                function (callback) {
+                    model.find_or_create_user({
+                        key: 'hoge',
+                        name: 'sugyan',
+                        info: { foo: 'bar' }
+                    }, function (err, result) {
+                        assert.equal(result.user.name, 'sugyan', 'user found');
+                        assert.ok(! result.user.code, 'has no code');
+                        model.update(
+                            'users',
+                            { _id: result.user._id },
+                            { $set: { code: 'piyopiyo' } },
+                            function (err) {
+                                callback(err);
+                            }
+                        );
+                    });
+                },
+                // check
+                function (callback) {
+                    model.find_or_create_user({
+                        key: 'hoge',
+                        name: 'sugyan',
+                        info: { foo: 'bar' }
+                    }, function (err, result) {
+                        assert.equal(result.user.name, 'sugyan', 'user found');
+                        assert.ok(result.user.code, 'has code');
+                        callback(err);
+                    });
+                },
+                function (callback) {
+                    QUnit.start();
+                }
+            ], function (err) {
+                console.error('Caught exceptions: ' + err);
+                assert.ok(false, 'no exceptions');
+                QUnit.start();
+            });
+        });
+    });
+
     QUnit.start();
 
     process.on('uncaughtException', function (err) {
