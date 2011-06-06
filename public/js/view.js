@@ -52,14 +52,16 @@ $(function () {
             editor.setText(msg.code);
         }
         if (msg.lang !== undefined) {
-            $.ajax({
-                url: '/data/lang/' + msg.lang + '.json',
-                dataType: 'json',
-                success: function (data) {
-                    styler.changeLanguage(data);
-                }
-            });
-            $('#lang').val(msg.lang);
+            if (msg.lang !== $('#lang').val()) {
+                $.ajax({
+                    url: '/data/lang/' + msg.lang + '.json',
+                    dataType: 'json',
+                    success: function (data) {
+                        styler.changeLanguage(data);
+                    }
+                });
+                $('#lang').val(msg.lang);
+            }
         }
         if (msg.name) {
             var path = window.location.pathname;
