@@ -1,12 +1,12 @@
-$(function() {
+$(function () {
     var dmp = new diff_match_patch(),
-        editor = new eclipse.Editor({
+        editor = new orion.textview.TextView({
             parent: 'code',
-            model: new eclipse.TextModel(),
+            model: new orion.textview.TextModel(),
             stylesheet: ['/css/code.css'],
             readonly: true
         }),
-        pos = { top: 0, left: 0 };
+        pos = { top: 70, left: 25 };
     editor.setText('');
 	editor.addRuler(new Livecoder.LineNumberRuler(
         "left",
@@ -15,9 +15,9 @@ $(function() {
         { styleClass: "ruler_lines_even" }
     ));
     var styler = new Livecoder.TextStyler(editor);
-    $('#cursor').offset({ top: 70, left: 25 }).height(editor.getLineHeight());
+    $('#cursor').height(editor.getLineHeight());
 
-    socket.on('message', function(msg) {
+    socket.on('message', function (msg) {
         if (msg.patch) {
             var patches = dmp.patch_fromText(msg.patch);
             var results = dmp.patch_apply(patches, editor.getText());
@@ -52,14 +52,16 @@ $(function() {
             editor.setText(msg.code);
         }
         if (msg.lang !== undefined) {
-            $.ajax({
-                url: '/data/lang/' + msg.lang + '.json',
-                dataType: 'json',
-                success: function (data) {
-                    styler.changeLanguage(data);
-                }
-            });
-            $('#lang').val(msg.lang);
+            if (msg.lang !== $('#lang').val()) {
+                $.ajax({
+                    url: '/data/lang/' + msg.lang + '.json',
+                    dataType: 'json',
+                    success: function (data) {
+                        styler.changeLanguage(data);
+                    }
+                });
+                $('#lang').val(msg.lang);
+            }
         }
         if (msg.name) {
             var path = window.location.pathname;
@@ -67,12 +69,12 @@ $(function() {
             socket.send({ view: target });
         }
     });
-    socket.on('connect', function() {
+    socket.on('connect', function () {
         socket.send({ auth: { cookie: document.cookie } });
     });
     socket.connect();
 
-    $('#message_form').submit(function() {
+    $('#message_form').submit(function () {
         var val = $('#message').val();
         if (val.length > 0) {
             socket.send({ chat: val });
@@ -82,7 +84,7 @@ $(function() {
     });
     $('#message').focus();
 
-    var blink; blink = function() {
+    setInterval(function () {
         var cursor = $('#cursor');
         if (cursor.css('display') === 'none') {
             if (pos.top < $('#code').height() + editor.getLineHeight()) {
@@ -95,9 +97,7 @@ $(function() {
         else {
             cursor.hide();
         }
-        setTimeout(blink, 500);
-    };
-    blink();
+    }, 500);
 
     var LS = new Livecoder.Socket(socket);
     LS.use(['chat', 'stat']);

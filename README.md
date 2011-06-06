@@ -7,13 +7,12 @@ http://livecoder.sugyan.com/
     $ git clone git://github.com/sugyan/live-coder.git
     $ cd live-coder
     $ ./setup.sh
-    $ node server.js -config ./conf/example.js
+    $ node server.js
 
 ### Dependencies
 - [node.js](http://nodejs.org/) 0.4.8
  - [Socket.IO](http://socket.io/) 0.6.18
- - [Express](http://expressjs.com/) 2.3.10
- - [Mongoose](http://mongoosejs.com/) 1.3.6
+ - [Express](http://expressjs.com/) 2.3.11
  - [EJS](http://embeddedjs.com/) 0.4.2
  - [oauth](https://github.com/ciaranj/node-oauth) 0.9.0
 - [MongoDB](http://www.mongodb.org/) 1.8.1

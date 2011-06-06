@@ -1,12 +1,12 @@
 $(function () {
     var prev = { code: '', row: 0, col: 0 },
         dmp = new diff_match_patch(),
-        editor = new eclipse.Editor({
+        editor = new orion.textview.TextView({
             parent: 'code',
-            model: new eclipse.TextModel(),
+            model: new orion.textview.TextModel(),
             stylesheet: ['/css/code.css', '/css/editor.css']
         });
-    editor.setText('');
+    editor.setText(prev.code);
     editor.focus();
 	editor.addRuler(new Livecoder.LineNumberRuler(
         "left",
@@ -51,12 +51,13 @@ $(function () {
             }
         }, 0);
     }
-    function sync() {
+    function sync(save) {
         socket.send({
-            code: editor.getText(),
             edit: {
+                lang: $('#lang').val(),
+                code: editor.getText(),
                 cursor: cursor(),
-                lang: $('#lang').val()
+                save: save
             }
         });
     }
@@ -101,11 +102,9 @@ $(function () {
                 edit: true
             }
         });
-        var loop; loop = function () {
-            sync();
-            setTimeout(loop, 10000);
-        };
-        loop();
+        setInterval(function () {
+            sync(true);
+        }, 10000);
     });
     socket.connect();
 
@@ -128,4 +127,13 @@ $(function () {
             }
         });
     });
+    // restore
+    if (saved_data) {
+        if (saved_data.code) {
+            editor.setText(saved_data.code);
+        }
+        if (saved_data.lang) {
+            $('#lang').val(saved_data.lang).change();
+        }
+    }
 });
