@@ -101,12 +101,12 @@ empty_port(function(err, port) {
                     assert.equal(
                         msg.chat.message, 'bar', 'socket1 received message'
                     );
-                    setTimeout(function() {
+                    process.nextTick(function () {
                         socket1.disconnect();
                         socket2.disconnect();
                         socket3.disconnect();
                         QUnit.start();
-                    }, 100);
+                    });
                 }
             }
         });

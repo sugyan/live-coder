@@ -1,16 +1,13 @@
 require('../test_helper');
 
 var async = require('async'),
-    events = require('events'),
-    utils = require('util'),
-    MongoSetup = function () {};
-utils.inherits(MongoSetup, events.EventEmitter);
+    events = require('events');
 
 empty_port(function (err, port) {
     if (err) { throw err; }
 
     var mongod,
-        mongoSetup = new MongoSetup(),
+        mongoSetup = new events.EventEmitter(),
         model = new (require('../lib/model'))({ port: port });
     QUnit.module('model', {
         setup: function () {
@@ -21,8 +18,11 @@ empty_port(function (err, port) {
             ]);
             mongod.stdout.on('data', function (data) {
                 if (data.toString().match(new RegExp('waiting for connections on port ' + port))) {
-                    model.open(function (err) {
-                        mongoSetup.emit('ok');
+                    process.nextTick(function () {
+                        model.open(function (err) {
+                            console.log(err);
+                            mongoSetup.emit('ok');
+                        });
                     });
                 }
             });
