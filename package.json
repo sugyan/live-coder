@@ -1,0 +1,23 @@
+{
+    "name": "livecoder",
+    "version": "0.3.0",
+    "description": "live coding application",
+    "homepage": "http://livecoder.sugyan.com/",
+    "author": {
+        "name": "sugyan",
+        "email": "sugi1982@gmail.com",
+        "url": "http://sugyan.com/"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/sugyan/live-coder"
+    },
+    "dependencies": {
+        "express": ">=2.4.3",
+        "connect-mongodb": "1.x",
+        "mongodb": ">=0.9.6",
+        "oauth": ">=0.9.3",
+        "socket.io": ">=0.7.7",
+        "ejs": ">=0.4.3"
+    }
+}
