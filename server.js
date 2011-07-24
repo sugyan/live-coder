@@ -1,14 +1,35 @@
-// http server
-var express = require('express'),
-    app = express.createServer(),
-    store = new (require('connect-mongodb'))(),
-    config = require('./conf/config.js');
+/**
+ * Module dependencies.
+ */
+
+var express = require('express');
+var app = module.exports = express.createServer();
+
+// Configuration
+
+var config = require('./conf/config.js');
+app.configure(function(){
+    app.set('views', __dirname + '/views');
+    app.set('view engine', 'ejs');
+    app.use(express.bodyParser());
+    app.use(express.methodOverride());
+    app.use(express.cookieParser());
+    app.use(express.session({ secret: 'your secret here' }));
+    app.use(app.router);
+    app.use(express['static'](__dirname + '/public'));
+    app.dynamicHelpers({
+        session: function (req, res) {
+            return req.session;
+        }
+    });
+});
 
 app.configure('development', function () {
     var development = require('./conf/development');
     Object.keys(development).forEach(function (key) {
         config[key] = development[key];
     });
+    app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 });
 app.configure('production', function () {
     // if NODE_ENV is production
@@ -16,58 +37,12 @@ app.configure('production', function () {
     Object.keys(production).forEach(function (key) {
         config[key] = production[key];
     });
-});
-app.configure(function () {
-    app.use(express['static'](__dirname + '/public'));
-    app.use(express.cookieParser());
-    app.use(express.session({
-        store: store,
-        secret: config.http.cookie_secret,
-        cookie: { httpOnly: false }
-    }));
-
-    app.set('view engine', 'ejs');
-    app.helpers({
-        port: config.http.back_port,
-        jss: []
-    });
-    app.dynamicHelpers({
-        session: function(req, res) {
-            return req.session;
-        },
-        req: function(req, res) {
-            return req;
-        }
-    });
+    app.use(express.errorHandler());
 });
 
+// Routes
 
-// db
-var model = (function () {
-    var Model = require('./lib/model');
-    return new Model(config.db);
-}());
+require('./lib/route');
 
-// routing
-require('./lib/http')({
-    app: app,
-    model: model,
-    config: config
-});
-
-model.open(function (err) {
-    if (err) {
-        console.error(err.message);
-        process.exit(1);
-    }
-
-    app.listen(config.http.back_port, config.http.host);
-    console.log('Server running at http://' + config.http.host + ':' + config.http.back_port + '/');
-
-    // socket.io
-    require('./lib/socket.io')({
-        server: app,
-        store: store,
-        model: model
-    });
-});
+app.listen(config.http.port, config.http.host);
+console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);

@@ -1,12 +1,11 @@
 /**
  * This configuration is template.
- * You shoud overwrite these config by "development.js" or "deployment.js"
+ * You shoud overwrite these config by "development.js" or "production.js"
  */
 module.exports = {
     http: {
         host: 'localhost',
-        front_port: 3000,
-        back_port: 3000,
+        port: 3000,
         cookie_secret: '********'
     },
     oauth: {
@@ -22,10 +21,5 @@ module.exports = {
             client_id: '********************',
             client_secret: '****************************************'
         }
-    },
-    db: {
-        host: 'localhost',
-        port: 27017,
-        dbname: 'livecoder'
     }
 };
