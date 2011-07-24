@@ -100,7 +100,7 @@ $(function() {
         if (i > message.length) { return; }
 
         var wait = Math.floor(50 + Math.random() * 50);
-        if (message.charAt(i - 2).search(/[ \n]/) !== -1) { wait += 50; }
+        if (message.charAt(i - 2).search(/[ \n]/) !== -1) { wait = 0; }
         setTimeout(write_message, wait);
     };
     write_message();
