@@ -192,3 +192,9 @@ div#cursor {
 img {
     border: none;
 }
+
+div.signin_icon {
+    float: left;
+    text-align: center;
+    width: 128px;
+}
