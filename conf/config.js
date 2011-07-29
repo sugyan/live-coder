@@ -21,5 +21,20 @@ module.exports = {
             client_id: '********************',
             client_secret: '****************************************'
         }
+    },
+    session: {
+        secret: 'secret key',
+        mongodb: {
+            host: '127.0.0.1',
+            port: 27017,
+            options: {
+                auto_reconnect: true,
+                native_parser: true
+            }
+        }
+    },
+    require_login: {
+        '/mypage': 1,
+        '/edit': 1
     }
 };

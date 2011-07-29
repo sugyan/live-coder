@@ -8,14 +8,13 @@ var app = module.exports = express.createServer();
 // Configuration
 
 var config = require('./conf/config.js');
-app.configure(function(){
+
+app.configure(function () {
     app.set('views', __dirname + '/views');
     app.set('view engine', 'ejs');
     app.use(express.bodyParser());
     app.use(express.methodOverride());
     app.use(express.cookieParser());
-    app.use(express.session({ secret: 'your secret here' }));
-    app.use(app.router);
     app.use(express['static'](__dirname + '/public'));
     app.helpers({
         jss: []
@@ -43,8 +42,40 @@ app.configure('production', function () {
     app.use(express.errorHandler());
 });
 
-// Routes
-require('./lib/route');
+// Session
+(function () {
+    var url = require('url');
+    var mongo = require('mongodb');
+    var mongoStore = require('connect-mongodb');
+    var store = new mongoStore({
+        server_config: new mongo.Server(
+            config.session.mongodb.host,
+            config.session.mongodb.port,
+            config.session.mongodb.options
+        )
+    }, function (err) {
+        if (err) { throw err; }
+    });
+
+    app.use(express.session({
+        secret: config.session.secret,
+        store: store
+    }));
+    app.use(app.router);
+    app.use(function (req, res, next) {
+        var parsed = url.parse(req.url);
+        if (config.require_login[parsed.pathname] && ! req.session.user) {
+            res.redirect('/signin');
+        }
+        else {
+            next();
+        }
+    });
+
+    // Routes
+    require('./lib/route');
+}());
+
 // Socket.IO
 require('./lib/socket.io');
 
