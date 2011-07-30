@@ -73,7 +73,7 @@ app.configure('production', function () {
     });
 
     // Routes
-    require('./lib/route');
+    require('./lib/router')(app, config);
 }());
 
 // Socket.IO
