@@ -11,7 +11,7 @@
       <div id="signin"><% if (session.user) { %>
         <%= session.user.name %>
         <a href="/signout">Sign out</a><% } else { %>
-        Sign in
+        <a href="/signin">Sign in</a>
         <div id="signin_list">
           <a href="/signin/twitter"><img src="/img/authbuttons/twitter_64.png" /></a>
           <a href="/signin/facebook"><img src="/img/authbuttons/facebook_64.png" /></a>
