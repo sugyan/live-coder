@@ -8,8 +8,8 @@
   <body>
     <div id="header">
       <span class="logo"><a href="/">Livecoder</a></span>
-      <div id="signin"><% if (session.user) { %>
-        <%= session.user.name %>
+      <div id="signin"><% if (req.session.user) { %>
+        <%= req.session.user.name %>
         <a href="/signout">Sign out</a><% } else { %>
         <a href="/signin">Sign in</a>
         <div id="signin_list">

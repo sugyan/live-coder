@@ -10,10 +10,10 @@
   <h4>URL</h4>
   <div>
     <div class="info_url">
-      <a href="http://<%= req.headers.host + '/view/' + session.user.name %>">http://<%= req.headers.host + '/view/' + session.user.name %></a>
+      <a href="http://<%= req.headers.host + '/view/' + req.session.user.name %>">http://<%= req.headers.host + '/view/' + req.session.user.name %></a>
     </div>
     <div>
-      <a href="http://twitter.com/share" class="twitter-share-button" data-text="I'm livecoding now! #livecoder" data-count="none" data-url="http://<%= req.headers.host + '/view/' + session.user.name %>">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+      <a href="http://twitter.com/share" class="twitter-share-button" data-text="I'm livecoding now! #livecoder" data-count="none" data-url="http://<%= req.headers.host + '/view/' + req.session.user.name %>">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
     </div>
   </div>
   <h4>Language</h4>
@@ -41,6 +41,3 @@
   </form>
   <dl id="message_list"></dl>
 </div>
-<script type="text/javascript">
-var saved_data = <%- JSON.stringify(user) %>;
-</script>

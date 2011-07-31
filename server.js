@@ -20,8 +20,8 @@ app.configure(function () {
         jss: []
     });
     app.dynamicHelpers({
-        session: function (req, res) {
-            return req.session;
+        req: function (req, res) {
+            return req;
         }
     });
 });
