@@ -61,7 +61,6 @@ app.configure('production', function () {
         secret: config.session.secret,
         store: store
     }));
-    app.use(app.router);
     app.use(function (req, res, next) {
         var parsed = url.parse(req.url);
         if (config.require_login[parsed.pathname] && ! req.session.user) {
@@ -71,6 +70,7 @@ app.configure('production', function () {
             next();
         }
     });
+    app.use(app.router);
 
     // Routes
     require('./lib/router')(app, config);
