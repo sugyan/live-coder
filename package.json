@@ -13,7 +13,7 @@
         "url": "https://github.com/sugyan/live-coder"
     },
     "dependencies": {
-        "express": ">=2.4.3",
+        "express": ">=2.4.4",
         "connect-mongodb": ">=1.0.0",
         "mongodb": ">=0.9.6",
         "oauth": ">=0.9.3",
