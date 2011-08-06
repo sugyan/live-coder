@@ -43,7 +43,7 @@ app.configure('production', function () {
 });
 
 // Session
-(function () {
+var store = (function () {
     var url = require('url');
     var mongo = require('mongodb');
     var mongoStore = require('connect-mongodb');
@@ -70,14 +70,16 @@ app.configure('production', function () {
             next();
         }
     });
-    app.use(app.router);
 
     // Routes
     require('./lib/router')(app, config);
+    app.use(app.router);
+
+    return store;
 }());
 
 // Socket.IO
-require('./lib/socket.io');
+require('./lib/socket.io')(app, config, store);
 
 app.listen(config.http.port, config.http.host);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
