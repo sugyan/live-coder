@@ -54,78 +54,81 @@ $(function () {
         editor.setAction(e, emitEdit);
     });
 
-    $('#message_form').submit(function () {
-        var val = $('#message').val();
-        if (val.length > 0) {
-            socket.send({ chat: val });
-        }
-        $('#message').val('');
-        return false;
+    socket.on('patch failed', function () {
+        console.log('patch failed');
     });
+    // $('#message_form').submit(function () {
+    //     var val = $('#message').val();
+    //     if (val.length > 0) {
+    //         socket.send({ chat: val });
+    //     }
+    //     $('#message').val('');
+    //     return false;
+    // });
 
-    socket.on('message', function (msg) {
-        if (msg.error) {
-            socket.disconnect();
-            alert('disconnected!');
-        }
-        if (msg.name) {
-            sync();
-        }
-        if (msg.info && msg.info.action === 'connect') {
-            if (window.webkitNotifications && window.webkitNotifications.checkPermission() === 0) {
-                var notify = window.webkitNotifications.createNotification(
-                    '', 'livecoder', msg.info.user + ' connected.'
-                );
-                notify.show();
-                setTimeout(function () {
-                    notify.cancel();
-                }, 3000);
-            }
-            sync();
-        }
-        if (msg.inquiry === 'code') {
-            sync();
-        }
-    });
-    socket.on('connect', function () {
-        socket.send({
-            auth: {
-                cookie: document.cookie,
-                edit: true
-            }
-        });
-        setInterval(function () {
-            sync(true);
-        }, 10000);
-    });
-    socket.connect();
+    // socket.on('message', function (msg) {
+    //     if (msg.error) {
+    //         socket.disconnect();
+    //         alert('disconnected!');
+    //     }
+    //     if (msg.name) {
+    //         sync();
+    //     }
+    //     if (msg.info && msg.info.action === 'connect') {
+    //         if (window.webkitNotifications && window.webkitNotifications.checkPermission() === 0) {
+    //             var notify = window.webkitNotifications.createNotification(
+    //                 '', 'livecoder', msg.info.user + ' connected.'
+    //             );
+    //             notify.show();
+    //             setTimeout(function () {
+    //                 notify.cancel();
+    //             }, 3000);
+    //         }
+    //         sync();
+    //     }
+    //     if (msg.inquiry === 'code') {
+    //         sync();
+    //     }
+    // });
+    // socket.on('connect', function () {
+    //     socket.send({
+    //         auth: {
+    //             cookie: document.cookie,
+    //             edit: true
+    //         }
+    //     });
+    //     setInterval(function () {
+    //         sync(true);
+    //     }, 10000);
+    // });
+    // socket.connect();
 
-    var LS = new Livecoder.Socket(socket);
-    LS.use(['chat', 'stat']);
+    // var LS = new Livecoder.Socket(socket);
+    // LS.use(['chat', 'stat']);
 
-    var LE = new Livecoder.Editor(editor);
-    LE.use(['menu']);
+    // var LE = new Livecoder.Editor(editor);
+    // LE.use(['menu']);
 
-    $('#lang').change(function () {
-        var lang = $(this).val();
-        socket.send({
-            edit: { lang: lang }
-        });
-        $.ajax({
-            url: '/data/lang/' + lang + '.json',
-            dataType: 'json',
-            success: function (data) {
-                styler.changeLanguage(data);
-            }
-        });
-    });
-    // restore
-    if (saved_data) {
-        if (saved_data.code) {
-            editor.setText(saved_data.code);
-        }
-        if (saved_data.lang) {
-            $('#lang').val(saved_data.lang).change();
-        }
-    }
+    // $('#lang').change(function () {
+    //     var lang = $(this).val();
+    //     socket.send({
+    //         edit: { lang: lang }
+    //     });
+    //     $.ajax({
+    //         url: '/data/lang/' + lang + '.json',
+    //         dataType: 'json',
+    //         success: function (data) {
+    //             styler.changeLanguage(data);
+    //         }
+    //     });
+    // });
+    // // restore
+    // if (saved_data) {
+    //     if (saved_data.code) {
+    //         editor.setText(saved_data.code);
+    //     }
+    //     if (saved_data.lang) {
+    //         $('#lang').val(saved_data.lang).change();
+    //     }
+    // }
 });

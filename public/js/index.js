@@ -14,64 +14,64 @@ $(function() {
     ));
     var styler = new Livecoder.TextStyler(editor);
 
-    socket.on('message', function(msg) {
-        if (msg.connections) {
-            var viewers = msg.connections.viewers;
-            var editors = (function() {
-                var obj = msg.connections.editors;
-                var arr = [];
-                var e;
-                for (e in obj) {
-                    if (obj.hasOwnProperty(e)) {
-                        arr.push({
-                            name: e,
-                            date: Math.floor(obj[e].start / 1000)
-                        });
-                    }
-                }
-                return arr.sort(function(a, b) {
-                    return b.date - a.date;
-                });
-            }());
-            var ul = $('#editors_list');
-            ul.children().remove();
-            if (editors.length > 0) {
-                var i, l;
-                var count_viewers = function (editor) {
-                    var e, n = 0, obj = viewers[editor];
-                    for (e in obj) {
-                        if (obj.hasOwnProperty(e)) {
-                            n++;
-                        }
-                    }
-                    return n - 1;
-                };
-                for (i = 0, l = editors.length; i < l; i++) {
-                    var name = $('<span>').addClass('name')
-                        .append($('<a>').attr({
-                            href: '/view/' + editors[i].name
-                        }).text(editors[i].name));
-                    var count = count_viewers(editors[i].name);
-                    var info = $('<span>').addClass('info')
-                        .append($('<span>').text(count + ' viewers, '))
-                        .append($('<span>').addClass('datetime').data(
-                            'date', editors[i].date
-                        ));
-                    ul.append(
-                        $('<li>').append(name).append('<br>').append(info)
-                    );
-                    updateTime();
-                }
-            }
-            else {
-                ul.append($('<span>').text("There're no livecoders now..."));
-            }
-        }
-    });
-    socket.on('connect', function() {
-        socket.send({ view: '/' });
-    });
-    socket.connect();
+    // socket.on('message', function(msg) {
+    //     if (msg.connections) {
+    //         var viewers = msg.connections.viewers;
+    //         var editors = (function() {
+    //             var obj = msg.connections.editors;
+    //             var arr = [];
+    //             var e;
+    //             for (e in obj) {
+    //                 if (obj.hasOwnProperty(e)) {
+    //                     arr.push({
+    //                         name: e,
+    //                         date: Math.floor(obj[e].start / 1000)
+    //                     });
+    //                 }
+    //             }
+    //             return arr.sort(function(a, b) {
+    //                 return b.date - a.date;
+    //             });
+    //         }());
+    //         var ul = $('#editors_list');
+    //         ul.children().remove();
+    //         if (editors.length > 0) {
+    //             var i, l;
+    //             var count_viewers = function (editor) {
+    //                 var e, n = 0, obj = viewers[editor];
+    //                 for (e in obj) {
+    //                     if (obj.hasOwnProperty(e)) {
+    //                         n++;
+    //                     }
+    //                 }
+    //                 return n - 1;
+    //             };
+    //             for (i = 0, l = editors.length; i < l; i++) {
+    //                 var name = $('<span>').addClass('name')
+    //                     .append($('<a>').attr({
+    //                         href: '/view/' + editors[i].name
+    //                     }).text(editors[i].name));
+    //                 var count = count_viewers(editors[i].name);
+    //                 var info = $('<span>').addClass('info')
+    //                     .append($('<span>').text(count + ' viewers, '))
+    //                     .append($('<span>').addClass('datetime').data(
+    //                         'date', editors[i].date
+    //                     ));
+    //                 ul.append(
+    //                     $('<li>').append(name).append('<br>').append(info)
+    //                 );
+    //                 updateTime();
+    //             }
+    //         }
+    //         else {
+    //             ul.append($('<span>').text("There're no livecoders now..."));
+    //         }
+    //     }
+    // });
+    // socket.on('connect', function() {
+    //     socket.send({ view: '/' });
+    // });
+    // socket.connect();
 
     var updateTime = function() {
         $('.datetime').each(function(i, e) {

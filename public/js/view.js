@@ -17,10 +17,17 @@ $(function () {
     var styler = new Livecoder.TextStyler(editor);
     $('#cursor').height(editor.getLineHeight());
 
-    socket.on('message', function (msg) {
-        if (msg.patch) {
-            var patches = dmp.patch_fromText(msg.patch);
+    var socket = io.connect();
+    socket.on('connect', function () {
+        var pathname = window.location.pathname;
+        var roomname = pathname.match(/\/view\/([\w\.\-]+)/)[1];
+        socket.emit('join', roomname);
+    });
+    socket.on('edit', function (data) {
+        if (data.patch) {
+            var patches = dmp.patch_fromText(data.patch);
             var results = dmp.patch_apply(patches, editor.getText());
+
             // check results
             var i, flg = true;
             for (i = results[1].length; i--;) {
@@ -33,11 +40,11 @@ $(function () {
                 editor.setText(results[0]);
             }
             else {
-                socket.send({ inquiry: 'code' });
+                socket.emit('patch failed');
             }
         }
-        if (msg.cursor) {
-            var offset = editor.getModel().getLineStart(msg.cursor.row) + msg.cursor.col;
+        if (data.cursor) {
+            var offset = editor.getModel().getLineStart(data.cursor.row) + data.cursor.col;
             var location = editor.getLocationAtOffset(offset);
             pos.top = 70 + location.y;
             pos.left = 25 + location.x;
@@ -48,60 +55,62 @@ $(function () {
                 });
             }
         }
-        if (msg.code !== undefined) {
-            editor.setText(msg.code);
-        }
-        if (msg.lang !== undefined) {
-            if (msg.lang !== $('#lang').val()) {
-                $.ajax({
-                    url: '/data/lang/' + msg.lang + '.json',
-                    dataType: 'json',
-                    success: function (data) {
-                        styler.changeLanguage(data);
-                    }
-                });
-                $('#lang').val(msg.lang);
-            }
-        }
-        if (msg.name) {
-            var path = window.location.pathname;
-            var target = path.match(/\/view\/([\w\.\-]+)/)[1];
-            socket.send({ view: target });
-        }
     });
-    socket.on('connect', function () {
-        socket.send({ auth: { cookie: document.cookie } });
-    });
-    socket.connect();
+    // socket.on('message', function (msg) {
+    //     if (msg.code !== undefined) {
+    //         editor.setText(msg.code);
+    //     }
+    //     if (msg.lang !== undefined) {
+    //         if (msg.lang !== $('#lang').val()) {
+    //             $.ajax({
+    //                 url: '/data/lang/' + msg.lang + '.json',
+    //                 dataType: 'json',
+    //                 success: function (data) {
+    //                     styler.changeLanguage(data);
+    //                 }
+    //             });
+    //             $('#lang').val(msg.lang);
+    //         }
+    //     }
+    //     if (msg.name) {
+    //         var path = window.location.pathname;
+    //         var target = path.match(/\/view\/([\w\.\-]+)/)[1];
+    //         socket.send({ view: target });
+    //     }
+    // });
+    // socket.on('connect', function () {
+    //     socket.send({ auth: { cookie: document.cookie } });
+    // });
+    // socket.connect();
 
-    $('#message_form').submit(function () {
-        var val = $('#message').val();
-        if (val.length > 0) {
-            socket.send({ chat: val });
-        }
-        $('#message').val('');
-        return false;
-    });
-    $('#message').focus();
+    // $('#message_form').submit(function () {
+    //     var val = $('#message').val();
+    //     if (val.length > 0) {
+    //         socket.send({ chat: val });
+    //     }
+    //     $('#message').val('');
+    //     return false;
+    // });
+    // $('#message').focus();
 
-    setInterval(function () {
-        var cursor = $('#cursor');
-        if (cursor.css('display') === 'none') {
-            if (pos.top < $('#code').height() + editor.getLineHeight()) {
-                cursor.show().offset({
-                    top: pos.top,
-                    left: pos.left + editor._leftDiv.scrollWidth
-                });
-            }
-        }
-        else {
-            cursor.hide();
-        }
-    }, 500);
+    // setInterval(function () {
+    //     var cursor = $('#cursor');
+    //     if (cursor.css('display') === 'none') {
+    //         if (pos.top < $('#code').height() + editor.getLineHeight()) {
+    //             cursor.show().offset({
+    //                 top: pos.top,
+    //                 left: pos.left + editor._leftDiv.scrollWidth
+    //             });
+    //         }
+    //     }
+    //     else {
+    //         cursor.hide();
+    //     }
+    // }, 500);
 
-    var LS = new Livecoder.Socket(socket);
-    LS.use(['chat', 'stat']);
+    // var LS = new Livecoder.Socket(socket);
+    // LS.use(['chat', 'stat']);
 
-    var LE = new Livecoder.Editor(editor);
-    LE.use(['menu']);
+    // var LE = new Livecoder.Editor(editor);
+    // LE.use(['menu']);
 });
