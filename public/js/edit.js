@@ -16,51 +16,43 @@ $(function () {
     ));
     var styler = new Livecoder.TextStyler(editor);
 
+    var socket = io.connect();
+    socket.on('connect', function () {
+        console.log('connected!');
+    });
+
+    // editor actions
+    var emitEdit = function (patch) {
+        var data = {};
+        if (patch) {
+            data.patch = patch;
+        }
+        setTimeout(function () {
+            var model = editor.getModel();
+            var offset = editor.getCaretOffset();
+            var row = model.getLineAtOffset(offset);
+            var col = offset - model.getLineStart(row);
+            if (row !== prev.row || col !== prev.col) {
+                data.cursor = { row: row, col: col };
+                prev.row = row;
+                prev.col = col;
+            }
+            if (data.patch || data.cursor) {
+                socket.emit('edit', data);
+            }
+        }, 0);
+    };
     editor.addEventListener('Modify', {}, function () {
         var code = editor.getText();
         if (code !== prev.code) {
             var patch = dmp.patch_toText(dmp.patch_make(prev.code, code));
-            send(socket, patch);
+            emitEdit(patch);
             prev.code = code;
         }
     });
     $.each(['lineUp', 'lineDown', 'charPrevious', 'charNext'], function (i, e) {
-        editor.setAction(e, function () {
-            send(socket, null);
-        });
+        editor.setAction(e, emitEdit);
     });
-    function cursor() {
-        var model = editor.getModel(),
-            offset = editor.getCaretOffset(),
-            row = model.getLineAtOffset(offset),
-            col = offset - model.getLineStart(row);
-        return { col: col, row: row };
-    }
-    function send(socket, patch) {
-        var data = {};
-        if (patch) { data.patch = patch; }
-        setTimeout(function () {
-            var c = cursor();
-            if (c.row !== prev.row || c.col !== prev.col) {
-                data.cursor = c;
-                prev.row = c.row;
-                prev.col = c.col;
-            }
-            if (data.patch || data.cursor) {
-                socket.send({ edit: data });
-            }
-        }, 0);
-    }
-    function sync(save) {
-        socket.send({
-            edit: {
-                lang: $('#lang').val(),
-                code: editor.getText(),
-                cursor: cursor(),
-                save: save
-            }
-        });
-    }
 
     $('#message_form').submit(function () {
         var val = $('#message').val();
