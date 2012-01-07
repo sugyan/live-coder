@@ -57,14 +57,16 @@ $(function () {
     socket.on('patch failed', function () {
         console.log('patch failed');
     });
-    // $('#message_form').submit(function () {
-    //     var val = $('#message').val();
-    //     if (val.length > 0) {
-    //         socket.send({ chat: val });
-    //     }
-    //     $('#message').val('');
-    //     return false;
-    // });
+
+    // chat
+    $('#message_form').submit(function () {
+        var val = $('#message').val();
+        if (val.length > 0) {
+            socket.emit('chat', val);
+        }
+        $('#message').val('');
+        return false;
+    });
 
     // socket.on('message', function (msg) {
     //     if (msg.error) {
@@ -106,8 +108,8 @@ $(function () {
     // var LS = new Livecoder.Socket(socket);
     // LS.use(['chat', 'stat']);
 
-    // var LE = new Livecoder.Editor(editor);
-    // LE.use(['menu']);
+    var LE = new Livecoder.Editor(editor);
+    LE.use(['menu']);
 
     // $('#lang').change(function () {
     //     var lang = $(this).val();

@@ -56,6 +56,21 @@ $(function () {
             }
         }
     });
+
+    // chat
+    $('#message_form').submit(function () {
+        var val = $('#message').val();
+        if (val.length > 0) {
+            socket.emit('chat', val);
+        }
+        $('#message').val('');
+        return false;
+    });
+    $('#message').focus();
+    socket.on('chat', function (data) {
+        console.log(data);
+    });
+
     // socket.on('message', function (msg) {
     //     if (msg.code !== undefined) {
     //         editor.setText(msg.code);
@@ -82,16 +97,6 @@ $(function () {
     //     socket.send({ auth: { cookie: document.cookie } });
     // });
     // socket.connect();
-
-    // $('#message_form').submit(function () {
-    //     var val = $('#message').val();
-    //     if (val.length > 0) {
-    //         socket.send({ chat: val });
-    //     }
-    //     $('#message').val('');
-    //     return false;
-    // });
-    // $('#message').focus();
 
     // setInterval(function () {
     //     var cursor = $('#cursor');
