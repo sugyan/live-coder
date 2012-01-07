@@ -1,6 +1,24 @@
 !!!
 html
   head
-    title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
-  body!= body
+    title Livecoder
+    link(rel="stylesheet", href="/stylesheets/lib/bootstrap/bootstrap.min.css")
+    link(rel="stylesheet", href="/stylesheets/style.css")
+    script(type="text/javascript", src="/javascripts/lib/jquery/jquery-1.7.1.min.js")
+    script(type="text/javascript", src="/javascripts/lib/bootstrap/bootstrap-dropdown.js")
+  body
+    div.topbar
+      div.topbar-inner
+        div.container
+          a.brand(href="/") Livecoder
+          ul.secondary-nav
+            li.dropdown(data-dropdown="dropdown")
+              a.dropdown-toggle(href="#") signin
+              ul.dropdown-menu
+                li
+                  a Twitter
+                li
+                  a Facebook
+                li
+                  a Github
+    div.body!= body
