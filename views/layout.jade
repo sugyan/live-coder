@@ -3,9 +3,14 @@ html
   head
     title Livecoder
     link(rel="stylesheet", href="/stylesheets/lib/bootstrap/bootstrap.min.css")
+    link(rel="stylesheet", href="/stylesheets/lib/codemirror/codemirror.css")
+    link(rel="stylesheet", href="/stylesheets/lib/codemirror/theme/night.css")
     link(rel="stylesheet", href="/stylesheets/style.css")
     script(type="text/javascript", src="/javascripts/lib/jquery/jquery-1.7.1.min.js")
     script(type="text/javascript", src="/javascripts/lib/bootstrap/bootstrap-dropdown.js")
+    script(type="text/javascript", src="/javascripts/lib/codemirror/codemirror.js")
+    script(type="text/javascript", src="/javascripts/lib/codemirror/mode/javascript.js")
+    script(type="text/javascript", src="/javascripts/index.js")
   body
     div.topbar
       div.topbar-inner
@@ -22,3 +27,13 @@ html
                 li
                   a Github
     div.body!= body
+    footer
+      //
+        div#socialbuttons
+          div#twitter.button
+            a.twitter-share-button(href="http://twitter.com/share", data-url="http://livecoder.sugyan.com/", data-text="Livecoder", data-count="horizontal", data-via="sugyan") Tweet
+            script(type="text/javascript", src="http://platform.twitter.com/widgets.js")
+          div#facebook.button
+            iframe(src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Flivecoder.sugyan.com%2F&amp;layout=button_count&amp;show_faces=false&amp;width=450&amp;action=like&amp;font&amp;colorscheme=light&amp;height=21", scrolling="no", frameborder="0", style="border:none; overflow:hidden; width:450px; height:21px;", allowTransparency="true")
+      div#credit created by 
+        a(href="http://sugyan.com/", target="_blank") sugyan

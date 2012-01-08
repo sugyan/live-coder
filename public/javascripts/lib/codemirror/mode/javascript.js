@@ -1,0 +1,1 @@
+../../../../../deps/CodeMirror2/mode/javascript/javascript.js

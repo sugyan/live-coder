@@ -1,12 +1,38 @@
+/* default */
+body {
+    padding-top: 40px;
+    margin: 5px 0;
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+a {
+    color: #00B7FF;
+}
+
+/* topbar */
 div.topbar a.brand {
     font-family: monospace;
 }
 
-body {
-    padding-top: 45px;
-    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+/* footer */
+footer {
+    position: absolute;
+    background-color: #EEE;
+    height: 28px;
+    width: 100%;
+    bottom: 0px;
 }
-
-a {
-    color: #00B7FF;
+footer div#socialbuttons {
+    position: relative;
+    margin-left: 10px;
+    bottom: 10px;
+}
+footer div#socialbuttons .button {
+    float: left;
+    margin-top: 7px;
+}
+footer div#credit {
+    position: absolute;
+    height: 20px;
+    margin: 12px;
+    right: 0; bottom: 0;
 }
