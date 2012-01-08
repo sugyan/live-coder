@@ -17,8 +17,16 @@ html
         div.container
           a.brand(href="/") Livecoder
           ul.secondary-nav
-            li
-              a(href="/signin") signin
+            - if (session.user)
+              li.dropdown(data-dropdown="dropdown")
+                a.dropdown-toggle(href="#")
+                  img.icon(src="#{ session.user.icon }")
+                  #{ session.user.name }
+                ul.dropdown-menu
+                  li
+                    a(href="/signout") signout
+            - else
+                a(href="/signin") signin
     div.body!= body
     footer
       //

@@ -9,8 +9,13 @@ a {
 }
 
 /* topbar */
-div.topbar a.brand {
+.topbar a.brand {
     font-family: monospace;
+}
+.topbar img.icon {
+    height: 15px;
+    width: 15px;
+    margin-right: 5px;
 }
 
 /* editor */

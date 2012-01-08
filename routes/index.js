@@ -2,7 +2,7 @@ var async = require('async');
 var oauth = require('oauth');
 
 module.exports = (function () {
-    var config = {};
+    var config;
     var ret = {};
 
     ret.configure = function (obj) {
@@ -46,6 +46,10 @@ module.exports = (function () {
         else {
             res.redirect(github.getAuthorizeUrl());
         }
+    };
+    ret.signout = function (req, res) {
+        req.session.destroy();
+        res.redirect('/');
     };
     return ret;
 }());

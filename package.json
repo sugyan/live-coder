@@ -4,6 +4,7 @@
     "private": true,
     "dependencies": {
         "async": "0.1.15",
+        "connect-redis": "1.2.0",
         "express": "2.5.4",
         "jade": "0.20.0",
         "oauth": "0.9.5",
