@@ -13,6 +13,11 @@ div.topbar a.brand {
     font-family: monospace;
 }
 
+/* editor */
+.CodeMirror {
+    font-family: Monaco,"Courier New","DejaVu Sans Mono","Bitstream Vera Sans Mono",monospace;
+}
+
 /* footer */
 footer {
     position: absolute;

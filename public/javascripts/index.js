@@ -14,4 +14,5 @@ $(function () {
         lineNumbers: true
     });
     resize();
+    editor.focus();
 });

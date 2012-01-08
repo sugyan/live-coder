@@ -1,6 +1,8 @@
 // Module dependencies.
 var express = require('express');
+var _       = require('underscore');
 var routes  = require('./routes');
+var config  = require('./config');
 var app = module.exports = express.createServer();
 
 // Configuration
@@ -20,9 +22,14 @@ app.configure('development', function () {
 app.configure('production', function () {
     app.use(express.errorHandler());
 });
+app.configure(function () {
+    config = _.extend(config, require('./config/' + app.settings.env));
+    routes.configure(config);
+});
 
 // Routes
-app.get('/', routes.index);
+app.get('/',       routes.index);
+app.get('/signin', routes.signin);
 
 app.listen(3000);
 console.log('server listening on port %d in %s mode', app.address().port, app.settings.env);

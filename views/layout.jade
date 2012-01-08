@@ -17,15 +17,8 @@ html
         div.container
           a.brand(href="/") Livecoder
           ul.secondary-nav
-            li.dropdown(data-dropdown="dropdown")
-              a.dropdown-toggle(href="#") signin
-              ul.dropdown-menu
-                li
-                  a Twitter
-                li
-                  a Facebook
-                li
-                  a Github
+            li
+              a(href="/signin") signin
     div.body!= body
     footer
       //

@@ -3,7 +3,10 @@
     "version": "0.0.1",
     "private": true,
     "dependencies": {
+        "async": "0.1.15",
         "express": "2.5.4",
-        "jade": "0.20.0"
+        "jade": "0.20.0",
+        "oauth": "0.9.5",
+        "underscore": "1.2.4"
     }
 }
