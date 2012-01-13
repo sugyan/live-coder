@@ -4,6 +4,8 @@ var credis  = require('connect-redis');
 var _       = require('underscore');
 var routes  = require('./routes');
 var config  = require('./config');
+var socket  = require('./lib/socket.io');
+
 var app = module.exports = express.createServer();
 
 // Configuration
@@ -43,6 +45,8 @@ app.dynamicHelpers({
 app.get('/',        routes.index);
 app.get('/signin',  routes.signin);
 app.get('/signout', routes.signout);
+
+socket(app);
 
 app.listen(3000);
 console.log('server listening on port %d in %s mode', app.address().port, app.settings.env);

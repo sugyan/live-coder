@@ -8,6 +8,7 @@
         "express": "2.5.4",
         "jade": "0.20.0",
         "oauth": "0.9.5",
+        "socket.io": "0.8.7",
         "underscore": "1.2.4"
     }
 }

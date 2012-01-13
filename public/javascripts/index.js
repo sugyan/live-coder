@@ -15,4 +15,7 @@ $(function () {
     });
     resize();
     editor.focus();
+
+    // socket
+    var socket = io.connect();
 });
