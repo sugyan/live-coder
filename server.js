@@ -11,7 +11,7 @@ app.configure(function () {
     var RedisStore = credis(express);
     // environment config
     config = _.extend(config, require('./config/' + app.settings.env));
-    routes.configure(config);
+    routes = routes(config);
     // app config
     app.set('views', __dirname + '/views');
     app.set('view engine', 'jade');
