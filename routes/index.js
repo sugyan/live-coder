@@ -8,13 +8,18 @@ module.exports = function (config) {
                 javascripts: ['index.js']
             });
         },
-        editor: function (req, res) {
+        edit: function (req, res) {
             if (! req.session.user) {
                 res.redirect('/signin');
                 return;
             }
             res.render('index', {
-                javascripts: ['editor.js']
+                javascripts: ['edit.js']
+            });
+        },
+        view: function (req, res) {
+            res.render('index', {
+                javascripts: ['view.js']
             });
         },
         signin: function (req, res) {
