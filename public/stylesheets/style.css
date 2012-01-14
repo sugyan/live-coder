@@ -21,6 +21,7 @@ a {
 /* editor */
 .CodeMirror {
     font-family: Monaco,"Courier New","DejaVu Sans Mono","Bitstream Vera Sans Mono",monospace;
+    font-size: 16px;
 }
 
 /* footer */
