@@ -4,8 +4,18 @@ var oauth = require('oauth');
 module.exports = function (config) {
     return {
         index: function (req, res) {
-            console.log(req.session);
-            res.render('index');
+            res.render('index', {
+                javascripts: ['index.js']
+            });
+        },
+        editor: function (req, res) {
+            if (! req.session.user) {
+                res.redirect('/signin');
+                return;
+            }
+            res.render('index', {
+                javascripts: ['editor.js']
+            });
         },
         signin: function (req, res) {
             var github = new oauth.OAuth2(

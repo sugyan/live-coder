@@ -44,6 +44,7 @@ app.dynamicHelpers({
 
 // Routes
 app.get('/',        routes.index);
+app.get('/editor',  routes.editor);
 app.get('/signin',  routes.signin);
 app.get('/signout', routes.signout);
 

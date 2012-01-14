@@ -11,8 +11,11 @@ html
     script(type="text/javascript", src="/javascripts/lib/bootstrap/bootstrap-dropdown.js")
     script(type="text/javascript", src="/javascripts/lib/codemirror/codemirror.js")
     script(type="text/javascript", src="/javascripts/lib/codemirror/mode/javascript.js")
+    script(type="text/javascript", src="/javascripts/lib/google-diff-match-patch/diff_match_patch.js")
     script(type="text/javascript", src="/javascripts/livecoder.js")
-    script(type="text/javascript", src="/javascripts/index.js")
+    if locals.javascripts
+      for javascript in locals.javascripts
+        script(type="text/javascript", src="/javascripts/#{ javascript }")
   body
     div.topbar
       div.topbar-inner
@@ -26,6 +29,7 @@ html
                   #{ session.user.name }
                 ul.dropdown-menu
                   li
+                    a(href="/editor") start coding!
                     a(href="/signout") signout
             - else
                 a(href="/signin") signin
