@@ -44,14 +44,22 @@ Livecoder.Editor = (function () {
         });
     };
 
-    Editor.prototype.subscribe = function (socket) {
+    Editor.prototype.subscribe = function (socket, room) {
         var self = this;
         var cursor = $('<div>').css({
             position: 'absolute',
-            border: 'gray 1px solid'
+            'z-index': 10,
+            'border-left': '1px solid white'
         });
         $('body').append(cursor);
+        window.setInterval(function () {
+            cursor.css({
+                visibility: cursor.css('visibility') === 'hidden' ? '' : 'hidden'
+            });
+        }, 650);
         self.editor.setOption('readOnly', true);
+
+        socket.emit('join', room);
         socket.on('diff', function (diff) {
             var patch = self.dmp.patch_fromText(diff);
             var results = self.dmp.patch_apply(patch, self.text);
