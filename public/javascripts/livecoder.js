@@ -60,13 +60,14 @@ Livecoder.Editor = (function () {
             // TODO: check results[1]
         });
         socket.on('cursor', function (coords) {
-            // TODO: delay?
-            var position = self.editor.charCoords(coords);
-            cursor.css({
-                left: position.x,
-                top: position.y,
-                height: position.yBot - position.y
-            });
+            window.setTimeout(function () {
+                var position = self.editor.charCoords(coords);
+                cursor.css({
+                    left: position.x,
+                    top: position.y,
+                    height: position.yBot - position.y
+                });
+            }, 10);
         });
     };
 
