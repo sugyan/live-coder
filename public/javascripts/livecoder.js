@@ -3,7 +3,7 @@ var Livecoder = Livecoder || {};
 Livecoder.Editor = (function () {
     function Editor (id) {
         var self = this;
-        self.text   = '';
+        self.text   = $('#editor').val();
         self.coords = { line: 0, ch: 0 };
         self.dmp = new diff_match_patch();
         self.editor = CodeMirror.fromTextArea(document.getElementById('editor'), {
@@ -42,6 +42,10 @@ Livecoder.Editor = (function () {
             }
             self.coords = coords;
         });
+        // save all codes
+        window.setInterval(function () {
+            socket.emit('code', self.editor.getValue());
+        }, 1000);
     };
 
     Editor.prototype.subscribe = function (socket, room) {

@@ -1,7 +1,20 @@
 var async = require('async');
 var oauth = require('oauth');
+var util  = require('./../lib/util');
 
 module.exports = function (config) {
+    var getCode = function (username, callback) {
+        var client = util.redisClient();
+        client.get(util.createRedisKey('code', username), function (err, data) {
+            client.quit();
+            if (err) {
+                callback(err);
+                return;
+            }
+            callback(null, data);
+        });
+    };
+
     return {
         index: function (req, res) {
             res.render('index', {
@@ -13,13 +26,25 @@ module.exports = function (config) {
                 res.redirect('/signin');
                 return;
             }
-            res.render('index', {
-                javascripts: ['edit.js']
+            getCode(req.session.user.name, function (err, code) {
+                if (err) {
+                    throw err;
+                }
+                res.render('index', {
+                    code: code,
+                    javascripts: ['edit.js']
+                });
             });
         },
         view: function (req, res) {
-            res.render('index', {
-                javascripts: ['view.js']
+            getCode(req.param('id'), function (err, code) {
+                if (err) {
+                    throw err;
+                }
+                res.render('index', {
+                    code: code,
+                    javascripts: ['view.js']
+                });
             });
         },
         signin: function (req, res) {
